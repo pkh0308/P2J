@@ -56,7 +56,7 @@ void APlayerZeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis(TEXT("Move Right / Left"), this, &APlayerZeroCharacter::OnAxisHorizontal);
-	PlayerInputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &APlayerZeroCharacter::OnAxisHorizontal);
+	PlayerInputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &APlayerZeroCharacter::OnAxisVertical);
 
 
 }

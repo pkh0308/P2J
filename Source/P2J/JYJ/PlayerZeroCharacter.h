@@ -32,6 +32,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent*	p1camComp;
 
+	UPROPERTY(EditAnywhere)
 	FVector direction;
 
 	void Move();
