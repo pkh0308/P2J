@@ -7,6 +7,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMesh.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Character.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
+#include "PlayerAnimInstance.h"
 
 // Sets default values
 APlayerZeroCharacter::APlayerZeroCharacter()
@@ -21,12 +22,18 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 	p1camComp = CreateDefaultSubobject<UCameraComponent>(TEXT("p1camComp"));
 	p1camComp->SetupAttachment(springArmComp);
 
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> tmpMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/PKH/Mesh/PasserA/Ch06_nonPBR.Ch06_nonPBR'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tmpMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/JYJ/Mesh/Player1/Ch06_nonPBR.Ch06_nonPBR'"));
 	if (tmpMesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(tmpMesh.Object);
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, -90, 0));
 
+	}
+
+	static ConstructorHelpers::FClassFinder<UAnimInstance> ABP_Player(TEXT("/Script/Engine.AnimBlueprint'/Game/JYJ/Animations/ABP_Player.ABP_Player'"));
+	if (ABP_Player.Succeeded())
+	{
+		GetMesh()->SetAnimInstanceClass(ABP_Player.Class);
 	}
 
 	bUseControllerRotationYaw = true;
@@ -57,6 +64,12 @@ void APlayerZeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 	PlayerInputComponent->BindAxis(TEXT("Move Right / Left"), this, &APlayerZeroCharacter::OnAxisHorizontal);
 	PlayerInputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &APlayerZeroCharacter::OnAxisVertical);
+	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APlayerZeroCharacter::OnActionJump);
+	PlayerInputComponent->BindAction(TEXT("Punch"), IE_Pressed, this, &APlayerZeroCharacter::Attack);
+
+	PlayerInputComponent->BindAxis(TEXT("Turn Right / Left Mouse"), this, &APlayerZeroCharacter::OnAxisTurnYaw);
+	PlayerInputComponent->BindAxis(TEXT("Look Up / Down Mouse"), this, &APlayerZeroCharacter::OnAxisLookupPitch);
+
 
 
 }
@@ -65,6 +78,8 @@ void APlayerZeroCharacter::Move()
 {
 	FTransform trans = p1camComp->GetComponentTransform();
 	AddMovementInput(trans.TransformVector(direction));
+
+
 }
 
 void APlayerZeroCharacter::OnAxisVertical(float value)
@@ -83,6 +98,7 @@ void APlayerZeroCharacter::OnActionJump()
 }
 
 
+
 void APlayerZeroCharacter::OnAxisTurnYaw(float value)
 {
 	AddControllerYawInput(value);
@@ -93,4 +109,11 @@ void APlayerZeroCharacter::OnAxisLookupPitch(float value)
 	AddControllerPitchInput(value);
 }
 
+void APlayerZeroCharacter::Attack()
+{
+	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+	if (nullptr == AnimInstance) return;
+
+	AnimInstance->PlayerAttackMontage();
+}
 

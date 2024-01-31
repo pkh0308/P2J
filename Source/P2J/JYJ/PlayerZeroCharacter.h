@@ -45,4 +45,6 @@ public:
 	void OnAxisTurnYaw(float value);			//Yaw
 	void OnAxisLookupPitch(float value);		//Pitch
 
+	void Attack();
+
 };
