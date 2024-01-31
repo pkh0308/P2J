@@ -1,0 +1,216 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "PKH/Passer_FBI/Passer_FBI.h"
+#include "PKH/Passer_FBI/PasserFBIAIController.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "PKH/Passer/PasserAIKey.h"
+#include "PKH/Item/Item_IDCard.h"
+#include "../../../../../../../Source/Runtime/LevelSequence/Public/LevelSequencePlayer.h"
+
+APasser_FBI::APasser_FBI()
+{
+	PrimaryActorTick.bCanEverTick = true;
+
+	AIControllerClass = APasserFBIAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	// Weapon Mesh
+	WeaponMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMeshComp"));
+	WeaponMeshComp->SetupAttachment(GetMesh(), TEXT("PistolSocket"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> WeaponMeshRef(TEXT("/Script/Engine.StaticMesh'/Game/PKH/Mesh/Pistol/g18_not_rigged.g18_not_rigged'"));
+	if (WeaponMeshRef.Object)
+	{
+		WeaponMeshComp->SetStaticMesh(WeaponMeshRef.Object);
+		WeaponMeshComp->SetRelativeLocation(FVector(1.431f, -4.902f, 1.482f));
+		WeaponMeshComp->SetRelativeRotation(FRotator(90.472f, -94.023f, 86.738f));
+	}
+
+	// Animation
+	static ConstructorHelpers::FClassFinder<UAnimInstance> AnimRef(TEXT("/Game/PKH/Animations/PasserFBI/ABP_FBIAnimInstance.ABP_FBIAnimInstance_C"));
+	if (AnimRef.Class)
+	{
+		GetMesh()->SetAnimInstanceClass(AnimRef.Class);
+	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> AttackMontageRef(TEXT("/Script/Engine.AnimMontage'/Game/PKH/Animations/PasserFBI/AM_FBIAttack.AM_FBIAttack'"));
+	if (AttackMontageRef.Object)
+	{
+		AttackMontage = AttackMontageRef.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> DamagedMontageRef(TEXT("/Script/Engine.AnimMontage'/Game/PKH/Animations/PasserFBI/AM_FBIDamaged.AM_FBIDamaged'"));
+	if (DamagedMontageRef.Object)
+	{
+		DamagedMontage = DamagedMontageRef.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> DeathMontageRef(TEXT("/Script/Engine.AnimMontage'/Game/PKH/Animations/PasserFBI/AM_FBIDeath.AM_FBIDeath'"));
+	if (DeathMontageRef.Object)
+	{
+		DeathMontage = DeathMontageRef.Object;
+	}
+
+	// ID Card
+	static ConstructorHelpers::FClassFinder<AItem_IDCard> IDCardRef(TEXT("/Game/PKH/Blueprints/Item/BP_IDCard.BP_IDCard_C"));
+	if (IDCardRef.Class)
+	{
+		IDCardFactory = IDCardRef.Class;
+	}
+
+	// Status
+	Hp = 5;
+	WalkSpeed = 150;
+	RunSpeed = 350;
+}
+
+void APasser_FBI::BeginPlay()
+{
+	Super::BeginPlay();
+
+	BBComp = GetBlackboard();
+	WeaponMeshComp->SetVisibility(false);
+
+	IDCard = GetWorld()->SpawnActor<AItem_IDCard>(IDCardFactory);
+	IDCard->SetActive(false);
+
+	// Test
+	FMovieSceneSequencePlaybackSettings MovieSetting;
+	ALevelSequenceActor* OutActor;
+	SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), Sequence_FBIOut, MovieSetting, OutActor);
+}
+
+void APasser_FBI::Tick(float DeltaTime)
+{
+	if (IsRage)
+	{
+		if (BBComp)
+		{
+			APawn* TargetPawn = Cast<APawn>(BBComp->GetValueAsObject(PASSER_KEY_TARGET));
+			if (TargetPawn)
+			{
+				FVector LookVector = TargetPawn->GetActorLocation() - GetActorLocation();
+				LookVector.Z = 0.0f;
+				FRotator TargetRotation = FRotationMatrix::MakeFromX(LookVector).Rotator();
+				SetActorRotation(FMath::RInterpTo(GetActorRotation(), TargetRotation, DeltaTime, 1000));
+			}
+		}
+		return;
+	}
+
+	if (IsDead && false == IsDropped)
+	{
+		if (GetActorLocation().Y > 2390)
+		{
+			IsDropped = true;
+
+			IDCard->SetActive(true);
+			IDCard->SetActorLocation(GetActorLocation() + GetActorForwardVector() * -20);
+			IDCard->SetActorRotation(FRotator(40, 0, 50));
+		}
+	}
+}
+
+void APasser_FBI::OnDamaged(int32 InDamage, AActor* NewTarget)
+{
+	if (IsDead)
+	{
+		return;
+	}
+
+	Hp -= InDamage;
+	if (Hp <= 0)
+	{
+		OnDie();
+	}
+	else
+	{
+		if (IsRage)
+		{
+			return;
+		}
+
+		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+		PlayMontage(DamagedMontage);
+
+		if (BBComp)
+		{
+			BBComp->SetValueAsBool(PASSER_KEY_ISHITDELAY, true);
+			BBComp->SetValueAsObject(PASSER_KEY_TARGET, NewTarget);
+		}
+
+		if (Hp <= 3)
+		{
+			IsRage = true;
+		}
+	}
+}
+
+void APasser_FBI::OnDamagedEnd()
+{
+	Super::OnDamagedEnd();
+
+	WeaponMeshComp->SetVisibility(IsRage);
+}
+
+void APasser_FBI::OnDie()
+{
+	IsDead = true;
+	IsRage = false;
+	WeaponMeshComp->SetVisibility(false);
+	GetCharacterMovement()->MaxWalkSpeed = FastRunSpeed;
+
+	AActor* TargetActor = Cast<AActor>(GetBlackboard()->GetValueAsObject(PASSER_KEY_TARGET));
+	if (TargetActor)
+	{
+		FVector DestinationVec = GetActorLocation() - TargetActor->GetActorLocation();
+		DestinationVec.Z = 0;
+		DestinationVec.Normalize();
+		GetBlackboard()->SetValueAsVector(PASSER_KEY_HOMELOCATION, FVector(500, 9600, 88));
+	}
+	GetBlackboard()->SetValueAsObject(PASSER_KEY_TARGET, nullptr);
+	
+	// Destroy
+	FTimerHandle DestroyHandle;
+	GetWorldTimerManager().SetTimer(DestroyHandle, FTimerDelegate::CreateLambda(
+		[this]() {
+			Destroy();
+		}
+	), 8.0f, false);
+
+	if (SequencePlayer)
+	{
+		SequencePlayer->Play();
+	}
+}
+
+void APasser_FBI::Shoot()
+{
+	ACharacter* Target = Cast<ACharacter>(GetBlackboard()->GetValueAsObject(PASSER_KEY_TARGET));
+	if (nullptr == Target)
+	{
+		return;
+	}
+
+	FHitResult HResult;
+	FCollisionQueryParams Param;
+	Param.AddIgnoredActor(this);
+	
+	const FVector StartVec = GetActorLocation() + PistolOffset;
+	FVector RandVec = Target->GetActorRightVector() * FMath::RandRange(-ShootYOffset, ShootYOffset) + Target->GetActorUpVector() * FMath::RandRange(-ShootZOffset, ShootZOffset);
+	const FVector EndVec = Target->GetActorLocation() + RandVec;
+
+	bool IsHit = GetWorld()->LineTraceSingleByChannel(HResult, StartVec, EndVec, ECollisionChannel::ECC_Pawn, Param);
+	if (IsHit)
+	{
+		ACharacter* Player = Cast<ACharacter>(HResult.GetActor());
+		if (Player)
+		{
+			DrawDebugLine(GetWorld(), StartVec, EndVec, FColor::Green, false, 3.0f);
+			UE_LOG(LogTemp, Log, TEXT("Player shoot Hit"));
+		}
+	}
+	else
+	{
+		DrawDebugLine(GetWorld(), StartVec, EndVec, FColor::Red, false, 3.0f);
+	}
+}

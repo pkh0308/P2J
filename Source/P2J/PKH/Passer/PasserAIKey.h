@@ -6,3 +6,4 @@
 #define PASSER_KEY_CHASERANGE TEXT("ChaseRange")
 #define PASSER_KEY_HOMELOCATION TEXT("HomeLocation")
 #define PASSER_KEY_ISHITDELAY TEXT("IsHitDelay")
+#define PASSER_KEY_ISRAGE TEXT("IsRage")

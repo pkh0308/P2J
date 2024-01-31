@@ -31,11 +31,11 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void OnDamaged(int32 InDamage, AActor* NewTarget);
+	virtual void OnDamaged(int32 InDamage, AActor* NewTarget);
 
-	void OnDamagedEnd();
+	virtual void OnDamagedEnd();
 
-	void OnDie();
+	virtual void OnDie();
 
 	void BeginAttack();
 

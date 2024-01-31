@@ -100,6 +100,7 @@ void APasserBase::OnDie()
 	GetMesh()->GetAnimInstance()->Montage_Play(DeathMontage);
 	GetBlackboard()->SetValueAsObject(PASSER_KEY_TARGET, nullptr);
 	IsDead = true;
+	GetController()->UnPossess();
 }
 
 void APasserBase::BeginAttack()
