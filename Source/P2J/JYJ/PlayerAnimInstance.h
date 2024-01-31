@@ -29,6 +29,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Speed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isInAir ;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Direction;
 

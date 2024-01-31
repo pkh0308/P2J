@@ -8,6 +8,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Character.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 #include "PlayerAnimInstance.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Components/SphereComponent.h"
 
 // Sets default values
 APlayerZeroCharacter::APlayerZeroCharacter()
@@ -21,6 +22,9 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 
 	p1camComp = CreateDefaultSubobject<UCameraComponent>(TEXT("p1camComp"));
 	p1camComp->SetupAttachment(springArmComp);
+
+	//punchComp = CreateDefaultSubobject<USphereComponent>(TEXT("punchComp"));
+	//punchComp->SetupAttachment(GetMesh());
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tmpMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/JYJ/Mesh/Player1/Ch06_nonPBR.Ch06_nonPBR'"));
 	if (tmpMesh.Succeeded())

@@ -32,19 +32,19 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent*	p1camComp;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//class USphereComponent* punchComp;
+
 	UPROPERTY(EditAnywhere)
 	FVector direction;
 
-	void Move();
-
 	void OnAxisVertical(float value);
 	void OnAxisHorizontal(float value);
-
-	void OnActionJump();
-
 	void OnAxisTurnYaw(float value);			//Yaw
 	void OnAxisLookupPitch(float value);		//Pitch
 
+	void Move();
+	void OnActionJump();
 	void Attack();
 
 };

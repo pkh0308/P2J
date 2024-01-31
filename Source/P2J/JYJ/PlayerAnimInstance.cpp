@@ -3,10 +3,13 @@
 
 #include "JYJ/PlayerAnimInstance.h"
 #include "PlayerZeroCharacter.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Character.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/PawnMovementComponent.h"
 
 UPlayerAnimInstance::UPlayerAnimInstance()
 {
 	Speed = 0.0f;
+	isInAir = false;
 
 	//몽타주 변수 가져오기
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>AM(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/AM_Player.AM_Player'"));
@@ -21,15 +24,6 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 void UPlayerAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-
-	/*
-	PlayerZeroCharacter = Cast<APlayerZeroCharacter>(TryGetPawnOwner());
-	if (PlayerZeroCharacter) {
-		//#include "GameFramework/CharacterMovementComponent.h" 필요.
-		PlayerZeroMovement = PlayerZeroCharacter->GetCharacterMovement();
-	}
-	*/
-
 
 }
 
@@ -57,9 +51,12 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (!::IsValid(playerZero)) return;
 
 	Speed = playerZero->GetVelocity().Size();
-	//Direction = CalculateDirection(playerZero->GetVelocity(), playerZero->GetActorRotation());
-
-
+	auto Character = Cast<ACharacter>(playerZero);
+	 
+	if (Character)
+	{
+		isInAir = Character->GetMovementComponent()->IsFalling();
+	}
 
 }
 
@@ -72,34 +69,3 @@ void UPlayerAnimInstance::PlayerAttackMontage()
 
 }
 
-/*
-void UPlayerAnimInstance::PlayerWalk()
-{
-	
-	if (!Montage_IsPlaying(walkMontage))
-	{
-		Montage_Play(walkMontage, 1.f);
-	}
-	
-
-	auto Player = TryGetPawnOwner();
-	if (::IsValid(Player))
-	{
-		CurrentPlayerSpeed = Player->GetVelocity().Size();
-		auto Character = Cast<ACharacter>(Player);
-
-	}
-
-	if (CurrentPlayerSpeed > 0) {
-		isWalking = true;
-	}
-	else 
-	{
-		isWalking = false;
-	}
-
-	
-
-
-}
-*/
