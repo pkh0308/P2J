@@ -9,6 +9,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 #include "PlayerAnimInstance.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/SphereComponent.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Components/CapsuleComponent.h"
 
 // Sets default values
 APlayerZeroCharacter::APlayerZeroCharacter()
@@ -23,9 +24,6 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 	p1camComp = CreateDefaultSubobject<UCameraComponent>(TEXT("p1camComp"));
 	p1camComp->SetupAttachment(springArmComp);
 
-	//punchComp = CreateDefaultSubobject<USphereComponent>(TEXT("punchComp"));
-	//punchComp->SetupAttachment(GetMesh());
-
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tmpMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/JYJ/Mesh/Player1/Ch06_nonPBR.Ch06_nonPBR'"));
 	if (tmpMesh.Succeeded())
 	{
@@ -34,16 +32,34 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 
 	}
 
+	FName FirstAttackSocket(TEXT("FirstAttack"));
+
+	if (GetMesh()->DoesSocketExist(FirstAttackSocket))
+	{
+		punchComp = CreateDefaultSubobject<USphereComponent>(TEXT("punchComp"));
+		punchComp->SetupAttachment(GetMesh(), FirstAttackSocket);
+		//punchComp->SetRelativeLocation(FVector(27, 5, 90));
+		punchComp->SetRelativeScale3D(FVector(0.25f));
+	}
+
+
 	static ConstructorHelpers::FClassFinder<UAnimInstance> ABP_Player(TEXT("/Script/Engine.AnimBlueprint'/Game/JYJ/Animations/ABP_Player.ABP_Player'"));
 	if (ABP_Player.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(ABP_Player.Class);
 	}
+	
 
 	bUseControllerRotationYaw = true;
 	springArmComp->bUsePawnControlRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
+	//충돌체 설정
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
+	//GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	//punchComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
 }
 
 // Called when the game starts or when spawned
@@ -116,8 +132,14 @@ void APlayerZeroCharacter::OnAxisLookupPitch(float value)
 void APlayerZeroCharacter::Attack()
 {
 	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
-	if (nullptr == AnimInstance) return;
 
+	//punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
+	punchComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	if (nullptr == AnimInstance) return;
 	AnimInstance->PlayerAttackMontage();
+
+	//punchComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 }
+
 

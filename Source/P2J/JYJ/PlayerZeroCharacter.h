@@ -32,8 +32,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent*	p1camComp;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//class USphereComponent* punchComp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USphereComponent* punchComp;
 
 	UPROPERTY(EditAnywhere)
 	FVector direction;
@@ -46,5 +46,6 @@ public:
 	void Move();
 	void OnActionJump();
 	void Attack();
+
 
 };
