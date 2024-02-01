@@ -19,7 +19,7 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 
 	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
 	springArmComp->SetupAttachment(RootComponent);
-	springArmComp->SetWorldLocation(FVector(0, 70, 90));
+	springArmComp->SetWorldLocation(FVector(0, 0, 90));
 
 	p1camComp = CreateDefaultSubobject<UCameraComponent>(TEXT("p1camComp"));
 	p1camComp->SetupAttachment(springArmComp);
@@ -38,10 +38,8 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 	{
 		punchComp = CreateDefaultSubobject<USphereComponent>(TEXT("punchComp"));
 		punchComp->SetupAttachment(GetMesh(), FirstAttackSocket);
-		//punchComp->SetRelativeLocation(FVector(27, 5, 90));
 		punchComp->SetRelativeScale3D(FVector(0.25f));
 	}
-
 
 	static ConstructorHelpers::FClassFinder<UAnimInstance> ABP_Player(TEXT("/Script/Engine.AnimBlueprint'/Game/JYJ/Animations/ABP_Player.ABP_Player'"));
 	if (ABP_Player.Succeeded())
@@ -50,16 +48,23 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 	}
 	
 
-	bUseControllerRotationYaw = true;
 	springArmComp->bUsePawnControlRotation = true;
-	GetCharacterMovement()->bOrientRotationToMovement = false;
+	springArmComp->bInheritPitch = true;
+	springArmComp->bInheritRoll = true;
+	springArmComp->bInheritYaw = true;
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	//GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
+
 
 	//충돌체 설정
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
-	//GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	//punchComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	//punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
+	SprintSpeedMultiplier = 2.0f;	//달리기 배속
+
+
 }
 
 // Called when the game starts or when spawned
@@ -86,6 +91,8 @@ void APlayerZeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &APlayerZeroCharacter::OnAxisVertical);
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APlayerZeroCharacter::OnActionJump);
 	PlayerInputComponent->BindAction(TEXT("Punch"), IE_Pressed, this, &APlayerZeroCharacter::Attack);
+	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &APlayerZeroCharacter::Sprint);
+	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APlayerZeroCharacter::StopSprinting);
 
 	PlayerInputComponent->BindAxis(TEXT("Turn Right / Left Mouse"), this, &APlayerZeroCharacter::OnAxisTurnYaw);
 	PlayerInputComponent->BindAxis(TEXT("Look Up / Down Mouse"), this, &APlayerZeroCharacter::OnAxisLookupPitch);
@@ -134,12 +141,23 @@ void APlayerZeroCharacter::Attack()
 	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 
 	//punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
-	punchComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	//punchComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	if (nullptr == AnimInstance) return;
 	AnimInstance->PlayerAttackMontage();
+
+	//punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
 
 	//punchComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 }
 
+void APlayerZeroCharacter::Sprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed *= SprintSpeedMultiplier;
+}
+
+void APlayerZeroCharacter::StopSprinting()
+{
+	GetCharacterMovement()->MaxWalkSpeed /= SprintSpeedMultiplier;
+}
 

@@ -40,5 +40,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* AttackMontage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float CurrentWalkSpeed;
+
 
 };

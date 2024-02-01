@@ -10,9 +10,10 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 {
 	Speed = 0.0f;
 	isInAir = false;
+	//CurrentWalkSpeed = 0.0f;
 
 	//몽타주 변수 가져오기
-	static ConstructorHelpers::FObjectFinder<UAnimMontage>AM(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/AM_Player.AM_Player'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>AM(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/AM_Player.AM_Player1'"));
 	if (AM.Succeeded())
 	{
 		AttackMontage = AM.Object;
@@ -56,6 +57,8 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (Character)
 	{
 		isInAir = Character->GetMovementComponent()->IsFalling();
+		CurrentWalkSpeed = Character->GetMovementComponent()->GetMaxSpeed();
+
 	}
 
 }

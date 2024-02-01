@@ -13,5 +13,13 @@ UCLASS()
 class P2J_API UAnimNotify_Attack1HitCheck : public UAnimNotify
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
+
+	//virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
+
+	UPROPERTY(EditAnywhere)
+	FString Params;
 	
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AnimAAttackInterface.h"
 #include "PlayerZeroCharacter.generated.h"
 
 UCLASS()
@@ -26,6 +27,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+//protected:
+
 	UPROPERTY(EditAnywhere)
 	class USpringArmComponent* springArmComp;
 
@@ -38,6 +41,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	FVector direction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float SprintSpeedMultiplier;
+
 	void OnAxisVertical(float value);
 	void OnAxisHorizontal(float value);
 	void OnAxisTurnYaw(float value);			//Yaw
@@ -45,7 +51,13 @@ public:
 
 	void Move();
 	void OnActionJump();
+
+public:
 	void Attack();
+
+protected:
+	void Sprint();
+	void StopSprinting();
 
 
 };
