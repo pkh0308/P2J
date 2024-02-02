@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "../BulletActor.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "EnemyAI.generated.h"
 
 UCLASS()
@@ -22,6 +24,21 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	// 총 메시를 추가하고 싶다
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class UStaticMeshComponent* gunMeshComp;
+
+	/*UPROPERTY(EditAnywhere, Category = "Combat System", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class HandGun> Sword;*/
+
+	// 총알공장을 만들고 싶다.
+	// 총알을 만들어서 FirePosition소켓에 배치하고싶다
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABulletActor> bulletFactory;
+
+	void OnActionFire();
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

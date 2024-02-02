@@ -13,15 +13,5 @@ UCLASS()
 class P2J_API AEnemyAIController : public AAIController
 {
 	GENERATED_BODY()
-
-//public: 
-//	AEnemyAIController();
-//
-//protected:
-//	virtual void BeginPlay() override;
-//	virtual void OnPossess(APawn* InPawn) override;
-//
-//private:
-//	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = true))
 	
 };
