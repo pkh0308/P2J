@@ -8,6 +8,8 @@
 #include "PKH/Passer/PasserAIKey.h"
 #include "PKH/Item/Item_IDCard.h"
 #include "../../../../../../../Source/Runtime/LevelSequence/Public/LevelSequencePlayer.h"
+#include "KIsmet/GameplayStatics.h"
+#include "PKH/Game/PKHGameMode.h"
 
 APasser_FBI::APasser_FBI()
 {
@@ -73,7 +75,6 @@ void APasser_FBI::BeginPlay()
 	IDCard = GetWorld()->SpawnActor<AItem_IDCard>(IDCardFactory);
 	IDCard->SetActive(false);
 
-	// Test
 	FMovieSceneSequencePlaybackSettings MovieSetting;
 	ALevelSequenceActor* OutActor;
 	SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), Sequence_FBIOut, MovieSetting, OutActor);
@@ -99,7 +100,7 @@ void APasser_FBI::Tick(float DeltaTime)
 
 	if (IsDead && false == IsDropped)
 	{
-		if (GetActorLocation().Y > 2390)
+		if (GetActorLocation().Y > 4200)
 		{
 			IsDropped = true;
 
@@ -180,6 +181,17 @@ void APasser_FBI::OnDie()
 	if (SequencePlayer)
 	{
 		SequencePlayer->Play();
+	}
+
+	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (nullptr == GameMode)
+	{
+		return;
+	}
+
+	if (GameMode->CheckCurQuest(EQuestType::Q1_FightWithMan))
+	{
+		GameMode->ClearCurQuest();
 	}
 }
 

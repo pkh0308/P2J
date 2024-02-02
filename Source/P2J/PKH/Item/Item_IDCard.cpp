@@ -3,6 +3,8 @@
 
 #include "PKH/Item/Item_IDCard.h"
 #include "Components/BoxComponent.h"
+#include "KIsmet/GameplayStatics.h"
+#include "PKH/Game/PKHGameMode.h"
 
 AItem_IDCard::AItem_IDCard()
 {
@@ -26,4 +28,15 @@ void AItem_IDCard::GetItem(ACharacter* InCharacter)
 	Super::GetItem(InCharacter);
 
 	UE_LOG(LogTemp, Log, TEXT("Player Get ID card"));
+
+	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (nullptr == GameMode)
+	{
+		return;
+	}
+
+	if (GameMode->CheckCurQuest(EQuestType::Q2_GetIDCard))
+	{
+		GameMode->ClearCurQuest();
+	}
 }

@@ -24,9 +24,10 @@ EBTNodeResult::Type UBTTask_SetMoveLocation::ExecuteTask(UBehaviorTreeComponent&
 	UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
 	if (BBComp)
 	{
-		FVector TargetLocation = OwnerPawn->GetActorForwardVector();
-		TargetLocation.Z = 0;
-		TargetLocation = IsForward ? TargetLocation * LocationOffset : TargetLocation * LocationOffset * -1;
+		FVector TargetDirection = OwnerPawn->GetActorForwardVector();
+		TargetDirection.Z = 0;
+		FVector TargetLocation = OwnerPawn->GetActorLocation();
+		TargetLocation += IsForward ? TargetDirection * LocationOffset : TargetDirection * LocationOffset * -1;
 		BBComp->SetValueAsVector(PASSER_KEY_MOVELOCATION, TargetLocation);
 		IsForward = !IsForward;
 		return EBTNodeResult::Succeeded;
