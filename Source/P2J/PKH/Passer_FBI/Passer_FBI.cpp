@@ -100,7 +100,7 @@ void APasser_FBI::Tick(float DeltaTime)
 
 	if (IsDead && false == IsDropped)
 	{
-		if (GetActorLocation().Y > 4200)
+		if (GetActorLocation().Y > -1400)
 		{
 			IsDropped = true;
 
@@ -166,7 +166,7 @@ void APasser_FBI::OnDie()
 		FVector DestinationVec = GetActorLocation() - TargetActor->GetActorLocation();
 		DestinationVec.Z = 0;
 		DestinationVec.Normalize();
-		GetBlackboard()->SetValueAsVector(PASSER_KEY_HOMELOCATION, FVector(500, 9600, 88));
+		GetBlackboard()->SetValueAsVector(PASSER_KEY_HOMELOCATION, FVector(-700, 4000, 98));
 	}
 	GetBlackboard()->SetValueAsObject(PASSER_KEY_TARGET, nullptr);
 	
