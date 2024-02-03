@@ -21,12 +21,12 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	//virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AWeaponActor> Gun;
+	//UPROPERTY(EditAnywhere)
+	//TSubclassOf<class AWeaponActor> Gun;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	class UStaticMeshComponent* SMGMeshComp;	//SMG11Y
+	class USkeletalMeshComponent* SMGMeshComp;	//SMG11Y
 
 };

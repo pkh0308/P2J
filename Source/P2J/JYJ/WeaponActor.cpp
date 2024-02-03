@@ -9,18 +9,19 @@
 AWeaponActor::AWeaponActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	//SMG11Y ·Îµå
-	SMGMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SMGMeshComp"));
+	SMGMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SMGMeshComp"));
 	SMGMeshComp->SetupAttachment(RootComponent);
 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> smgMesh(TEXT("/Script/Engine.StaticMesh'/Game/JYJ/Models/FPS_Weapon_Bundle/Weapons/Meshes/SMG11/SM_SMG11_X.SM_SMG11_X'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> smgMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/JYJ/Models/FPS_Weapon_Bundle/Weapons/Meshes/SMG11/SK_SMG11_Nostock_Y.SK_SMG11_Nostock_Y'"));
 	if (smgMesh.Succeeded())
 	{
-		SMGMeshComp->SetStaticMesh(smgMesh.Object);
-		//SMGMeshComp->SetRelativeLocation(FVector(0, 80, 130));
-		//SMGMeshComp->SetRelativeRotation(FRotator(0, 0, 90));
+		SMGMeshComp->SetSkeletalMesh(smgMesh.Object);
+		SMGMeshComp->SetRelativeLocation(FVector(3, -1, 2));
+		//(Pitch=40.000000,Yaw=-100.000000,Roll=80.000000)
+		SMGMeshComp->SetRelativeRotation(FRotator(40, -100, 80));
 		SMGMeshComp->SetWorldScale3D(FVector(1.5f));
 	}
 
@@ -35,9 +36,11 @@ void AWeaponActor::BeginPlay()
 }
 
 // Called every frame
+/*
 void AWeaponActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
+*/
 

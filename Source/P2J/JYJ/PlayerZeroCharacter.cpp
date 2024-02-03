@@ -11,6 +11,8 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/SphereComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/CapsuleComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h"
+#include "WeaponActor.h"
 
 // Sets default values
 APlayerZeroCharacter::APlayerZeroCharacter()
@@ -76,6 +78,8 @@ void APlayerZeroCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerAnim = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+	check(PlayerAnim);
+	PlayerAnim->OnMontageEnded.AddDynamic(this, &APlayerZeroCharacter::OnPunchingMontageEnded);
 	
 }
 
@@ -139,6 +143,7 @@ void APlayerZeroCharacter::Attack()
 {
 	//auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 
+	punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
 	if (nullptr == PlayerAnim) return;
 	PlayerAnim->PlayerAttackMontage();
 
@@ -152,5 +157,10 @@ void APlayerZeroCharacter::Sprint()
 void APlayerZeroCharacter::StopSprinting()
 {
 	GetCharacterMovement()->MaxWalkSpeed /= SprintSpeedMultiplier;
+}
+
+void APlayerZeroCharacter::OnPunchingMontageEnded(UAnimMontage* Montage, bool bInterrupred)
+{
+
 }
 

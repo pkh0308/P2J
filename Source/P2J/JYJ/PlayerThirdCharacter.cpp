@@ -9,6 +9,7 @@
 #include "WeaponActor.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/SpringArmComponent.h"
+#include "PlayerAnimInstance.h"
 
 APlayerThirdCharacter::APlayerThirdCharacter()
 {
@@ -20,28 +21,11 @@ APlayerThirdCharacter::APlayerThirdCharacter()
 
 	}
 
-	//SMG11Y 로드
-	/*
-	SMGMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SMGMeshComp"));
-	SMGMeshComp->SetupAttachment(GetMesh());
-
-	ConstructorHelpers::FObjectFinder<UStaticMesh> smgMesh(TEXT("/Script/Engine.StaticMesh'/Game/JYJ/Models/FPS_Weapon_Bundle/Weapons/Meshes/SMG11/SM_SMG11_X.SM_SMG11_X'"));
-	if (smgMesh.Succeeded())
-	{
-		SMGMeshComp->SetStaticMesh(smgMesh.Object);
-		SMGMeshComp->SetRelativeLocation(FVector(0, 80, 130));
-		SMGMeshComp->SetRelativeRotation(FRotator(0,0,90));
-		SMGMeshComp->SetWorldScale3D(FVector(1.5f));
-	}
-	*/
-
 }
 
 void APlayerThirdCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 
 }
 
@@ -49,8 +33,8 @@ void APlayerThirdCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction(TEXT("Zoom"), IE_Pressed, this, &APlayerThirdCharacter::ZoomIn);
-	PlayerInputComponent->BindAction(TEXT("Zoom"), IE_Released, this, &APlayerThirdCharacter::ZoomOut);
+	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Pressed, this, &APlayerThirdCharacter::ZoomIn);
+	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Released, this, &APlayerThirdCharacter::ZoomOut);
 	PlayerInputComponent->BindAction(TEXT("Shooting"), IE_Pressed, this, &APlayerThirdCharacter::OnActionFire);
 	PlayerInputComponent->BindAction(TEXT("SMG11Y"), IE_Pressed, this, &APlayerThirdCharacter::OnActionChooseSMG11);
 
@@ -61,6 +45,7 @@ void APlayerThirdCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	Zoom();
+	//bAttack = false;
 }
 
 void APlayerThirdCharacter::Zoom()
@@ -87,59 +72,56 @@ void APlayerThirdCharacter::OnActionChooseSMG11()
 {
 	//SMGMeshComp->SetVisibility(true);
 	AttachWeapon(Gun);
+	bValidRifle = true;
 	//ZoomIn();
 }
 
 void APlayerThirdCharacter::OnActionFire()
 {
-	FHitResult outhit;
-	FVector start = p1camComp->GetComponentLocation();
-	FVector end = start + (p1camComp->GetForwardVector() * 100000);
-	FCollisionQueryParams params;
-	params.AddIgnoredActor(this);	//플레이어 제외 요청
+	bAttack = true;
+	if(bAttack == true && bValidRifle == true)
+	{ 
+		FHitResult outhit;
+		FVector start = p1camComp->GetComponentLocation();
+		FVector end = start + (p1camComp->GetForwardVector() * 100000);
+		FCollisionQueryParams params;
+		params.AddIgnoredActor(this);	//플레이어 제외 요청
 
-	bool breturnValue = GetWorld()->LineTraceSingleByChannel(outhit, start, end, ECollisionChannel::ECC_Visibility, params);
+		bool breturnValue = GetWorld()->LineTraceSingleByChannel(outhit, start, end, ECollisionChannel::ECC_Visibility, params);
 
-	if (breturnValue)
-	{
-		DrawDebugLine(GetWorld(), outhit.TraceStart, outhit.ImpactPoint, FColor::Red, false, 10);
-
-		UPrimitiveComponent* hitComp = outhit.GetComponent();
-
-		if (hitComp && hitComp->IsSimulatingPhysics())
+		if (breturnValue)
 		{
-			//그 컴포넌트한테 힘을 가하고 싶다.
-			FVector tmp = end - start;
-			hitComp->AddForce(tmp.GetSafeNormal() * 500000 * hitComp->GetMass());
+			DrawDebugLine(GetWorld(), outhit.TraceStart, outhit.ImpactPoint, FColor::Red, false, 10);
+			UPrimitiveComponent* hitComp = outhit.GetComponent();
+
+			if (hitComp && hitComp->IsSimulatingPhysics())
+			{
+				//그 컴포넌트한테 힘을 가하고 싶다.
+				FVector tmp = end - start;
+				hitComp->AddForce(tmp.GetSafeNormal() * 500000 * hitComp->GetMass());
+			}
+
+			//부딪힌 곳에 expVFX를 생성해서 배치하고 싶다.
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), expVFX, outhit.ImpactPoint);
+
+			bAttack = false;
 		}
-
-		//부딪힌 곳에 expVFX를 생성해서 배치하고 싶다.
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), expVFX, outhit.ImpactPoint);
-
-
 	}
 
 }
 
 void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon)
 {
-
-	UE_LOG(LogTemp, Warning, TEXT("test1"));
+	PlayerAnim->PlayerRifleIdleMontage();
 	if (Weapon) {
-
 		//weapon에 무기 정보만 담겨 있고 실제 객체는 생성되어 있지 않음
-		UE_LOG(LogTemp, Warning, TEXT("test2"));
-		AActor* SpawnWeapon = GetWorld()->SpawnActor<AWeaponActor>(FVector::ZeroVector, FRotator::ZeroRotator);
-		//AActor* SpawnWeapon = get
-		
-		//위에서 생성한 socket 이름을 통해 socket 정보를 가져온다.
 		const USkeletalMeshSocket* WeaponSocket = GetMesh()->GetSocketByName("RifleGunSocket");
+		AWeaponActor* weapon = GetWorld()->SpawnActor<AWeaponActor>(FVector::ZeroVector, FRotator::ZeroRotator);
 
-		if (WeaponSocket && SpawnWeapon)
+		if (weapon)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("test3"));
-			//WeaponSocket->AttachActor(SpawnWeapon, this->GetMesh());
-			//WeaponSocket->AttachActor(SpawnWeapon, WeaponSocket);
+			WeaponSocket->AttachActor(weapon, GetMesh());
 		}
 	}
 }
+

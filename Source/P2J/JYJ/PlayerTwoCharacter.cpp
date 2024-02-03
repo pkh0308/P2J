@@ -6,7 +6,7 @@
 APlayerTwoCharacter::APlayerTwoCharacter()
 {
 	
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> tmpMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/JYJ/Mesh/Player3/Ch35_nonPBR.Ch35_nonPBR'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tmpMesh(TEXT("/Script/Engine.Skeleton'/Game/JYJ/Mesh/Player2/Ch01_nonPBR_Skeleton.Ch01_nonPBR_Skeleton'"));
 	if (tmpMesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(tmpMesh.Object);

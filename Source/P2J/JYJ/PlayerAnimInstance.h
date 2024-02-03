@@ -35,8 +35,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Direction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float CurrentWalkSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bRifleValid;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bShootGun;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* AttackMontage;

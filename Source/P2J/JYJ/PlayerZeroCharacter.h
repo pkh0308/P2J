@@ -60,13 +60,11 @@ public:
 	void OnAxisLookupPitch(float value);		//Pitch
 
 	void OnActionJump();
-
-public:
 	void Attack();
-
-protected:
 	void Sprint();
 	void StopSprinting();
+	void OnPunchingMontageEnded(UAnimMontage* Montage, bool bInterrupred);
+
 
 
 };

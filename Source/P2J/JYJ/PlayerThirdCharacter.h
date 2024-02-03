@@ -30,9 +30,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float targetFOV = 90;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	class UStaticMeshComponent* SMGMeshComp;	//SMG11Y
-
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* expVFX;
 
@@ -41,7 +38,12 @@ public:
 
 	UFUNCTION()
 	void AttachWeapon(TSubclassOf<AWeaponActor> Weapon);
+	
+	UPROPERTY(EditAnywhere)
+	bool bValidRifle = false;
 
+	UPROPERTY(EditAnywhere)
+	bool bAttack = false;
 	
 
 };

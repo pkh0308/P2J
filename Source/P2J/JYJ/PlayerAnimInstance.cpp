@@ -5,12 +5,14 @@
 #include "PlayerZeroCharacter.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Character.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/PawnMovementComponent.h"
+#include "PlayerThirdCharacter.h"
+#include "PlayerTwoCharacter.h"
 
 UPlayerAnimInstance::UPlayerAnimInstance()
 {
 	Speed = 0.0f;
 	isInAir = false;
-	//CurrentWalkSpeed = 0.0f;
+	bRifleValid = false;
 
 	//몽타주 변수 가져오기
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>AM(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/Player1/AM_Player1.AM_Player1'"));
@@ -48,18 +50,27 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
-	auto playerZero = TryGetPawnOwner();
-	if (!::IsValid(playerZero)) return;
+	auto player = TryGetPawnOwner();
+	if (!::IsValid(player)) return;
 
-	Speed = playerZero->GetVelocity().Size();
-	auto Character = Cast<ACharacter>(playerZero);
-	 
+	auto Character = Cast<ACharacter>(player);
 	if (Character)
 	{
 		isInAir = Character->GetMovementComponent()->IsFalling();
-		CurrentWalkSpeed = Character->GetMovementComponent()->GetMaxSpeed();
-
+		Speed = player->GetVelocity().Size();
 	}
+
+	if (player == Cast<APlayerThirdCharacter>(Character)) {
+		auto playerThree = Cast<APlayerThirdCharacter>(Character);
+		bRifleValid = playerThree->bValidRifle;
+		bShootGun = playerThree->bAttack;
+	}
+	else if (player == Cast<APlayerTwoCharacter>(Character))
+	{
+		auto playerTwo = Cast<APlayerTwoCharacter>(Character);
+	}
+
+	
 
 }
 
@@ -74,7 +85,8 @@ void UPlayerAnimInstance::PlayerAttackMontage()
 
 void UPlayerAnimInstance::PlayerRifleIdleMontage()
 {
-
+	Montage_JumpToSection(FName("Rifle_IDLE"), AttackMontage);
+	UE_LOG(LogTemp, Warning, TEXT("test1"));
 }
 
 

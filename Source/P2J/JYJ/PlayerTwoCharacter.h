@@ -16,4 +16,6 @@ class P2J_API APlayerTwoCharacter : public APlayerZeroCharacter
 	
 public:
 	APlayerTwoCharacter();
+
+
 };
