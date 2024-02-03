@@ -89,14 +89,13 @@ void APlayerZeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 	PlayerInputComponent->BindAxis(TEXT("Move Right / Left"), this, &APlayerZeroCharacter::OnAxisHorizontal);
 	PlayerInputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &APlayerZeroCharacter::OnAxisVertical);
+	PlayerInputComponent->BindAxis(TEXT("Turn Right / Left Mouse"), this, &APlayerZeroCharacter::OnAxisTurnYaw);
+	PlayerInputComponent->BindAxis(TEXT("Look Up / Down Mouse"), this, &APlayerZeroCharacter::OnAxisLookupPitch);
+
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APlayerZeroCharacter::OnActionJump);
 	PlayerInputComponent->BindAction(TEXT("Punch"), IE_Pressed, this, &APlayerZeroCharacter::Attack);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &APlayerZeroCharacter::Sprint);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APlayerZeroCharacter::StopSprinting);
-
-	PlayerInputComponent->BindAxis(TEXT("Turn Right / Left Mouse"), this, &APlayerZeroCharacter::OnAxisTurnYaw);
-	PlayerInputComponent->BindAxis(TEXT("Look Up / Down Mouse"), this, &APlayerZeroCharacter::OnAxisLookupPitch);
-
 
 
 }
@@ -105,7 +104,6 @@ void APlayerZeroCharacter::Move()
 {
 	FTransform trans = p1camComp->GetComponentTransform();
 	AddMovementInput(trans.TransformVector(direction));
-
 
 }
 
@@ -124,8 +122,6 @@ void APlayerZeroCharacter::OnActionJump()
 	Jump();
 }
 
-
-
 void APlayerZeroCharacter::OnAxisTurnYaw(float value)
 {
 	AddControllerYawInput(value);
@@ -140,14 +136,8 @@ void APlayerZeroCharacter::Attack()
 {
 	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 
-	//punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
-	//punchComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	if (nullptr == AnimInstance) return;
 	AnimInstance->PlayerAttackMontage();
-
-	//punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
-
-	//punchComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 }
 

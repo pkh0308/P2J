@@ -35,13 +35,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Direction;
 
-	void PlayerAttackMontage();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float CurrentWalkSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* AttackMontage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float CurrentWalkSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAnimMontage* RifleIdleMontage;
+
+	void PlayerAttackMontage();
+	void PlayerRifleIdleMontage();
 
 
 };
