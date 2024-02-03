@@ -38,7 +38,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USphereComponent* punchComp;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 	class UPlayerAnimInstance* PlayerAnim;
 
 	UPROPERTY(EditAnywhere)
@@ -47,13 +47,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float SprintSpeedMultiplier;
 
-
-
+	UFUNCTION()
 	void OnAxisVertical(float value);
+	
+	UFUNCTION()
 	void OnAxisHorizontal(float value);
+	
+	UFUNCTION()
 	void OnAxisTurnYaw(float value);			//Yaw
+	
+	UFUNCTION()
 	void OnAxisLookupPitch(float value);		//Pitch
-	void Move();
+
 	void OnActionJump();
 
 public:

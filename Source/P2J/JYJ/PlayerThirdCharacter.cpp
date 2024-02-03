@@ -8,6 +8,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/PrimitiveComponent.h"
 #include "WeaponActor.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/SpringArmComponent.h"
 
 APlayerThirdCharacter::APlayerThirdCharacter()
 {
@@ -70,19 +71,23 @@ void APlayerThirdCharacter::Zoom()
 
 void APlayerThirdCharacter::ZoomIn()
 {
-	targetFOV = 30;
+	targetFOV = 50;
+	springArmComp->SetRelativeLocation(FVector( 0, 40, 90));
+	//GetMesh()->SetRelativeLocation(FVector(-30, 0, -90));
 }
 
 void APlayerThirdCharacter::ZoomOut()
 {
 	targetFOV = 90;
+	springArmComp->SetRelativeLocation(FVector(0, 0, 90));
+	//GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
 }
 
 void APlayerThirdCharacter::OnActionChooseSMG11()
 {
 	//SMGMeshComp->SetVisibility(true);
 	AttachWeapon(Gun);
-	ZoomIn();
+	//ZoomIn();
 }
 
 void APlayerThirdCharacter::OnActionFire()
@@ -116,7 +121,7 @@ void APlayerThirdCharacter::OnActionFire()
 
 }
 
-void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon) const
+void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon)
 {
 
 	UE_LOG(LogTemp, Warning, TEXT("test1"));
@@ -124,15 +129,17 @@ void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon) const
 
 		//weapon에 무기 정보만 담겨 있고 실제 객체는 생성되어 있지 않음
 		UE_LOG(LogTemp, Warning, TEXT("test2"));
-		AActor* SpawnWeapon = GetWorld()->SpawnActor<AWeaponActor>(Weapon);
-	
+		AActor* SpawnWeapon = GetWorld()->SpawnActor<AWeaponActor>(FVector::ZeroVector, FRotator::ZeroRotator);
+		//AActor* SpawnWeapon = get
+		
 		//위에서 생성한 socket 이름을 통해 socket 정보를 가져온다.
 		const USkeletalMeshSocket* WeaponSocket = GetMesh()->GetSocketByName("RifleGunSocket");
 
 		if (WeaponSocket && SpawnWeapon)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("test3"));
-			WeaponSocket->AttachActor(SpawnWeapon, GetMesh());
+			//WeaponSocket->AttachActor(SpawnWeapon, this->GetMesh());
+			//WeaponSocket->AttachActor(SpawnWeapon, WeaponSocket);
 		}
 	}
 }

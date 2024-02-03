@@ -40,7 +40,7 @@ public:
 	TSubclassOf<class AWeaponActor> Gun;
 
 	UFUNCTION()
-	void AttachWeapon(TSubclassOf<AWeaponActor> Weapon) const;
+	void AttachWeapon(TSubclassOf<AWeaponActor> Weapon);
 
 	
 

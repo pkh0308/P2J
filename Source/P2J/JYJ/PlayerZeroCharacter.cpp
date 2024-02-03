@@ -10,6 +10,7 @@
 #include "PlayerAnimInstance.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/SphereComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/CapsuleComponent.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 
 // Sets default values
 APlayerZeroCharacter::APlayerZeroCharacter()
@@ -18,7 +19,7 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
-	springArmComp->SetupAttachment(RootComponent);
+	springArmComp->SetupAttachment(GetCapsuleComponent());
 	springArmComp->SetWorldLocation(FVector(0, 0, 90));
 
 	p1camComp = CreateDefaultSubobject<UCameraComponent>(TEXT("p1camComp"));
@@ -33,7 +34,6 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 	}
 
 	FName FirstAttackSocket(TEXT("FirstAttack"));
-
 	if (GetMesh()->DoesSocketExist(FirstAttackSocket))
 	{
 		punchComp = CreateDefaultSubobject<USphereComponent>(TEXT("punchComp"));
@@ -41,21 +41,24 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 		punchComp->SetRelativeScale3D(FVector(0.25f));
 	}
 
-	static ConstructorHelpers::FClassFinder<UAnimInstance> ABP_Player(TEXT("/Script/Engine.AnimBlueprint'/Game/JYJ/Animations/ABP_Player.ABP_Player'"));
+	/*
+	static ConstructorHelpers::FClassFinder<UPlayerAnimInstance> ABP_Player(TEXT("/Script/Engine.AnimBlueprint'/Game/JYJ/Animations/Player1/ABP_Player1.ABP_Player1'"));
 	if (ABP_Player.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(ABP_Player.Class);
 	}
+	*/
 	
 
 	springArmComp->bUsePawnControlRotation = true;
+	//springArmComp->SetRelativeRotation(FRotator::ZeroRotator);
 	springArmComp->bInheritPitch = true;
 	springArmComp->bInheritRoll = true;
 	springArmComp->bInheritYaw = true;
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
-	//GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 720.f, 0.f);
 
 
 	//충돌체 설정
@@ -71,6 +74,8 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 void APlayerZeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	PlayerAnim = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 	
 }
 
@@ -78,7 +83,7 @@ void APlayerZeroCharacter::BeginPlay()
 void APlayerZeroCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Move();
+	//Move();
 
 }
 
@@ -100,21 +105,19 @@ void APlayerZeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 }
 
-void APlayerZeroCharacter::Move()
-{
-	FTransform trans = p1camComp->GetComponentTransform();
-	AddMovementInput(trans.TransformVector(direction));
-
-}
-
 void APlayerZeroCharacter::OnAxisVertical(float value)
 {
-	direction.X = value;
+	//direction.X = value;
+	FVector Direction = UKismetMathLibrary::GetForwardVector(FRotator(0.0f, GetControlRotation().Yaw, 0.0f));
+	AddMovementInput(Direction, value);
 }
 
 void APlayerZeroCharacter::OnAxisHorizontal(float value)
 {
-	direction.Y = value;
+	//direction.Y = value;
+	FVector Direction = UKismetMathLibrary::GetRightVector(FRotator(0.0f, GetControlRotation().Yaw, 0.0f));
+	AddMovementInput(Direction, value);
+
 }
 
 void APlayerZeroCharacter::OnActionJump()
@@ -134,10 +137,10 @@ void APlayerZeroCharacter::OnAxisLookupPitch(float value)
 
 void APlayerZeroCharacter::Attack()
 {
-	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+	//auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 
-	if (nullptr == AnimInstance) return;
-	AnimInstance->PlayerAttackMontage();
+	if (nullptr == PlayerAnim) return;
+	PlayerAnim->PlayerAttackMontage();
 
 }
 

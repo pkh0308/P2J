@@ -13,7 +13,7 @@ AWeaponActor::AWeaponActor()
 
 	//SMG11Y ·Îµå
 	SMGMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SMGMeshComp"));
-	//SMGMeshComp->SetupAttachment(GetMesh());
+	SMGMeshComp->SetupAttachment(RootComponent);
 
 	ConstructorHelpers::FObjectFinder<UStaticMesh> smgMesh(TEXT("/Script/Engine.StaticMesh'/Game/JYJ/Models/FPS_Weapon_Bundle/Weapons/Meshes/SMG11/SM_SMG11_X.SM_SMG11_X'"));
 	if (smgMesh.Succeeded())
