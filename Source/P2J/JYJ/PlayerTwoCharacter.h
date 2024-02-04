@@ -17,5 +17,10 @@ class P2J_API APlayerTwoCharacter : public APlayerZeroCharacter
 public:
 	APlayerTwoCharacter();
 
+	virtual void BeginPlay() override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void CleanStart();
+	void CleanEnd();
 
 };

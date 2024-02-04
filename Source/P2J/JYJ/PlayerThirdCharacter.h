@@ -40,10 +40,18 @@ public:
 	void AttachWeapon(TSubclassOf<AWeaponActor> Weapon);
 	
 	UPROPERTY(EditAnywhere)
-	bool bValidRifle = false;
+	bool bValidRifle;
 
 	UPROPERTY(EditAnywhere)
-	bool bAttack = false;
-	
+	bool bAttack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bOnZoomRifle;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> crossHairFactory;
+
+	UPROPERTY()
+	class UUserWidget* crossHairUI;
 
 };

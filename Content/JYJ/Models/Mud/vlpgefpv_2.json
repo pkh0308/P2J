@@ -1,0 +1,68 @@
+{
+	"assetId": "vlpgefpv",
+	"assetName": "Mud_Splash_vlpgefpv",
+	"assetType": "atlas",
+	"assetSubType": "decal",
+	"assetTier": 2,
+	"assetRootPath": "/Game/Megascans/Decals/Mud_Splash_vlpgefpv",
+	"meshList": [],
+	"foliageAssetPaths": [],
+	"materialInstances": [
+		{
+			"instanceId": "mat1",
+			"instanceName": "MI_Mud_Splash_vlpgefpv_2K",
+			"instancePath": "/Game/Megascans/Decals/Mud_Splash_vlpgefpv/MI_Mud_Splash_vlpgefpv_2K.MI_Mud_Splash_vlpgefpv_2K",
+			"instanceMaster": "master1",
+			"type": "materialInstance",
+			"params": [
+				{
+					"paramName": "albedo",
+					"usedTextureId": "tex2"
+				},
+				{
+					"paramName": "DRO",
+					"usedTextureId": "tex1"
+				}
+			]
+		}
+	],
+	"textureSets": [
+		{
+			"textureId": "tex1",
+			"type": "DRO",
+			"resolution": "2K",
+			"name": "T_MudSplash_vlpgefpv_2K_DpRA",
+			"path": "/Game/Megascans/Decals/Mud_Splash_vlpgefpv/T_MudSplash_vlpgefpv_2K_DpRA.T_MudSplash_vlpgefpv_2K_DpRA",
+			"isChannelPacked": false,
+			"channelPackInfo": [],
+			"pluggedIn": [
+				{
+					"matId": "mat1",
+					"matParams": "PackTexture"
+				}
+			]
+		},
+		{
+			"textureId": "tex2",
+			"type": "albedo",
+			"resolution": "2K",
+			"name": "T_Mud_Splash_vlpgefpv_2K_D",
+			"path": "/Game/Megascans/Decals/Mud_Splash_vlpgefpv/T_Mud_Splash_vlpgefpv_2K_D.T_Mud_Splash_vlpgefpv_2K_D",
+			"isChannelPacked": false,
+			"channelPackInfo": [],
+			"pluggedIn": [
+				{
+					"matId": "mat1",
+					"matParams": "albedo"
+				}
+			]
+		}
+	],
+	"masterMaterials": [
+		{
+			"masterId": "master1",
+			"masterMaterialName": "M_MS_Decal_Material",
+			"path": "/Game/MSPresets/M_MS_Decal_Material/M_MS_Decal_Material"
+		}
+	]
+}

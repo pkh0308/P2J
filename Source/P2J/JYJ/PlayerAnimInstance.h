@@ -35,6 +35,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Direction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bIDLEJump;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bRifleValid;
 
@@ -42,13 +45,23 @@ public:
 	bool bShootGun;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bOnZoomRifle;
+
+	UPROPERTY(BlueprintReadOnly)
+	class APlayerThirdCharacter* PlayerThirdCharacter;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAnimMontage* CleanMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* RifleIdleMontage;
 
 	void PlayerAttackMontage();
 	void PlayerRifleIdleMontage();
+	void PlayerCleanMontage();
 
 
 };

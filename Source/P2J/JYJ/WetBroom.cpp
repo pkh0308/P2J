@@ -21,14 +21,12 @@ AWetBroom::AWetBroom()
 	Trigger->SetupAttachment(BroomstickComp);
 	Trigger->SetCollisionProfileName(TEXT("CleanItem"));
 
-	/*
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> broomMesh(TEXT(""));
+	
+	ConstructorHelpers::FObjectFinder<UStaticMesh> broomMesh(TEXT("/Script/Engine.StaticMesh'/Game/JYJ/Models/Ax_Weapon/test.test'"));
 	if (broomMesh.Succeeded())
 	{
-		BroomstickComp->SetSkeletalMesh(broomMesh.Object);
+		BroomstickComp->SetStaticMesh(broomMesh.Object);
 	}
-	*/
-	
 
 
 }

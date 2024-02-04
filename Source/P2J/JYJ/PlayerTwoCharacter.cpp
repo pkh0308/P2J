@@ -2,6 +2,7 @@
 
 
 #include "JYJ/PlayerTwoCharacter.h"
+#include "PlayerAnimInstance.h"
 
 APlayerTwoCharacter::APlayerTwoCharacter()
 {
@@ -13,4 +14,32 @@ APlayerTwoCharacter::APlayerTwoCharacter()
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, -90, 0));
 
 	}
+}
+
+void APlayerTwoCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	PlayerAnim = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+}
+
+void APlayerTwoCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Pressed, this, &APlayerTwoCharacter::CleanStart);
+	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Released, this, &APlayerTwoCharacter::CleanEnd);
+
+
+}
+
+void APlayerTwoCharacter::CleanStart()
+{
+	UE_LOG(LogTemp, Warning, TEXT("TEST PLAYER2"));
+	PlayerAnim->PlayerCleanMontage();
+}
+
+void APlayerTwoCharacter::CleanEnd()
+{
+	
 }

@@ -7,18 +7,26 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/PawnMovementComponent.h"
 #include "PlayerThirdCharacter.h"
 #include "PlayerTwoCharacter.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 
 UPlayerAnimInstance::UPlayerAnimInstance()
 {
 	Speed = 0.0f;
 	isInAir = false;
 	bRifleValid = false;
+	bIDLEJump = false;
 
 	//몽타주 변수 가져오기
-	static ConstructorHelpers::FObjectFinder<UAnimMontage>AM(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/Player1/AM_Player1.AM_Player1'"));
-	if (AM.Succeeded())
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>AMPlayer1(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/Player1/AM_Player1.AM_Player1'"));
+	if (AMPlayer1.Succeeded())
 	{
-		AttackMontage = AM.Object;
+		AttackMontage = AMPlayer1.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>AMPlayer2(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/Player1/AM_Player1.AM_Player2'"));
+	if (AMPlayer2.Succeeded())
+	{
+		CleanMontage = AMPlayer2.Object;
 	}
 
 
@@ -58,16 +66,25 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		isInAir = Character->GetMovementComponent()->IsFalling();
 		Speed = player->GetVelocity().Size();
+
+		if (Character->GetCharacterMovement()->GetMaxJumpHeight() > 500) {
+			bIDLEJump = true;
+		}
+
 	}
 
 	if (player == Cast<APlayerThirdCharacter>(Character)) {
 		auto playerThree = Cast<APlayerThirdCharacter>(Character);
 		bRifleValid = playerThree->bValidRifle;
 		bShootGun = playerThree->bAttack;
+		bOnZoomRifle = playerThree->bOnZoomRifle;
 	}
 	else if (player == Cast<APlayerTwoCharacter>(Character))
 	{
 		auto playerTwo = Cast<APlayerTwoCharacter>(Character);
+	}
+	else {
+		
 	}
 
 	
@@ -89,4 +106,11 @@ void UPlayerAnimInstance::PlayerRifleIdleMontage()
 	UE_LOG(LogTemp, Warning, TEXT("test1"));
 }
 
+void UPlayerAnimInstance::PlayerCleanMontage()
+{
+	if (!Montage_IsPlaying(CleanMontage))
+	{
+		Montage_Play(CleanMontage, 1.0f);
+	}
+}
 

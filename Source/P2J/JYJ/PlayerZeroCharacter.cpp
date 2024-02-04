@@ -68,6 +68,7 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	SprintSpeedMultiplier = 2.0f;	//달리기 배속
+	GetCharacterMovement()->JumpZVelocity = 500.0f;
 
 
 }
@@ -142,7 +143,6 @@ void APlayerZeroCharacter::OnAxisLookupPitch(float value)
 void APlayerZeroCharacter::Attack()
 {
 	//auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
-
 	punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
 	if (nullptr == PlayerAnim) return;
 	PlayerAnim->PlayerAttackMontage();

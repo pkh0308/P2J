@@ -10,6 +10,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/SpringArmComponent.h"
 #include "PlayerAnimInstance.h"
+#include "../../../../../../../Source/Runtime/UMG/Public/Blueprint/UserWidget.h"
 
 APlayerThirdCharacter::APlayerThirdCharacter()
 {
@@ -26,6 +27,14 @@ APlayerThirdCharacter::APlayerThirdCharacter()
 void APlayerThirdCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	bValidRifle = false;
+	bAttack		= false;
+
+	crossHairUI = CreateWidget(GetWorld(), crossHairFactory);
+	crossHairUI->AddToViewport();
+
+	crossHairUI->SetVisibility(ESlateVisibility::Hidden);
+
 
 }
 
@@ -45,7 +54,6 @@ void APlayerThirdCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	Zoom();
-	//bAttack = false;
 }
 
 void APlayerThirdCharacter::Zoom()
@@ -57,6 +65,8 @@ void APlayerThirdCharacter::Zoom()
 void APlayerThirdCharacter::ZoomIn()
 {
 	targetFOV = 50;
+	bOnZoomRifle = true;
+	crossHairUI->SetVisibility(ESlateVisibility::Visible);
 	springArmComp->SetRelativeLocation(FVector( 0, 40, 90));
 	//GetMesh()->SetRelativeLocation(FVector(-30, 0, -90));
 }
@@ -64,7 +74,9 @@ void APlayerThirdCharacter::ZoomIn()
 void APlayerThirdCharacter::ZoomOut()
 {
 	targetFOV = 90;
+	bOnZoomRifle = false;
 	springArmComp->SetRelativeLocation(FVector(0, 0, 90));
+	crossHairUI->SetVisibility(ESlateVisibility::Hidden);
 	//GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
 }
 
@@ -72,7 +84,8 @@ void APlayerThirdCharacter::OnActionChooseSMG11()
 {
 	//SMGMeshComp->SetVisibility(true);
 	AttachWeapon(Gun);
-	bValidRifle = true;
+	bAttack = false;
+	//bValidRifle = true;
 	//ZoomIn();
 }
 
@@ -121,6 +134,7 @@ void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon)
 		if (weapon)
 		{
 			WeaponSocket->AttachActor(weapon, GetMesh());
+			bValidRifle = true;
 		}
 	}
 }

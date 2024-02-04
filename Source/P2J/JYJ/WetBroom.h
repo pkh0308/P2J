@@ -25,7 +25,7 @@ public:
 	virtual void PostInitializeComponents() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	class UStaticMeshComponent* BroomstickComp;	
+	class UStaticMeshComponent* BroomstickComp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
     class UBoxComponent* Trigger;
