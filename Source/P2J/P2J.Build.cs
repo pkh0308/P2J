@@ -10,7 +10,7 @@ public class P2J : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] { "P2J" });
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "AIModule", "NavigationSystem", "GameplayTasks", "LevelSequence", "MovieScene" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "AIModule", "NavigationSystem", "GameplayTasks", "LevelSequence", "MovieScene", "UMG" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

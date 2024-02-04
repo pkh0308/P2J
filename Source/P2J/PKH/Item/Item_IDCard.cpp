@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PKH/Item/Item_IDCard.h"
@@ -38,5 +38,6 @@ void AItem_IDCard::GetItem(ACharacter* InCharacter)
 	if (GameMode->CheckCurQuest(EQuestType::Q2_GetIDCard))
 	{
 		GameMode->ClearCurQuest();
+		GameMode->SetQuestGuideText(TEXT("청소부 복장으로 정보국 건물에 진입하십시오."));
 	}
 }

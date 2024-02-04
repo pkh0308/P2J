@@ -35,6 +35,14 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+// Level
+protected:
+	FString LevelName_1 = TEXT("Demo_Copy");
+	FString LevelName_2 = TEXT("Level2");
+	FString LevelName_3 = TEXT("Level3");
+
+	int32 LevelIdx = 0;
+
 // Quest
 protected:
 	EQuestType CurQuest;
@@ -43,4 +51,15 @@ public:
 	FORCEINLINE bool CheckCurQuest(enum EQuestType Type) { return CurQuest == Type; }
 
 	void ClearCurQuest();
+
+// UI
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UQuestGuideWidget> QuestGuideUIClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UQuestGuideWidget> QuestGuideUI;
+
+public:
+	void SetQuestGuideText(FString GuideString, float DisplayTime = 5.0f);
 };

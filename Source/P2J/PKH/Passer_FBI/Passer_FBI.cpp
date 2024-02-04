@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PKH/Passer_FBI/Passer_FBI.h"
@@ -169,29 +169,36 @@ void APasser_FBI::OnDie()
 		GetBlackboard()->SetValueAsVector(PASSER_KEY_HOMELOCATION, FVector(-700, 4000, 98));
 	}
 	GetBlackboard()->SetValueAsObject(PASSER_KEY_TARGET, nullptr);
-	
+
+	// Sequence
+	if (SequencePlayer)
+	{
+		SequencePlayer->Play();
+	}
+
 	// Destroy
 	FTimerHandle DestroyHandle;
 	GetWorldTimerManager().SetTimer(DestroyHandle, FTimerDelegate::CreateLambda(
 		[this]() {
 			Destroy();
 		}
-	), 8.0f, false);
+	), 14.0f, false);
 
-	if (SequencePlayer)
-	{
-		SequencePlayer->Play();
-	}
-
+	// Quest
 	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (nullptr == GameMode)
 	{
 		return;
 	}
-
 	if (GameMode->CheckCurQuest(EQuestType::Q1_FightWithMan))
 	{
 		GameMode->ClearCurQuest();
+
+		FTimerHandle Handle;
+		GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda(
+			[&]() {
+				Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->SetQuestGuideText(TEXT("ID 카드를 획득하십시오."));
+			}), 12.0f, false);
 	}
 }
 

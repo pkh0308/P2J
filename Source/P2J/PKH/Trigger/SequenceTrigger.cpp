@@ -16,6 +16,7 @@ ASequenceTrigger::ASequenceTrigger()
 	SetRootComponent(BoxComp);
 	BoxComp->SetCollisionProfileName(TEXT("Trigger"));
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ASequenceTrigger::OnPlayerOverlap);
+	BoxComp->SetBoxExtent(FVector(100));
 }
 
 void ASequenceTrigger::BeginPlay()
