@@ -111,6 +111,12 @@ void APlayerZeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 }
 
+void APlayerZeroCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();	
+	punchComp->OnComponentBeginOverlap.AddDynamic(this, &APlayerZeroCharacter::OnEnemyOverlap);
+}
+
 void APlayerZeroCharacter::OnAxisVertical(float value)
 {
 	//direction.X = value;
