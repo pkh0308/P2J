@@ -7,7 +7,7 @@
 
 APKHGameMode::APKHGameMode()
 {
-	static ConstructorHelpers::FClassFinder<ACharacter> PawnRef(TEXT("/Game/PKH/Blueprints/BP_TestPlayer.BP_TestPlayer_C"));
+	static ConstructorHelpers::FClassFinder<ACharacter> PawnRef(TEXT("/Game/JYJ/Blueprints/BP_PlayerZero.BP_PlayerZero_C"));
 	if (PawnRef.Class)
 	{
 		DefaultPawnClass = PawnRef.Class;
@@ -19,6 +19,12 @@ APKHGameMode::APKHGameMode()
 	{
 		QuestGuideUIClass = QuestGuideRef.Class;
 	}
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> FadeOutUIRef(TEXT("/Game/PKH/UI/WBP_FadeOut.WBP_FadeOut_C"));
+	if (FadeOutUIRef.Class)
+	{
+		FadeOutUIClass = FadeOutUIRef.Class;
+	}
 }
 
 void APKHGameMode::BeginPlay()
@@ -27,7 +33,7 @@ void APKHGameMode::BeginPlay()
 	if (CurLevelName == LevelName_1)
 	{
 		LevelIdx = 1;
-		CurQuest = EQuestType::Q1_FightWithMan; 
+		CurQuest = EQuestType::Q3_EnterBuilding; 
 	}
 	else if(CurLevelName == LevelName_2)
 	{
@@ -58,7 +64,13 @@ void APKHGameMode::BeginPlay()
 			QuestGuideUI->SetQuestGuideText(TEXT("보안 디스크를 획득하십시오."));
 			break;
 		}
-		
+	}
+
+	FadeOutUI = CreateWidget<UUserWidget>(GetWorld(), FadeOutUIClass);
+	if (FadeOutUI)
+	{
+		FadeOutUI->AddToViewport();
+		FadeOutUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -76,4 +88,9 @@ void APKHGameMode::ClearCurQuest()
 
 	UE_LOG(LogTemp, Log, TEXT("Quest Clear: %s"), *UEnum::GetValueAsString(CurQuest));
 	CurQuest = EQuestType((uint8)CurQuest + 1);
+}
+
+void APKHGameMode::ShowFadeOut()
+{
+	FadeOutUI->SetVisibility(ESlateVisibility::Visible);
 }

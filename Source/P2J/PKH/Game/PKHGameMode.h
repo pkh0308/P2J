@@ -54,12 +54,22 @@ public:
 
 // UI
 protected:
+	// Guide
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UQuestGuideWidget> QuestGuideUIClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UQuestGuideWidget> QuestGuideUI;
 
+	// Fade Out
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UUserWidget> FadeOutUIClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UUserWidget> FadeOutUI;
+
 public:
 	void SetQuestGuideText(FString GuideString, float DisplayTime = 5.0f);
+
+	void ShowFadeOut();
 };

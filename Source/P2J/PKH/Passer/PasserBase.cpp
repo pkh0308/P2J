@@ -15,6 +15,9 @@ APasserBase::APasserBase()
 	AIControllerClass = APasserAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+	// Collision
+	GetMesh()->SetCollisionProfileName(TEXT("Enemy"));
+
 	// Animation
 	static ConstructorHelpers::FClassFinder<UAnimInstance> AnimRef(TEXT("/Game/PKH/Animations/PasserA/ABP_PasserA.ABP_PasserA_C"));
 	if (AnimRef.Class)
