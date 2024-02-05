@@ -20,7 +20,10 @@ public:
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void CleanStart();
-	void CleanEnd();
+	void cleanStart();
+	void cleanEnd();
+
+	void putUp();
+	void putDown();
 
 };

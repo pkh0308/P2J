@@ -27,19 +27,39 @@ void APlayerTwoCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Pressed, this, &APlayerTwoCharacter::CleanStart);
-	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Released, this, &APlayerTwoCharacter::CleanEnd);
+	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Pressed, this, &APlayerTwoCharacter::cleanStart);
+	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Released, this, &APlayerTwoCharacter::cleanEnd);
+	PlayerInputComponent->BindAction(TEXT("Quest"), IE_Pressed, this, &APlayerTwoCharacter::putUp);
 
 
 }
 
-void APlayerTwoCharacter::CleanStart()
+void APlayerTwoCharacter::cleanStart()
 {
 	UE_LOG(LogTemp, Warning, TEXT("TEST PLAYER2"));
 	PlayerAnim->PlayerCleanMontage();
 }
 
-void APlayerTwoCharacter::CleanEnd()
+void APlayerTwoCharacter::cleanEnd()
+{
+	
+}
+
+void APlayerTwoCharacter::putUp()
+{
+	/*
+	AWetBroom* playerTwo = Cast<AWetBroom>(OtherActor);
+
+	if (playerTwo)
+	{
+		FName BroomSocket(TEXT("BroomSocket"));
+		//AttachToComponent(playerTwo->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, BroomSocket);
+
+	}
+	*/
+}
+
+void APlayerTwoCharacter::putDown()
 {
 	
 }

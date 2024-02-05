@@ -100,6 +100,8 @@ void APlayerThirdCharacter::OnActionFire()
 		FCollisionQueryParams params;
 		params.AddIgnoredActor(this);	//플레이어 제외 요청
 
+		if (nullptr == PlayerAnim) return;
+		PlayerAnim->PlayerRifleFireMontage();
 		bool breturnValue = GetWorld()->LineTraceSingleByChannel(outhit, start, end, ECollisionChannel::ECC_Visibility, params);
 
 		if (breturnValue)
@@ -125,7 +127,7 @@ void APlayerThirdCharacter::OnActionFire()
 
 void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon)
 {
-	PlayerAnim->PlayerRifleIdleMontage();
+	//PlayerAnim->PlayerRifleFireMontage();
 	if (Weapon) {
 		//weapon에 무기 정보만 담겨 있고 실제 객체는 생성되어 있지 않음
 		const USkeletalMeshSocket* WeaponSocket = GetMesh()->GetSocketByName("RifleGunSocket");

@@ -51,17 +51,19 @@ public:
 	class APlayerThirdCharacter* PlayerThirdCharacter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UAnimMontage* AttackMontage;
+	UAnimMontage* PlayerMontage;
 
+	/*
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* CleanMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* RifleIdleMontage;
+	*/
 
 	void PlayerAttackMontage();
-	void PlayerRifleIdleMontage();
 	void PlayerCleanMontage();
+	void PlayerRifleFireMontage();
 
 
 };

@@ -13,6 +13,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h"
 #include "WeaponActor.h"
+#include "../PKH/Passer/PasserBase.h"
 
 // Sets default values
 APlayerZeroCharacter::APlayerZeroCharacter()
@@ -80,7 +81,7 @@ void APlayerZeroCharacter::BeginPlay()
 
 	PlayerAnim = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 	check(PlayerAnim);
-	PlayerAnim->OnMontageEnded.AddDynamic(this, &APlayerZeroCharacter::OnPunchingMontageEnded);
+	//PlayerAnim->OnMontageEnded.AddDynamic(this, &APlayerZeroCharacter::OnPunchingMontageEnded);
 	
 }
 
@@ -140,6 +141,16 @@ void APlayerZeroCharacter::OnAxisLookupPitch(float value)
 	AddControllerPitchInput(value);
 }
 
+void APlayerZeroCharacter::OnEnemyOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	APasserBase* enemy = Cast<APasserBase>(OtherActor);
+
+	if (enemy)
+	{
+		enemy->OnDamaged(1, this);
+	}
+}
+
 void APlayerZeroCharacter::Attack()
 {
 	//auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
@@ -159,8 +170,4 @@ void APlayerZeroCharacter::StopSprinting()
 	GetCharacterMovement()->MaxWalkSpeed /= SprintSpeedMultiplier;
 }
 
-void APlayerZeroCharacter::OnPunchingMontageEnded(UAnimMontage* Montage, bool bInterrupred)
-{
-
-}
 

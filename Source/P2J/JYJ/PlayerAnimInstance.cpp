@@ -20,15 +20,16 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>AMPlayer1(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/Player1/AM_Player1.AM_Player1'"));
 	if (AMPlayer1.Succeeded())
 	{
-		AttackMontage = AMPlayer1.Object;
+		PlayerMontage = AMPlayer1.Object;
 	}
 
+	/*
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>AMPlayer2(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/Player1/AM_Player1.AM_Player2'"));
 	if (AMPlayer2.Succeeded())
 	{
 		CleanMontage = AMPlayer2.Object;
 	}
-
+	*/
 
 }
 
@@ -93,24 +94,27 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UPlayerAnimInstance::PlayerAttackMontage()
 {
-	if (!Montage_IsPlaying(AttackMontage))
+	if (!Montage_IsPlaying(PlayerMontage))
 	{
-		Montage_Play(AttackMontage, 1.0f);
+		Cast<APlayerZeroCharacter>(TryGetPawnOwner())->PlayAnimMontage(PlayerMontage, 1, TEXT("Punching"));
+		
 	}
 
 }
 
-void UPlayerAnimInstance::PlayerRifleIdleMontage()
-{
-	Montage_JumpToSection(FName("Rifle_IDLE"), AttackMontage);
-	UE_LOG(LogTemp, Warning, TEXT("test1"));
-}
-
 void UPlayerAnimInstance::PlayerCleanMontage()
 {
-	if (!Montage_IsPlaying(CleanMontage))
+	if (!Montage_IsPlaying(PlayerMontage))
 	{
-		Montage_Play(CleanMontage, 1.0f);
+		Cast<APlayerZeroCharacter>(TryGetPawnOwner())->PlayAnimMontage(PlayerMontage, 1, TEXT("Clean"));
+	}
+}
+
+void UPlayerAnimInstance::PlayerRifleFireMontage()
+{
+	if (!Montage_IsPlaying(PlayerMontage))
+	{
+		Cast<APlayerZeroCharacter>(TryGetPawnOwner())->PlayAnimMontage(PlayerMontage, 1, TEXT("Fire"));
 	}
 }
 

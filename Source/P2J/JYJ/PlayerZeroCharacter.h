@@ -59,11 +59,14 @@ public:
 	UFUNCTION()
 	void OnAxisLookupPitch(float value);		//Pitch
 
+	UFUNCTION()
+	void OnEnemyOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	void OnActionJump();
 	void Attack();
 	void Sprint();
 	void StopSprinting();
-	void OnPunchingMontageEnded(UAnimMontage* Montage, bool bInterrupred);
+	//void OnPunchingMontageEnded(UAnimMontage* Montage, bool bInterrupred);
 
 
 
