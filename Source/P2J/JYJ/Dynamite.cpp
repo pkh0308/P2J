@@ -9,12 +9,16 @@ ADynamite::ADynamite()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	DynamiteBomb = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DynamiteBomb"));
-	DynamiteBomb->SetupAttachment(RootComponent);
+	DynamiteBomb1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DynamiteBomb"));
+	DynamiteBomb1->SetupAttachment(RootComponent);
 
-	//Trigger = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger"));
-	//Trigger->SetupAttachment(BroomstickComp);
-	//Trigger->SetCollisionProfileName(TEXT("CleanItem"));
+
+	ConstructorHelpers::FObjectFinder<UStaticMesh> dynamiteMesh(TEXT("/Script/Engine.StaticMesh'/Game/JYJ/Models/Dynamite/Dynamite.Dynamite'"));
+	if (dynamiteMesh.Succeeded())
+	{
+		DynamiteBomb1->SetStaticMesh(dynamiteMesh.Object);
+	}
+
 
 }
 

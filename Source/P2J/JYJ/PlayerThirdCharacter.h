@@ -54,4 +54,7 @@ public:
 	UPROPERTY()
 	class UUserWidget* crossHairUI;
 
+	void OnActionCrouchStart();
+	void OnActionCrouchEnd();
+
 };

@@ -23,7 +23,6 @@ public:
 	void cleanStart();
 	void cleanEnd();
 
-	void putUp();
-	void putDown();
+	void setupDynamite();
 
 };

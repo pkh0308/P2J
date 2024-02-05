@@ -47,6 +47,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bOnZoomRifle;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bCrouch;
+
 	UPROPERTY(BlueprintReadOnly)
 	class APlayerThirdCharacter* PlayerThirdCharacter;
 
@@ -64,6 +67,7 @@ public:
 	void PlayerAttackMontage();
 	void PlayerCleanMontage();
 	void PlayerRifleFireMontage();
+	//void PlayerCrouch();
 
 
 };

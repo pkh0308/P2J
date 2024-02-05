@@ -118,3 +118,13 @@ void UPlayerAnimInstance::PlayerRifleFireMontage()
 	}
 }
 
+/*
+void UPlayerAnimInstance::PlayerCrouch()
+{
+	if (!Montage_IsPlaying(PlayerMontage))
+	{
+		Cast<APlayerZeroCharacter>(TryGetPawnOwner())->PlayAnimMontage(PlayerMontage, 1, TEXT("Crouch"));
+	}
+}
+*/
+

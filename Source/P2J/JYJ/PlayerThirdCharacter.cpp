@@ -46,6 +46,8 @@ void APlayerThirdCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Released, this, &APlayerThirdCharacter::ZoomOut);
 	PlayerInputComponent->BindAction(TEXT("Shooting"), IE_Pressed, this, &APlayerThirdCharacter::OnActionFire);
 	PlayerInputComponent->BindAction(TEXT("SMG11Y"), IE_Pressed, this, &APlayerThirdCharacter::OnActionChooseSMG11);
+	PlayerInputComponent->BindAction(TEXT("Crouch"), IE_Pressed, this, &APlayerThirdCharacter::OnActionCrouchStart);
+	PlayerInputComponent->BindAction(TEXT("Crouch"), IE_Released, this, &APlayerThirdCharacter::OnActionCrouchEnd);
 
 
 }
@@ -139,5 +141,15 @@ void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon)
 			bValidRifle = true;
 		}
 	}
+}
+
+void APlayerThirdCharacter::OnActionCrouchStart()
+{
+	PlayerAnim->bCrouch = true;
+}
+
+void APlayerThirdCharacter::OnActionCrouchEnd()
+{
+	PlayerAnim->bCrouch = false;
 }
 

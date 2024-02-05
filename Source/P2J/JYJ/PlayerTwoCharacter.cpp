@@ -3,6 +3,8 @@
 
 #include "JYJ/PlayerTwoCharacter.h"
 #include "PlayerAnimInstance.h"
+#include "Dynamite.h"
+#include "DynamitePlace.h"
 
 APlayerTwoCharacter::APlayerTwoCharacter()
 {
@@ -29,7 +31,7 @@ void APlayerTwoCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Pressed, this, &APlayerTwoCharacter::cleanStart);
 	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Released, this, &APlayerTwoCharacter::cleanEnd);
-	PlayerInputComponent->BindAction(TEXT("Quest"), IE_Pressed, this, &APlayerTwoCharacter::putUp);
+	PlayerInputComponent->BindAction(TEXT("Quest"), IE_Pressed, this, &APlayerTwoCharacter::setupDynamite);
 
 
 }
@@ -45,21 +47,11 @@ void APlayerTwoCharacter::cleanEnd()
 	
 }
 
-void APlayerTwoCharacter::putUp()
+
+void APlayerTwoCharacter::setupDynamite()
 {
-	/*
-	AWetBroom* playerTwo = Cast<AWetBroom>(OtherActor);
+	//ADynamitePlace* bombPlace = Cast<ADynamitePlace>(bombPlace);
+	//bombPlace->SetDynamite();
 
-	if (playerTwo)
-	{
-		FName BroomSocket(TEXT("BroomSocket"));
-		//AttachToComponent(playerTwo->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, BroomSocket);
-
-	}
-	*/
 }
 
-void APlayerTwoCharacter::putDown()
-{
-	
-}

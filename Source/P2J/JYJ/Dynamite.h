@@ -24,7 +24,16 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	class UStaticMeshComponent* DynamiteBomb;
+	class UStaticMeshComponent* DynamiteBomb1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class UStaticMeshComponent* DynamiteBomb2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class UStaticMeshComponent* DynamiteBomb3;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class UStaticMeshComponent* DynamiteBomb4;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
     class UBoxComponent* Trigger;
