@@ -38,6 +38,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABulletActor> bulletFactory;
 
+	UFUNCTION(BlueprintCallable)
 	void OnActionFire();
 
 	// Called to bind functionality to input

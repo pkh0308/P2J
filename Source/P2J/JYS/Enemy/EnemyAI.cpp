@@ -13,8 +13,7 @@ AEnemyAI::AEnemyAI()
 
 	// gunMeshComp 생성 및 배치
 	gunMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("gunMeshComp"));
-	gunMeshComp->SetupAttachment(GetMesh());
-
+	
 	ConstructorHelpers::FObjectFinder<UStaticMesh> tempGunMesh(TEXT("/Script/Engine.StaticMesh'/Game/JYS/Mesh/HandGun/pistol_Tauros/pistol_tauros.pistol_tauros'"));
 
 	 // FName HandGunSocket(TEXT("HandGunSocket"));
@@ -23,7 +22,7 @@ AEnemyAI::AEnemyAI()
 	{
 		gunMeshComp->SetStaticMesh(tempGunMesh.Object);
 		gunMeshComp->SetRelativeLocationAndRotation(FVector(-4.838552, -14.091634, 7.870838), FRotator(32.259814, -56.247075, 210.800837));
-		// gunMeshComp->SetupAttachment(GetMesh(), HandGunSocket);
+		gunMeshComp->SetupAttachment(GetMesh(), TEXT("HandGunSocket"));
 	}
 }
 
