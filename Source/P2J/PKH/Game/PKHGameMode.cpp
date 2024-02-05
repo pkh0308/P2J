@@ -4,6 +4,9 @@
 #include "PKH/Game/PKHGameMode.h"
 #include "PKH/UI/QuestGuideWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "PKH/UI/OxygenWidget.h"
+#include "PKH/UI/QuestClearWidget.h"
+#include "PKH/UI/GameOverWidget.h"
 
 APKHGameMode::APKHGameMode()
 {
@@ -24,6 +27,24 @@ APKHGameMode::APKHGameMode()
 	if (FadeOutUIRef.Class)
 	{
 		FadeOutUIClass = FadeOutUIRef.Class;
+	}
+
+	static ConstructorHelpers::FClassFinder<UOxygenWidget> OxygenUIRef(TEXT("/Game/PKH/UI/WBP_OxygenWidget.WBP_OxygenWidget_C"));
+	if (OxygenUIRef.Class)
+	{
+		OxygenUIClass = OxygenUIRef.Class;
+	}
+
+	static ConstructorHelpers::FClassFinder<UQuestClearWidget> GameClearUIRef(TEXT("/Game/PKH/UI/WBP_QuestClear.WBP_QuestClear_C"));
+	if (GameClearUIRef.Class)
+	{
+		GameClearUIClass = GameClearUIRef.Class;
+	}
+
+	static ConstructorHelpers::FClassFinder<UGameOverWidget> GameOverUIRef(TEXT("/Game/PKH/UI/WBP_GameOver.WBP_GameOver_C"));
+	if (GameOverUIRef.Class)
+	{
+		GameOverUIClass = GameOverUIRef.Class;
 	}
 }
 
@@ -72,6 +93,27 @@ void APKHGameMode::BeginPlay()
 		FadeOutUI->AddToViewport();
 		FadeOutUI->SetVisibility(ESlateVisibility::Hidden);
 	}
+
+	OxygenUI = CreateWidget<UOxygenWidget>(GetWorld(), OxygenUIClass);
+	if (OxygenUI)
+	{
+		OxygenUI->AddToViewport();
+		OxygenUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	GameClearUI = CreateWidget<UQuestClearWidget>(GetWorld(), GameClearUIClass);
+	if (GameClearUI)
+	{
+		GameClearUI->AddToViewport();
+		GameClearUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	GameOverUI = CreateWidget<UGameOverWidget>(GetWorld(), GameOverUIClass);
+	if (GameOverUI)
+	{
+		GameOverUI->AddToViewport();
+		GameOverUI->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void APKHGameMode::SetQuestGuideText(FString GuideString, float DisplayTime)
@@ -93,4 +135,34 @@ void APKHGameMode::ClearCurQuest()
 void APKHGameMode::ShowFadeOut()
 {
 	FadeOutUI->SetVisibility(ESlateVisibility::Visible);
+}
+
+void APKHGameMode::StartOxygenTimer()
+{
+	OxygenUI->SetVisibility(ESlateVisibility::Visible);
+	OxygenUI->StartOxygenTimer();
+}
+
+void APKHGameMode::GameClear()
+{
+	GameClearUI->SetClearUIText(Seconds, OxygenUI->GetOxygenRate(), KillCount);
+	GameClearUI->SetVisibility(ESlateVisibility::Visible);
+
+	FTimerHandle Handle;
+	GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda(
+		[&]() {
+			GameClearUI->SetVisibility(ESlateVisibility::Hidden);
+		}), 7.0f, false);
+}
+
+void APKHGameMode::GameOver(FString NewFailReasonString)
+{
+	// Hide UI
+	QuestGuideUI->SetVisibility(ESlateVisibility::Hidden);
+	OxygenUI->SetVisibility(ESlateVisibility::Hidden);
+
+	// Game Over
+	GameOverUI->SetFailReasonText(NewFailReasonString);
+	GameOverUI->SetVisibility(ESlateVisibility::Visible);
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.2f);
 }

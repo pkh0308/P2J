@@ -52,6 +52,14 @@ public:
 
 	void ClearCurQuest();
 
+// Time & Kill Count
+protected:
+	int32 Seconds = 0;
+	int32 KillCount = 0;
+
+public:
+	FORCEINLINE void KillCountUp() { KillCount++; }
+
 // UI
 protected:
 	// Guide
@@ -68,8 +76,35 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UUserWidget> FadeOutUI;
 
+	// Oxygen
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UOxygenWidget> OxygenUIClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UOxygenWidget> OxygenUI;
+
+	// Game Clear
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UQuestClearWidget> GameClearUIClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UQuestClearWidget> GameClearUI;
+
+	// GameOver
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UGameOverWidget> GameOverUIClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UGameOverWidget> GameOverUI;
+
 public:
 	void SetQuestGuideText(FString GuideString, float DisplayTime = 5.0f);
 
 	void ShowFadeOut();
+
+	void StartOxygenTimer();
+
+	void GameClear();
+
+	void GameOver(FString NewFailReasonString);
 };
