@@ -79,6 +79,9 @@ void APlayerZeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	this->playerHP = this->playerMaxHP;
+	UE_LOG(LogTemp, Log, TEXT("Player HP : %d"), this->playerHP);
+
 	PlayerAnim = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 	check(PlayerAnim);
 	//PlayerAnim->OnMontageEnded.AddDynamic(this, &APlayerZeroCharacter::OnPunchingMontageEnded);
@@ -176,4 +179,12 @@ void APlayerZeroCharacter::StopSprinting()
 	GetCharacterMovement()->MaxWalkSpeed /= SprintSpeedMultiplier;
 }
 
+void APlayerZeroCharacter::TakeDamage(int damage)
+{
+	this->playerHP = this->playerMaxHP - damage;
+	if (this->playerHP < damage)
+	{
+		this->playerHP = 0;
+	}
+}
 

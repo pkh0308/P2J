@@ -33,7 +33,6 @@ void APlayerTwoCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAction(TEXT("Zoom / Clean"), IE_Released, this, &APlayerTwoCharacter::cleanEnd);
 	PlayerInputComponent->BindAction(TEXT("Quest"), IE_Pressed, this, &APlayerTwoCharacter::setupDynamite);
 
-
 }
 
 void APlayerTwoCharacter::cleanStart()
@@ -47,11 +46,23 @@ void APlayerTwoCharacter::cleanEnd()
 	
 }
 
-
 void APlayerTwoCharacter::setupDynamite()
 {
-	//ADynamitePlace* bombPlace = Cast<ADynamitePlace>(bombPlace);
-	//bombPlace->SetDynamite();
-
+	QuestState = true;
+	UE_LOG(LogTemp, Warning, TEXT("bombtest0"));
+	//FTransform t = Trigger->GetComponentTransform();
+	//GetWorld()->SpawnActor<ADynamite>(dynamiteFactory, t);
 }
+
+void APlayerTwoCharacter::OnDynamitePlaceOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("bombtest1"));
+	if(QuestState)
+	{
+		ADynamitePlace* dynamiteplace = Cast<ADynamitePlace>(OtherActor);
+		dynamiteplace->SetDynamite();
+		UE_LOG(LogTemp, Warning, TEXT("bombtest2"));
+	}
+}
+
 

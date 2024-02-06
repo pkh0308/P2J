@@ -1,10 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYJ/DynamitePlace.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/BoxComponent.h"
 #include "PlayerTwoCharacter.h"
 #include "Dynamite.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "../PKH/Game/PKHGameMode.h"
 
 // Sets default values
 ADynamitePlace::ADynamitePlace()
@@ -40,19 +42,22 @@ void ADynamitePlace::PostInitializeComponents()
 	Trigger->OnComponentBeginOverlap.AddDynamic(this, &ADynamitePlace::OnPlayer2Overlap);
 }
 
-//Å×½ºÆ®¿ë ÄÚµå. 
+//í…ŒìŠ¤íŠ¸ìš© ì½”ë“œ. 
 void ADynamitePlace::OnPlayer2Overlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	APlayerTwoCharacter* player = Cast<APlayerTwoCharacter>(OtherActor);
+	APKHGameMode* gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	gamemode->SetQuestGuideText(TEXT("E í‚¤ë¥¼ ëˆŒëŸ¬ í­íƒ„ì„ ì„¤ì¹˜í•˜ì‹œì˜¤."));
 
 	UE_LOG(LogTemp, Warning, TEXT("DynamicTest"));
 	if (player)
 	{
-		SetDynamite();
+		//SetDynamite();
 	}
 }
 
-//ÇÃ·¹ÀÌ¾î2 °¡ Æ®¸®°Å À§Ä¡·Î overlap µÇ¸é ¿ìÅ¬¸¯ÇÏ¶ó´Â ¹®±¸ ³ª¿È -> ÀÌÈÄ ¿ìÅ¬¸¯ ½Ã, ÆøÅº ¼³Ä¡
+//í”Œë ˆì´ì–´2 ê°€ íŠ¸ë¦¬ê±° ìœ„ì¹˜ë¡œ overlap ë˜ë©´ ìš°í´ë¦­í•˜ë¼ëŠ” ë¬¸êµ¬ ë‚˜ì˜´ -> ì´í›„ ìš°í´ë¦­ ì‹œ, í­íƒ„ ì„¤ì¹˜
 void ADynamitePlace::SetDynamite()
 {
 	FTransform t = Trigger->GetComponentTransform();

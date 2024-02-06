@@ -69,6 +69,12 @@ public:
 	void StopSprinting();
 	//void OnPunchingMontageEnded(UAnimMontage* Montage, bool bInterrupred);
 
+	void TakeDamage(int damage);
 
+	UPROPERTY(EditAnywhere)
+	int32 playerHP = 0;
+
+	UPROPERTY(EditAnywhere)
+	int32 playerMaxHP = 10;
 
 };
