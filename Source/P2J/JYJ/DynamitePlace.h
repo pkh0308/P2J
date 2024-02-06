@@ -30,10 +30,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* Trigger;
 
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class ADynamite> dynamiteFactory;
-
-public:
-	void SetDynamite();
 
 };

@@ -11,12 +11,11 @@
 // Sets default values
 ADynamitePlace::ADynamitePlace()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 	Trigger = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger"));
 	SetRootComponent(Trigger);
-
 
 	Trigger->SetCollisionProfileName(TEXT("CleanItem"));
 
@@ -27,7 +26,7 @@ ADynamitePlace::ADynamitePlace()
 void ADynamitePlace::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -48,21 +47,6 @@ void ADynamitePlace::OnPlayer2Overlap(UPrimitiveComponent* OverlappedComp, AActo
 {
 	APlayerTwoCharacter* player = Cast<APlayerTwoCharacter>(OtherActor);
 	APKHGameMode* gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-
 	gamemode->SetQuestGuideText(TEXT("E 키를 눌러 폭탄을 설치하시오."));
-
-	UE_LOG(LogTemp, Warning, TEXT("DynamicTest"));
-	if (player)
-	{
-		//SetDynamite();
-	}
-}
-
-//플레이어2 가 트리거 위치로 overlap 되면 우클릭하라는 문구 나옴 -> 이후 우클릭 시, 폭탄 설치
-void ADynamitePlace::SetDynamite()
-{
-	FTransform t = Trigger->GetComponentTransform();
-	GetWorld()->SpawnActor<ADynamite>(dynamiteFactory, t);
-	UE_LOG(LogTemp, Warning, TEXT("DynamicTest1"));
 }
 

@@ -19,7 +19,7 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	//virtual void 
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 	void cleanStart();
 	void cleanEnd();
@@ -27,10 +27,16 @@ public:
 	void setupDynamite();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	bool QuestState;
+	bool bCleanQEnabled;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bBombQEnabled;
 
-	UFUNCTION()
-	void OnDynamitePlaceOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ADynamite> dynamiteFactory;
+
+	UPROPERTY(EditAnywhere)
+	FTransform dynamiteTransform;
+
 
 };

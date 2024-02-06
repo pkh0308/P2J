@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYJ/WetBroom.h"
@@ -7,6 +7,8 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/BoxComponent.h"
 #include "PlayerTwoCharacter.h"
+#include "../PKH/Game/PKHGameMode.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 // Sets default values
 AWetBroom::AWetBroom()
@@ -35,6 +37,8 @@ AWetBroom::AWetBroom()
 void AWetBroom::BeginPlay()
 {
 	Super::BeginPlay();
+
+	nextQuest = true;
 	
 }
 
@@ -53,15 +57,23 @@ void AWetBroom::PostInitializeComponents()
 
 void AWetBroom::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Broom test"));
-
 	APlayerTwoCharacter* playerTwo = Cast<APlayerTwoCharacter>(OtherActor);
+	APKHGameMode* gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	//다음 퀘스트 안내 문구
+	if (nextQuest)
+	{
+		gamemode->SetQuestGuideText(TEXT("복도 바닥의 얼룩을 닦으십시오."));
+	}
 
 	if (playerTwo)
 	{
+		//플레이어의 메쉬에 빗자루 붙임
 		FName BroomSocket(TEXT("BroomSocket"));
 		AttachToComponent(playerTwo->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, BroomSocket);
-
+		this->bCleanQEnabled = playerTwo->bCleanQEnabled;
+		nextQuest = false;
 	}
+
 }
 

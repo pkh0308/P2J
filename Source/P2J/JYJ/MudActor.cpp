@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYJ/MudActor.h"
@@ -6,6 +6,8 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/BoxComponent.h"
 #include "PlayerTwoCharacter.h"
 #include "WetBroom.h"
+#include "../PKH/Game/PKHGameMode.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 // Sets default values
 AMudActor::AMudActor()
@@ -59,12 +61,18 @@ void AMudActor::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 
 	//APlayerTwoCharacter* playerTwo = Cast<APlayerTwoCharacter>(OtherActor);
 	AWetBroom* broom = Cast<AWetBroom>(OtherActor);
+	APKHGameMode* gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
-	if (broom)
+	if (broom )
 	{
-		//FName BroomSocket(TEXT("BroomSocket"));
-		UE_LOG(LogTemp, Warning, TEXT("mud test2"));
-		this->Destroy(true);
+		gamemode->SetQuestGuideText(TEXT("우클릭으로 얼룩을 지우십시오."));
+
+		if(broom->bCleanQEnabled )
+		{
+			UE_LOG(LogTemp, Warning, TEXT("mud test2"));
+			this->Destroy(true);
+		}
+		
 
 	}
 

@@ -5,6 +5,9 @@
 #include "PlayerAnimInstance.h"
 #include "Dynamite.h"
 #include "DynamitePlace.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Components/BoxComponent.h"
+#include "MudActor.h"
+#include "WetBroom.h"
 
 APlayerTwoCharacter::APlayerTwoCharacter()
 {
@@ -35,33 +38,32 @@ void APlayerTwoCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 }
 
+void APlayerTwoCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (OtherActor->IsA<ADynamitePlace>())
+	{
+		bBombQEnabled = true;
+		dynamiteTransform = OtherActor->GetActorTransform();
+	}
+}
+
 void APlayerTwoCharacter::cleanStart()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TEST PLAYER2"));
 	PlayerAnim->PlayerCleanMontage();
+	bCleanQEnabled = true;
 }
 
 void APlayerTwoCharacter::cleanEnd()
 {
-	
+	bCleanQEnabled = false;
 }
 
 void APlayerTwoCharacter::setupDynamite()
 {
-	QuestState = true;
-	UE_LOG(LogTemp, Warning, TEXT("bombtest0"));
-	//FTransform t = Trigger->GetComponentTransform();
-	//GetWorld()->SpawnActor<ADynamite>(dynamiteFactory, t);
-}
-
-void APlayerTwoCharacter::OnDynamitePlaceOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	UE_LOG(LogTemp, Warning, TEXT("bombtest1"));
-	if(QuestState)
+	if (bBombQEnabled)
 	{
-		ADynamitePlace* dynamiteplace = Cast<ADynamitePlace>(OtherActor);
-		dynamiteplace->SetDynamite();
-		UE_LOG(LogTemp, Warning, TEXT("bombtest2"));
+		GetWorld()->SpawnActor<ADynamite>(dynamiteFactory, dynamiteTransform);
+		bBombQEnabled = false;
 	}
 }
 
