@@ -17,6 +17,7 @@ ADynamitePlace::ADynamitePlace()
 	Trigger = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger"));
 	SetRootComponent(Trigger);
 
+
 	Trigger->SetCollisionProfileName(TEXT("CleanItem"));
 
 
