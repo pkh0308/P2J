@@ -44,4 +44,21 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+	
+	UFUNCTION()
+	void OnDamaged(int damage);
+	void OnDead();
+
+	UPROPERTY(EditAnywhere)
+	int HP = 20;
+
+	UPROPERTY(EditAnywhere)
+	bool isDead = false;
+
+	UFUNCTION(BlueprintCallable)
+	void Attack();
+
+	// ºÒ¸´ Å¬·¡½º
+
 };

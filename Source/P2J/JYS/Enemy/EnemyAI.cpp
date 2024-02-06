@@ -3,6 +3,7 @@
 
 #include "JYS/Enemy/EnemyAI.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -50,6 +51,39 @@ void AEnemyAI::OnActionFire()
 void AEnemyAI::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
+void AEnemyAI::OnDamaged(int damage)
+{
+	if (isDead) 
+	{
+		return;
+	}
+
+	HP = HP - damage;
+	if (HP <= 0)
+	{
+		OnDead();
+	}
+}
+
+void AEnemyAI::OnDead()
+{
+	isDead = true;
+}
+
+void AEnemyAI::Attack()
+{
+	 FVector PlayerLoc = UGameplayStatics::GetPlayerPawn(GetWorld(), 0)->GetActorLocation();
+	 FVector MyLoc = GetActorLocation();
+	 FVector dir = PlayerLoc - MyLoc;
+	 dir.Normalize();
+
+	 // 불릿 스폰할 위치
+	 FVector spawnLoc;
+	 GetWorld()->SpawnActor<ABulletActor>(bulletFactory, FVector((37.000000, 0.000000, 51.000000)), FRotator(0));
+
 
 }
 
