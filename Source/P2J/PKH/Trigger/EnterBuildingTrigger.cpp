@@ -3,7 +3,7 @@
 
 #include "PKH/Trigger/EnterBuildingTrigger.h"
 #include "JYJ/PlayerZeroCharacter.h"
-#include "../Game/PKHGameMode.h"
+#include "PKH/Game/PKHGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
 void AEnterBuildingTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -29,7 +29,7 @@ void AEnterBuildingTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedCompo
 		FTimerHandle Handle;
 		GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda(
 			[&]() {
-				UGameplayStatics::OpenLevel(GetWorld(), TEXT("Level3"));
+				GameMode->OpenLevel(ELevelSelect::Level3);
 			}), 3.0f, false);
 	}
 }

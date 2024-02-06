@@ -3,6 +3,8 @@
 
 #include "PKH/Trigger/ElebatorEscapeTrigger.h"
 #include "JYJ/PlayerZeroCharacter.h"
+#include "PKH/Game/PKHGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 void AElebatorEscapeTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -14,4 +16,10 @@ void AElebatorEscapeTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedComp
 	}
 
 	PlaySequence();
+	
+	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GameMode)
+	{
+		GameMode->StopOxygenTimer();
+	}
 }

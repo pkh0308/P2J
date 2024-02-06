@@ -21,6 +21,14 @@ enum class EQuestType : uint8
 	AllClear
 };
 
+UENUM()
+enum class ELevelSelect : uint8 
+{
+	Level1 = 0,
+	Level2,
+	Level3
+};
+
 /**
  * 
  */
@@ -37,10 +45,7 @@ protected:
 
 // Level
 protected:
-	FString LevelName_1 = TEXT("Demo_Copy");
-	FString LevelName_2 = TEXT("Level2");
-	FString LevelName_3 = TEXT("Level3");
-
+	TArray<FName> LevelNames;
 	int32 LevelIdx = 0;
 
 // Quest
@@ -56,6 +61,8 @@ public:
 protected:
 	int32 Seconds = 0;
 	int32 KillCount = 0;
+
+	FTimerHandle TimeHandle;
 
 public:
 	FORCEINLINE void KillCountUp() { KillCount++; }
@@ -103,8 +110,13 @@ public:
 	void ShowFadeOut();
 
 	void StartOxygenTimer();
+	void StopOxygenTimer();
 
 	void GameClear();
 
 	void GameOver(FString NewFailReasonString);
+
+// Level
+public:
+	void OpenLevel(enum ELevelSelect NewLevel);
 };

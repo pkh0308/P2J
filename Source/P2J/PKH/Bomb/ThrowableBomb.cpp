@@ -60,6 +60,9 @@ void AThrowableBomb::Explode()
 	// Particle
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), VFX_Explosion, GetActorLocation(), FRotator::ZeroRotator, FVector(1.0f));
 
+	// Shake
+	UGameplayStatics::PlayWorldCameraShake(GetWorld(), BombShakeClass, GetActorLocation(), InnerRadius, OuterRadius);
+
 	// Sound
 
 

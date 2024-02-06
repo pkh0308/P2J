@@ -43,4 +43,15 @@ protected:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UParticleSystem> VFX_Explosion;
+
+// Shake
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UCameraShakeBase> BombShakeClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float InnerRadius = 1500.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float OuterRadius = 3000.0f;
 };

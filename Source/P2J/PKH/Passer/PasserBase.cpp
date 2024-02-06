@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "PKH/Passer/PasserAIKey.h"
+#include "JYJ/PlayerZeroCharacter.h"
 
 // Sets default values
 APasserBase::APasserBase()
@@ -123,9 +124,10 @@ void APasserBase::AttackHit()
 	{
 		for (int i = 0; i < OverlapResults.Num(); i++)
 		{
-			if (OverlapResults[i].GetActor()->IsA<ACharacter>())
+			APlayerZeroCharacter* PlayerCharacter = Cast<APlayerZeroCharacter>(OverlapResults[i].GetActor());
+			if (PlayerCharacter)
 			{
-				UE_LOG(LogTemp, Log, TEXT("PasserAttackHit"));
+				PlayerCharacter->TakeDamage(1);
 				break;
 			}
 		}

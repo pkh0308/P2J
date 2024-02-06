@@ -10,6 +10,7 @@
 #include "../../../../../../../Source/Runtime/LevelSequence/Public/LevelSequencePlayer.h"
 #include "KIsmet/GameplayStatics.h"
 #include "PKH/Game/PKHGameMode.h"
+#include "JYJ/PlayerZeroCharacter.h"
 
 APasser_FBI::APasser_FBI()
 {
@@ -221,15 +222,10 @@ void APasser_FBI::Shoot()
 	bool IsHit = GetWorld()->LineTraceSingleByChannel(HResult, StartVec, EndVec, ECollisionChannel::ECC_Pawn, Param);
 	if (IsHit)
 	{
-		ACharacter* Player = Cast<ACharacter>(HResult.GetActor());
-		if (Player)
+		APlayerZeroCharacter* PlayerCharacter = Cast<APlayerZeroCharacter>(HResult.GetActor());
+		if (PlayerCharacter)
 		{
-			DrawDebugLine(GetWorld(), StartVec, EndVec, FColor::Green, false, 3.0f);
-			UE_LOG(LogTemp, Log, TEXT("Player shoot Hit"));
+			PlayerCharacter->TakeDamage(2);
 		}
-	}
-	else
-	{
-		DrawDebugLine(GetWorld(), StartVec, EndVec, FColor::Red, false, 3.0f);
 	}
 }

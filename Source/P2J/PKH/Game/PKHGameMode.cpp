@@ -7,6 +7,7 @@
 #include "PKH/UI/OxygenWidget.h"
 #include "PKH/UI/QuestClearWidget.h"
 #include "PKH/UI/GameOverWidget.h"
+#include "P2JGameInstance.h"
 
 APKHGameMode::APKHGameMode()
 {
@@ -46,22 +47,26 @@ APKHGameMode::APKHGameMode()
 	{
 		GameOverUIClass = GameOverUIRef.Class;
 	}
+
+	LevelNames.Add(TEXT("Demo_Copy"));
+	LevelNames.Add(TEXT("Level2_Test"));
+	LevelNames.Add(TEXT("Level3"));
 }
 
 void APKHGameMode::BeginPlay()
 {
 	FString CurLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	if (CurLevelName == LevelName_1)
+	if (CurLevelName == LevelNames[0])
 	{
 		LevelIdx = 1;
 		CurQuest = EQuestType::Q3_EnterBuilding; 
 	}
-	else if(CurLevelName == LevelName_2)
+	else if(CurLevelName == LevelNames[1])
 	{
 		LevelIdx = 2;
 		CurQuest = EQuestType::Q4_PlantBombs;
 	}
-	else if (CurLevelName == LevelName_3)
+	else if (CurLevelName == LevelNames[2])
 	{
 		LevelIdx = 3;
 		CurQuest = EQuestType::Q7_GetTheDisk;
@@ -83,6 +88,9 @@ void APKHGameMode::BeginPlay()
 			break;
 		case 3:
 			QuestGuideUI->SetQuestGuideText(TEXT("보안 디스크를 획득하십시오."));
+			break;
+		default:
+			QuestGuideUI->SetQuestGuideText(TEXT(""));
 			break;
 		}
 	}
@@ -114,6 +122,12 @@ void APKHGameMode::BeginPlay()
 		GameOverUI->AddToViewport();
 		GameOverUI->SetVisibility(ESlateVisibility::Hidden);
 	}
+
+	// Timer
+	GetWorldTimerManager().SetTimer(TimeHandle, FTimerDelegate::CreateLambda(
+		[this]() {
+			Seconds++;
+		}), 1.0f, false);
 }
 
 void APKHGameMode::SetQuestGuideText(FString GuideString, float DisplayTime)
@@ -143,8 +157,25 @@ void APKHGameMode::StartOxygenTimer()
 	OxygenUI->StartOxygenTimer();
 }
 
+void APKHGameMode::StopOxygenTimer()
+{
+	OxygenUI->SetVisibility(ESlateVisibility::Hidden);
+	OxygenUI->StopOxygenTimer();
+}
+
 void APKHGameMode::GameClear()
 {
+	// Update Seconds
+	if (TimeHandle.IsValid())
+	{
+		GetWorldTimerManager().ClearTimer(TimeHandle);
+	}
+	UP2JGameInstance* GI = Cast<UP2JGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (GI)
+	{
+		Seconds += GI->GetSeconds();
+	}
+
 	GameClearUI->SetClearUIText(Seconds, OxygenUI->GetOxygenRate(), KillCount);
 	GameClearUI->SetVisibility(ESlateVisibility::Visible);
 
@@ -165,4 +196,21 @@ void APKHGameMode::GameOver(FString NewFailReasonString)
 	GameOverUI->SetFailReasonText(NewFailReasonString);
 	GameOverUI->SetVisibility(ESlateVisibility::Visible);
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.2f);
+}
+
+void APKHGameMode::OpenLevel(enum ELevelSelect NewLevel)
+{
+	// Time Save
+	if (TimeHandle.IsValid())
+	{
+		GetWorldTimerManager().ClearTimer(TimeHandle);
+	}
+	UP2JGameInstance* GI = Cast<UP2JGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (GI)
+	{
+		GI->AddSeconds(Seconds);
+	}
+
+	uint8 Idx = (uint8)NewLevel;
+	UGameplayStatics::OpenLevel(GetWorld(), LevelNames[Idx]);
 }
