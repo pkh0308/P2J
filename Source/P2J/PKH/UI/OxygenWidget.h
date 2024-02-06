@@ -29,7 +29,7 @@ protected:
 	TObjectPtr<class UTextBlock> OxygenText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 MaxTime = 5;
+	int32 MaxTime = 100;
 
 	int32 CurTime = 0;
 

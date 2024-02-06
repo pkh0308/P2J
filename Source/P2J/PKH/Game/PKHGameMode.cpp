@@ -127,7 +127,7 @@ void APKHGameMode::BeginPlay()
 	GetWorldTimerManager().SetTimer(TimeHandle, FTimerDelegate::CreateLambda(
 		[this]() {
 			Seconds++;
-		}), 1.0f, false);
+		}), 1.0f, true);
 }
 
 void APKHGameMode::SetQuestGuideText(FString GuideString, float DisplayTime)
