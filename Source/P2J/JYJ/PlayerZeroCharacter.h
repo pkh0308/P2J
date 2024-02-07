@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -69,6 +69,7 @@ public:
 	void StopSprinting();
 	//void OnPunchingMontageEnded(UAnimMontage* Montage, bool bInterrupred);
 
+	UFUNCTION(BlueprintCallable)
 	void TakePlayerDamaged(int damage);
 
 	UPROPERTY(EditAnywhere)

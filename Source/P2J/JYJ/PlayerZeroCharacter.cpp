@@ -83,7 +83,6 @@ void APlayerZeroCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	this->playerHP = this->playerMaxHP;
-	UE_LOG(LogTemp, Log, TEXT("Player HP : %d"), this->playerHP);
 
 	PlayerAnim = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 	check(PlayerAnim);
@@ -91,6 +90,8 @@ void APlayerZeroCharacter::BeginPlay()
 	
 	//GameOver 띄우기 위해 게임모드 선언
 	gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	punchComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	
 }
@@ -100,8 +101,6 @@ void APlayerZeroCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//Move();
-
-	UE_LOG(LogTemp, Log, TEXT("Player HP : %d"), this->playerHP);
 	if (this->playerHP == 0)
 	{
 		PlayerAnim->PlayerDeathMontage();
@@ -166,10 +165,12 @@ void APlayerZeroCharacter::OnAxisLookupPitch(float value)
 
 void APlayerZeroCharacter::OnEnemyOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("rrrrr"));
 	APasserBase* enemy = Cast<APasserBase>(OtherActor);
 
 	if (enemy)
 	{
+		UE_LOG( LogTemp , Warning , TEXT( "rrrrr" ) );
 		enemy->OnDamaged(1, this);
 	}
 }
@@ -177,7 +178,7 @@ void APlayerZeroCharacter::OnEnemyOverlap(UPrimitiveComponent* OverlappedComp, A
 void APlayerZeroCharacter::Attack()
 {
 	//auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
-	punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
+	//punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
 	if (nullptr == PlayerAnim) return;
 	PlayerAnim->PlayerAttackMontage();
 

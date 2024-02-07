@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYJ/AnimNotify_Attack1HitCheck.h"
@@ -12,15 +12,20 @@ void UAnimNotify_Attack1HitCheck::Notify(USkeletalMeshComponent* MeshComp, UAnim
 {
 	Super::Notify(MeshComp, Animation);
 
+	UE_LOG( LogTemp , Warning , TEXT( "Player attack1 TEST1" ) );
+
 	if (MeshComp)
 	{
-		APlayerZeroCharacter* AttackPawn = Cast<APlayerZeroCharacter>(MeshComp->GetOwner());
+		UE_LOG( LogTemp , Warning , TEXT( "Player attack1 TEST2" ) );
+		APlayerZeroCharacter* AttackPlayer = Cast<APlayerZeroCharacter>(MeshComp->GetOwner());
 
-		if (AttackPawn)
+		if (AttackPlayer)
 		{
-			//AttackPawn->punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
-			AttackPawn->punchComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			UE_LOG( LogTemp , Warning , TEXT( "Player attack1 TEST3" ) );
+			AttackPlayer->punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
+			//AttackPlayer->punchComp->SetCollisionEnabled(ECollisionEnabled::);
 		}
 		
 	}
 }
+
