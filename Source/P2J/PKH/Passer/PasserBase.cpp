@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PKH/Passer/PasserBase.h"
@@ -64,10 +64,11 @@ void APasserBase::Tick(float DeltaTime)
 
 void APasserBase::OnDamaged(int32 InDamage, AActor* NewTarget)
 {
-	if (IsDead)
+	if (IsDamagedDelay || IsDead)
 	{
 		return;
 	}
+	IsDamagedDelay = true;
 
 	Hp -= InDamage;
 	if (Hp <= 0)
@@ -91,6 +92,7 @@ void APasserBase::OnDamaged(int32 InDamage, AActor* NewTarget)
 void APasserBase::OnDamagedEnd()
 {
 	OnDamagedFinished.ExecuteIfBound();
+	IsDamagedDelay = false;
 
 	UBlackboardComponent* BBComp = GetBlackboard();
 	if (BBComp)
@@ -117,9 +119,8 @@ void APasserBase::AttackHit()
 	TArray<FOverlapResult> OverlapResults;
 	const FVector AttackCenterVec = GetActorLocation() + GetActorForwardVector() * 80;
 	FCollisionObjectQueryParams Param;
+
 	bool OverlapRes = GetWorld()->OverlapMultiByObjectType(OverlapResults, AttackCenterVec, FQuat::Identity, Param, FCollisionShape::MakeSphere(AttackRadius));
-	DrawDebugSphere(GetWorld(), AttackCenterVec, AttackRadius, 26, FColor::Red, false, 1.0f);
-	
 	if (OverlapRes)
 	{
 		for (int i = 0; i < OverlapResults.Num(); i++)
@@ -180,4 +181,3 @@ void APasserBase::SetEndDamagedDelegate(FOnPasserDamagedFinished NewOnDamagedFin
 {
 	OnDamagedFinished = NewOnDamagedFinished;
 }
-

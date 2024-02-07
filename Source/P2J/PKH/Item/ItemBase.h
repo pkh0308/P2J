@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -34,6 +34,6 @@ public:
 
 // Get Item
 protected:
-	virtual void GetItem(class ACharacter* InCharacter);
+	virtual void GetItem(class APlayerZeroCharacter* InCharacter);
 
 };

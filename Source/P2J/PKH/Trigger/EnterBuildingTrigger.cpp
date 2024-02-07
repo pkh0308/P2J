@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PKH/Trigger/EnterBuildingTrigger.h"
@@ -28,7 +28,7 @@ void AEnterBuildingTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedCompo
 
 		FTimerHandle Handle;
 		GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda(
-			[&]() {
+			[GameMode]() {
 				GameMode->OpenLevel(ELevelSelect::Level3);
 			}), 3.0f, false);
 	}

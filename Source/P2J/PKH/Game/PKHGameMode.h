@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -17,7 +17,6 @@ enum class EQuestType : uint8
 	Q6_EnterAsAFireman,
 	Q7_GetTheDisk,
 	Q8_EscapeBuilding,
-	Q9_ToTheHome,
 	AllClear
 };
 

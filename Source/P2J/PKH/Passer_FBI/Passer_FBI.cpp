@@ -104,10 +104,8 @@ void APasser_FBI::Tick(float DeltaTime)
 		if (GetActorLocation().Y > -1400)
 		{
 			IsDropped = true;
-
 			IDCard->SetActive(true);
-			IDCard->SetActorLocation(GetActorLocation() + GetActorForwardVector() * -20);
-			IDCard->SetActorRotation(FRotator(40, 0, 50));
+			IDCard->SetActorLocationAndRotation(GetActorLocation() + GetActorForwardVector() * -20, FRotator( 40 , 0 , 50 ));
 		}
 	}
 }

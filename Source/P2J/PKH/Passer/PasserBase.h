@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -25,9 +25,10 @@ protected:
 	int32 Hp;
 	float WalkSpeed;
 	float RunSpeed;
-	bool IsDead = false;
-
 	float AttackRadius = 50.0f;
+
+	bool IsDamagedDelay = false;
+	bool IsDead = false;
 
 public:
 	UFUNCTION(BlueprintCallable)

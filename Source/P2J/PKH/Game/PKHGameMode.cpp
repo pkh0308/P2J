@@ -59,7 +59,7 @@ void APKHGameMode::BeginPlay()
 	if (CurLevelName == LevelNames[0])
 	{
 		LevelIdx = 1;
-		CurQuest = EQuestType::Q3_EnterBuilding; 
+		CurQuest = EQuestType::Q1_FightWithMan; 
 	}
 	else if(CurLevelName == LevelNames[1])
 	{
@@ -205,11 +205,6 @@ void APKHGameMode::GameOver(FString NewFailReasonString)
 
 void APKHGameMode::OpenLevel(enum ELevelSelect NewLevel)
 {
-	// Time Save
-	if (TimeHandle.IsValid())
-	{
-		GetWorldTimerManager().ClearTimer(TimeHandle);
-	}
 	UP2JGameInstance* GI = Cast<UP2JGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (GI)
 	{

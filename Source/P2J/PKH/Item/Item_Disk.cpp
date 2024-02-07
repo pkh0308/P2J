@@ -5,6 +5,7 @@
 #include "PKH/Game/PKHGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
+#include "JYJ/PlayerZeroCharacter.h"
 
 AItem_Disk::AItem_Disk()
 {
@@ -21,10 +22,11 @@ AItem_Disk::AItem_Disk()
 	}
 }
 
-void AItem_Disk::GetItem(ACharacter* InCharacter)
+void AItem_Disk::GetItem( APlayerZeroCharacter* InCharacter)
 {
 	Super::GetItem(InCharacter);
 
+	SetActive( false );
 	UE_LOG(LogTemp, Log, TEXT("Player Get Disk"));
 
 	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));

@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "KIsmet/GameplayStatics.h"
 #include "PKH/Game/PKHGameMode.h"
+#include "JYJ/PlayerZeroCharacter.h"
 
 AItem_IDCard::AItem_IDCard()
 {
@@ -23,10 +24,11 @@ AItem_IDCard::AItem_IDCard()
 	}
 }
 
-void AItem_IDCard::GetItem(ACharacter* InCharacter)
+void AItem_IDCard::GetItem(APlayerZeroCharacter* InCharacter)
 {
 	Super::GetItem(InCharacter);
 
+	SetActive( false );
 	UE_LOG(LogTemp, Log, TEXT("Player Get ID card"));
 
 	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -38,6 +40,6 @@ void AItem_IDCard::GetItem(ACharacter* InCharacter)
 	if (GameMode->CheckCurQuest(EQuestType::Q2_GetIDCard))
 	{
 		GameMode->ClearCurQuest();
-		GameMode->SetQuestGuideText(TEXT("청소부 복장으로 정보국 건물에 진입하십시오."));
+		GameMode->SetQuestGuideText(TEXT("정보국 건물에 진입하십시오."));
 	}
 }
