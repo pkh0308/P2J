@@ -36,6 +36,7 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 
 	}
 
+
 	FName FirstAttackSocket(TEXT("FirstAttack"));
 	if (GetMesh()->DoesSocketExist(FirstAttackSocket))
 	{
@@ -179,7 +180,7 @@ void APlayerZeroCharacter::StopSprinting()
 	GetCharacterMovement()->MaxWalkSpeed /= SprintSpeedMultiplier;
 }
 
-void APlayerZeroCharacter::TakeDamage(int damage)
+void APlayerZeroCharacter::TakePlayerDamaged(int damage)
 {
 	this->playerHP = this->playerMaxHP - damage;
 	if (this->playerHP < damage)
