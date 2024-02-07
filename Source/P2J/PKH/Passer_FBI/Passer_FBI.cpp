@@ -225,7 +225,7 @@ void APasser_FBI::Shoot()
 		APlayerZeroCharacter* PlayerCharacter = Cast<APlayerZeroCharacter>(HResult.GetActor());
 		if (PlayerCharacter)
 		{
-			PlayerCharacter->TakeDamage(2);
+			PlayerCharacter->TakePlayerDamaged(2);
 		}
 	}
 }

@@ -127,7 +127,7 @@ void APasserBase::AttackHit()
 			APlayerZeroCharacter* PlayerCharacter = Cast<APlayerZeroCharacter>(OverlapResults[i].GetActor());
 			if (PlayerCharacter)
 			{
-				PlayerCharacter->TakeDamage(1);
+				PlayerCharacter->TakePlayerDamaged(1);
 				break;
 			}
 		}
