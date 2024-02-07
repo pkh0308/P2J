@@ -77,4 +77,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	int32 playerMaxHP = 10;
 
+	UPROPERTY()
+	class APKHGameMode* gamemode;
+
 };

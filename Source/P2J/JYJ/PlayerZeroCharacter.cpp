@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYJ/PlayerZeroCharacter.h"
@@ -14,6 +14,8 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h"
 #include "WeaponActor.h"
 #include "../PKH/Passer/PasserBase.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "../PKH/Game/PKHGameMode.h"
 
 // Sets default values
 APlayerZeroCharacter::APlayerZeroCharacter()
@@ -65,11 +67,11 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 720.f, 0.f);
 
 
-	//�浹ü ����
+	//충돌체 설정
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	SprintSpeedMultiplier = 2.0f;	//�޸��� ���
+	SprintSpeedMultiplier = 2.0f;	//달리기 배속
 	GetCharacterMovement()->JumpZVelocity = 500.0f;
 
 
@@ -87,6 +89,10 @@ void APlayerZeroCharacter::BeginPlay()
 	check(PlayerAnim);
 	//PlayerAnim->OnMontageEnded.AddDynamic(this, &APlayerZeroCharacter::OnPunchingMontageEnded);
 	
+	//GameOver 띄우기 위해 게임모드 선언
+	gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	
 }
 
 // Called every frame
@@ -94,6 +100,13 @@ void APlayerZeroCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//Move();
+
+	UE_LOG(LogTemp, Log, TEXT("Player HP : %d"), this->playerHP);
+	if (this->playerHP == 0)
+	{
+		PlayerAnim->PlayerDeathMontage();
+		gamemode->GameOver(TEXT("당신은 시민에게 맞아 죽었습니다."));
+	}
 
 }
 
@@ -182,7 +195,11 @@ void APlayerZeroCharacter::StopSprinting()
 
 void APlayerZeroCharacter::TakePlayerDamaged(int damage)
 {
-	this->playerHP = this->playerMaxHP - damage;
+	UE_LOG(LogTemp, Warning, TEXT("Player Hit TEST"));
+	this->playerHP = this->playerHP - damage;
+
+	PlayerAnim->PlayerHitMontage();
+
 	if (this->playerHP < damage)
 	{
 		this->playerHP = 0;

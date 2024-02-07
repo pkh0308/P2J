@@ -63,6 +63,8 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (!::IsValid(player)) return;
 
 	auto Character = Cast<ACharacter>(player);
+
+	//플레이어 기본 애니메이션 변수 생성
 	if (Character)
 	{
 		isInAir = Character->GetMovementComponent()->IsFalling();
@@ -74,6 +76,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	}
 
+	//플레이어3 특정 변수 생성
 	if (player == Cast<APlayerThirdCharacter>(Character)) {
 		auto playerThree = Cast<APlayerThirdCharacter>(Character);
 		bRifleValid = playerThree->bValidRifle;
@@ -87,11 +90,11 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	else {
 		
 	}
-
 	
 
 }
 
+//주먹질 몽타주
 void UPlayerAnimInstance::PlayerAttackMontage()
 {
 	if (!Montage_IsPlaying(PlayerMontage))
@@ -102,6 +105,7 @@ void UPlayerAnimInstance::PlayerAttackMontage()
 
 }
 
+//청소 몽타주 재생
 void UPlayerAnimInstance::PlayerCleanMontage()
 {
 	if (!Montage_IsPlaying(PlayerMontage))
@@ -110,6 +114,7 @@ void UPlayerAnimInstance::PlayerCleanMontage()
 	}
 }
 
+//격발하는 몽타주
 void UPlayerAnimInstance::PlayerRifleFireMontage()
 {
 	if (!Montage_IsPlaying(PlayerMontage))
@@ -118,13 +123,22 @@ void UPlayerAnimInstance::PlayerRifleFireMontage()
 	}
 }
 
-/*
-void UPlayerAnimInstance::PlayerCrouch()
+//사망 몽타주
+void UPlayerAnimInstance::PlayerDeathMontage()
 {
 	if (!Montage_IsPlaying(PlayerMontage))
 	{
-		Cast<APlayerZeroCharacter>(TryGetPawnOwner())->PlayAnimMontage(PlayerMontage, 1, TEXT("Crouch"));
+		Cast<APlayerZeroCharacter>(TryGetPawnOwner())->PlayAnimMontage(PlayerMontage, 1, TEXT("Death"));
 	}
 }
-*/
+
+//피격 몽타주
+void UPlayerAnimInstance::PlayerHitMontage()
+{
+	if (!Montage_IsPlaying(PlayerMontage))
+	{
+		Cast<APlayerZeroCharacter>(TryGetPawnOwner())->PlayAnimMontage(PlayerMontage, 1, TEXT("Hit"));
+	}
+}
+
 
