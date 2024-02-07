@@ -22,8 +22,20 @@ void UQuestGuideWidget::SetQuestGuideText(FString GuideString, float DisplayTime
 	GuideText->SetText(FText::FromString(GuideString));
 	GuideText->SetVisibility(ESlateVisibility::Visible);
 
-	GetWorld()->GetTimerManager().SetTimer(GuideHandle, FTimerDelegate::CreateLambda(
-		[this]() {
-			GuideText->SetVisibility(ESlateVisibility::Hidden);
-		}), DisplayTime, false);
+	if (DisplayTime > 0)
+	{
+		GetWorld()->GetTimerManager().SetTimer(GuideHandle, FTimerDelegate::CreateLambda(
+			[this]() {
+				GuideText->SetVisibility(ESlateVisibility::Hidden);
+			}), DisplayTime, false);
+	}
+}
+
+void UQuestGuideWidget::UnsetQuestGuideText()
+{
+	if (GuideHandle.IsValid())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(GuideHandle);
+	}
+	GuideText->SetVisibility(ESlateVisibility::Hidden);
 }

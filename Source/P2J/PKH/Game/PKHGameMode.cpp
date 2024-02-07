@@ -135,6 +135,11 @@ void APKHGameMode::SetQuestGuideText(FString GuideString, float DisplayTime)
 	QuestGuideUI->SetQuestGuideText(GuideString, DisplayTime);
 }
 
+void APKHGameMode::UnsetQuestGuideText()
+{
+	QuestGuideUI->UnsetQuestGuideText();
+}
+
 void APKHGameMode::ClearCurQuest()
 {
 	if (CurQuest == EQuestType::AllClear)

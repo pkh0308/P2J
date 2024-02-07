@@ -106,6 +106,7 @@ protected:
 
 public:
 	void SetQuestGuideText(FString GuideString, float DisplayTime = 5.0f);
+	void UnsetQuestGuideText();
 
 	void ShowFadeOut();
 
