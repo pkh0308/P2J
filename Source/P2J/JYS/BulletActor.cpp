@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYS/BulletActor.h"
@@ -11,7 +11,7 @@ ABulletActor::ABulletActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	// sphereComp¸¦ ·çÆ®·Î
+	// sphereCompë¥¼ ë£¨íŠ¸ë¡œ
 	sphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("sphereComp"));
 	SetRootComponent(sphereComp);
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("meshComp"));
@@ -20,19 +20,19 @@ ABulletActor::ABulletActor()
 	movementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("movementComp"));
 	movementComp->SetUpdatedComponent(sphereComp);
 
-	// speed ¼³Á¤, ¹Ù¿îµå ¼³Á¤
-	movementComp->InitialSpeed = 3000.f;
-	movementComp->MaxSpeed = 2000.f;
-	movementComp->bShouldBounce = false;
+	// speed ì„¤ì •, ë°”ìš´ë“œ ì„¤ì •
+	movementComp->InitialSpeed = 200.f;
+	movementComp->MaxSpeed = 200.f;
+	movementComp->bShouldBounce = true;
 	movementComp->ProjectileGravityScale = 0;
 
 	sphereComp->SetCollisionProfileName(TEXT("BlockAll"));
 	meshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	// ¸Þ½ÃÀÇ Å©±â¸¦ 0.25·Î ÇÏ°í ½Í´Ù
+	// ë©”ì‹œì˜ í¬ê¸°ë¥¼ 0.25ë¡œ í•˜ê³  ì‹¶ë‹¤
 	meshComp->SetWorldScale3D(FVector(0.25f));
-	//Ãæµ¹Ã¼ÀÇ ¹ÝÁö¸§À» 12.5 ÇÏ°í½Í´Ù
-	sphereComp->SetSphereRadius(12.5f);
+	//ì¶©ëŒì²´ì˜ ë°˜ì§€ë¦„ì„ 12.5 í•˜ê³ ì‹¶ë‹¤
+	sphereComp->SetSphereRadius(6.0f);
 
 }
 
@@ -41,9 +41,12 @@ void ABulletActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ÃÑ¾Ë ¾×ÅÍÀÇ ¼ö¸íÀ» 5ÃÊ·Î ÇÏ°í ½Í´Ù. Å¸ÀÌ¸Ó¸¦ ÀÌ¿ëÇØ¼­ Ã³¸®ÇÏ°í ½Í´Ù.
+	movementComp->Velocity = GetActorForwardVector() * movementComp->MaxSpeed;
+	UE_LOG( LogTemp , Log , TEXT( "dasdasds" ) );
+
+	// ì´ì•Œ ì•¡í„°ì˜ ìˆ˜ëª…ì„ 5ì´ˆë¡œ í•˜ê³  ì‹¶ë‹¤. íƒ€ì´ë¨¸ë¥¼ ì´ìš©í•´ì„œ ì²˜ë¦¬í•˜ê³  ì‹¶ë‹¤.
 	FTimerHandle timerHandle;
-	GetWorld()->GetTimerManager().SetTimer(timerHandle, FTimerDelegate::CreateLambda([this]()->void {this->Destroy(); }), 5, false);
+	//GetWorld()->GetTimerManager().SetTimer(timerHandle, FTimerDelegate::CreateLambda([this]()->void {this->Destroy(); }), 10, false);
 	
 }
 
@@ -51,6 +54,6 @@ void ABulletActor::BeginPlay()
 void ABulletActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	//SetActorLocation( this->GetActorForwardVector() * 3000 * GetWorld()->DeltaTimeSeconds);
 }
 

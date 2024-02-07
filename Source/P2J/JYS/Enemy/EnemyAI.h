@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "../BulletActor.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "../AIFSM.h"
 #include "EnemyAI.generated.h"
 
 UCLASS()
@@ -25,15 +26,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// ÃÑ ¸Ş½Ã¸¦ Ãß°¡ÇÏ°í ½Í´Ù
+	// ì´ ë©”ì‹œë¥¼ ì¶”ê°€í•˜ê³  ì‹¶ë‹¤
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* gunMeshComp;
 
 	/*UPROPERTY(EditAnywhere, Category = "Combat System", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class HandGun> Sword;*/
 
-	// ÃÑ¾Ë°øÀåÀ» ¸¸µé°í ½Í´Ù.
-	// ÃÑ¾ËÀ» ¸¸µé¾î¼­ FirePosition¼ÒÄÏ¿¡ ¹èÄ¡ÇÏ°í½Í´Ù
+	// ì´ì•Œê³µì¥ì„ ë§Œë“¤ê³  ì‹¶ë‹¤.
+	// ì´ì•Œì„ ë§Œë“¤ì–´ì„œ FirePositionì†Œì¼“ì— ë°°ì¹˜í•˜ê³ ì‹¶ë‹¤
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABulletActor> bulletFactory;
@@ -59,6 +60,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Attack();
 
-	// ºÒ¸´ Å¬·¡½º
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UAIFSM* fsm;
 };

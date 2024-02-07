@@ -1,9 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+Ôªø// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYS/Enemy/EnemyAI.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "../BulletActor.h"
 
 
 // Sets default values
@@ -12,7 +13,7 @@ AEnemyAI::AEnemyAI()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// gunMeshComp ª˝º∫ π◊ πËƒ°
+	// gunMeshComp ÏÉùÏÑ± Î∞è Î∞∞Ïπò
 	gunMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("gunMeshComp"));
 	
 	ConstructorHelpers::FObjectFinder<UStaticMesh> tempGunMesh(TEXT("/Script/Engine.StaticMesh'/Game/JYS/Mesh/HandGun/pistol_Tauros/pistol_tauros.pistol_tauros'"));
@@ -25,13 +26,16 @@ AEnemyAI::AEnemyAI()
 		gunMeshComp->SetRelativeLocationAndRotation(FVector(-4.838552, -14.091634, 7.870838), FRotator(32.259814, -56.247075, 210.800837));
 		gunMeshComp->SetupAttachment(GetMesh(), TEXT("HandGunSocket"));
 	}
+
+	// EnemyFSM Ïª¥Ìè¨ÎÑåÌä∏ Ï∂îÍ∞Ä
+	fsm = CreateDefaultSubobject<UAIFSM>(TEXT("FSM"));
 }
 
 // Called when the game starts or when spawned
 void AEnemyAI::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	/*OnActionFire();*/
 }
 
 // Called every frame
@@ -43,8 +47,8 @@ void AEnemyAI::Tick(float DeltaTime)
 
 void AEnemyAI::OnActionFire()
 {
-	
-	
+	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
+	GetWorld()->SpawnActor<ABulletActor>(bulletFactory, t);
 }
 
 // Called to bind functionality to input
@@ -80,9 +84,15 @@ void AEnemyAI::Attack()
 	 FVector dir = PlayerLoc - MyLoc;
 	 dir.Normalize();
 
-	 // ∫“∏¥ Ω∫∆˘«“ ¿ßƒ°
-	 FVector spawnLoc;
-	 GetWorld()->SpawnActor<ABulletActor>(bulletFactory, FVector((37.000000, 0.000000, 51.000000)), FRotator(0));
+	 // Î∂àÎ¶ø Ïä§Ìè∞Ìï† ÏúÑÏπò
+	 //FVector spawnLoc;
+
+	 FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
+	 GetWorld()->SpawnActor<ABulletActor>(bulletFactory, t);
+
+	 //GetWorld()->SpawnActor<ABulletActor>(bulletFactory, FVector((37.000000, 0.000000, 51.000000)), FRotator(0));
+
+	 UE_LOG(LogTemp, Warning, TEXT("TEST1"));
 
 
 }
