@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYJ/PlayerTwoCharacter.h"
@@ -8,6 +8,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/BoxComponent.h"
 #include "MudActor.h"
 #include "WetBroom.h"
+#include "../PKH/Game/PKHGameMode.h"
 
 APlayerTwoCharacter::APlayerTwoCharacter()
 {
@@ -47,6 +48,16 @@ void APlayerTwoCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 	}
 }
 
+void APlayerTwoCharacter::Tick( float DeltaTime )
+{
+	Super::Tick( DeltaTime );
+	if (dynamiteCnt == 3)
+	{
+		gamemode->SetQuestGuideText(TEXT("건물을 나가시오."));
+	}
+
+}
+
 void APlayerTwoCharacter::cleanStart()
 {
 	PlayerAnim->PlayerCleanMontage();
@@ -64,6 +75,8 @@ void APlayerTwoCharacter::setupDynamite()
 	{
 		GetWorld()->SpawnActor<ADynamite>(dynamiteFactory, dynamiteTransform);
 		bBombQEnabled = false;
+		dynamiteCnt++;
+		
 	}
 }
 

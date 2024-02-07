@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -20,6 +20,7 @@ public:
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void Tick( float DeltaTime ) override;
 
 	void cleanStart();
 	void cleanEnd();
@@ -37,6 +38,12 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	FTransform dynamiteTransform;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool questState;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 dynamiteCnt;
 
 
 };

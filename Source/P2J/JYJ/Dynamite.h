@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -25,15 +25,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* DynamiteBomb1;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	class UStaticMeshComponent* DynamiteBomb2;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	class UStaticMeshComponent* DynamiteBomb3;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	class UStaticMeshComponent* DynamiteBomb4;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
     class UBoxComponent* Trigger;

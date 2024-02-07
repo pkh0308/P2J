@@ -72,7 +72,8 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	SprintSpeedMultiplier = 2.0f;	//달리기 배속
-	GetCharacterMovement()->JumpZVelocity = 500.0f;
+	this->GetCharacterMovement()->MaxWalkSpeed = 600;
+	this->GetCharacterMovement()->JumpZVelocity = 500.0f;
 
 
 }
@@ -165,12 +166,10 @@ void APlayerZeroCharacter::OnAxisLookupPitch(float value)
 
 void APlayerZeroCharacter::OnEnemyOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("rrrrr"));
 	APasserBase* enemy = Cast<APasserBase>(OtherActor);
 
 	if (enemy)
 	{
-		UE_LOG( LogTemp , Warning , TEXT( "rrrrr" ) );
 		enemy->OnDamaged(1, this);
 	}
 }
