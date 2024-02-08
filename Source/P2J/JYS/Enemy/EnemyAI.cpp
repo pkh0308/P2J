@@ -75,6 +75,7 @@ void AEnemyAI::OnDamaged(int damage)
 void AEnemyAI::OnDead()
 {
 	isDead = true;
+	UE_LOG( LogTemp , Warning , TEXT( "die" ) );
 }
 
 void AEnemyAI::Attack()

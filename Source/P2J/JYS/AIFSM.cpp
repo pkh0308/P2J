@@ -79,7 +79,7 @@ void UAIFSM::TickAttack()
 {
 	// 1. 시간이 흐르다가
 	currentTime += GetWorld()->GetDeltaSeconds();
-	UE_LOG( LogTemp , Warning , TEXT( "Attack TEST1 %f"), currentTime );
+	/*UE_LOG( LogTemp , Warning , TEXT( "Attack TEST1 %f"), currentTime );*/
 	if (currentTime > attackWaitTime)// 2. 현재 시간이 공격 대기시간을 초과하면
 	{
 		// 3. 현재시간을 초기화 하고 싶다.
@@ -90,15 +90,13 @@ void UAIFSM::TickAttack()
 
 		if (targetdist > attackDist)// 5. 그 거리가 공격가능거리를 초과한다면
 		{
-			UE_LOG( LogTemp , Warning , TEXT( "Attack TEST2 %f" ) , currentTime );
+			/*UE_LOG( LogTemp , Warning , TEXT( "Attack TEST2 %f" ) , currentTime );*/
 
 			// 6.	이동상태로 전이하고싶다.
 			SetState( EAIState::MOVE );
 		}
 		else// 7. 그렇지 않다면
 		{
-			UE_LOG( LogTemp , Warning , TEXT( "Attack TEST3 %f" ) , currentTime );
-
 			// 8.공격을 하고싶다.
 			UE_LOG( LogTemp , Warning , TEXT( "Enemy->Player Attack!!" ) );
 			GEngine->AddOnScreenDebugMessage( -1 , 3 , FColor::Cyan , TEXT( "Enemy->Player Attack!!" ) );

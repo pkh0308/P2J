@@ -52,7 +52,7 @@ public:
 	void OnDead();
 
 	UPROPERTY(EditAnywhere)
-	int HP = 20;
+	int HP = 3;
 
 	UPROPERTY(EditAnywhere)
 	bool isDead = false;
