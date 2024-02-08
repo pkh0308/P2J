@@ -172,7 +172,8 @@ void APlayerZeroCharacter::OnEnemyOverlap(UPrimitiveComponent* OverlappedComp, A
 
 	if (enemy1 || enemy2)
 	{
-		enemy->OnDamaged(1, this);
+		enemy1->OnDamaged(1, this);
+		enemy2->OnDamaged(1);
 	}
 }
 
