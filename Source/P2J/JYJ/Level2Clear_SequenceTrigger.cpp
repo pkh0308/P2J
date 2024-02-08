@@ -5,12 +5,14 @@
 #include "PlayerTwoCharacter.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "../PKH/Game/PKHGameMode.h"
+#include "../../../../../../../Source/Runtime/Engine/Public/TimerManager.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Engine/TimerHandle.h"
 
 void ALevel2Clear_SequenceTrigger::OnPlayerOverlap( UPrimitiveComponent* OverlappedComponent , AActor* OtherActor , UPrimitiveComponent* OtherComp , int32 OtherBodyIndex , bool bFromSweep , const FHitResult& SweepResult )
 {
 	Super::OnPlayerOverlap( OverlappedComponent , OtherActor , OtherComp , OtherBodyIndex , bFromSweep , SweepResult );
 
-	FTimerHandle Handle;
+	//FTimerHandle Handle;
 	APKHGameMode* GameMode = Cast<APKHGameMode>( UGameplayStatics::GetGameMode( GetWorld() ) );
 
 	
@@ -35,4 +37,13 @@ void ALevel2Clear_SequenceTrigger::OnPlayerOverlap( UPrimitiveComponent* Overlap
 
 	PlaySequence();
 
+
+	FTimerHandle Handle;
+	GetWorldTimerManager().SetTimer( Handle , FTimerDelegate::CreateLambda(
+		[GameMode]() {
+			GameMode->OpenLevel( ELevelSelect::Level3 );
+		} ) , 5.0f , false );
+
+
+	//GameMode->OpenLevel(ELevelSelect::Level3);
 }	

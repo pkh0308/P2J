@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYJ/PlayerThirdCharacter.h"
@@ -11,6 +11,8 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/SpringArmComponent.h"
 #include "PlayerAnimInstance.h"
 #include "../../../../../../../Source/Runtime/UMG/Public/Blueprint/UserWidget.h"
+#include "../JYS/Enemy/EnemyAI.h"
+#include "../PKH/Game/PKHGameMode.h"
 
 APlayerThirdCharacter::APlayerThirdCharacter()
 {
@@ -60,7 +62,7 @@ void APlayerThirdCharacter::Tick(float DeltaTime)
 
 void APlayerThirdCharacter::Zoom()
 {
-	//¼±Çüº¸°£À» ÀÌ¿ëÇØ¼­ ÇöÀç FOV¸¦ targetFOV°ª¿¡ ±ÙÁ¢ÇÏ°Ô ÇÏ°í ½Í´Ù.
+	//ì„ í˜•ë³´ê°„ì„ ì´ìš©í•´ì„œ í˜„ì¬ FOVë¥¼ targetFOVê°’ì— ê·¼ì ‘í•˜ê²Œ í•˜ê³  ì‹¶ë‹¤.
 	p1camComp->FieldOfView = FMath::Lerp<float>(p1camComp->FieldOfView, targetFOV, GetWorld()->GetDeltaSeconds() * 10);
 }
 
@@ -100,25 +102,51 @@ void APlayerThirdCharacter::OnActionFire()
 		FVector start = p1camComp->GetComponentLocation();
 		FVector end = start + (p1camComp->GetForwardVector() * 100000);
 		FCollisionQueryParams params;
-		params.AddIgnoredActor(this);	//ÇÃ·¹ÀÌ¾î Á¦¿Ü ¿äÃ»
+		params.AddIgnoredActor(this);	//í”Œë ˆì´ì–´ ì œì™¸ ìš”ì²­
+
+		
+		//ê²½í˜¸ë‹˜ ì½”ë“œ 
+
+		/*
+		bool IsHit = GetWorld()->LineTraceSingleByChannel( outhit , start , end, ECollisionChannel::ECC_Pawn , params );
+		if (IsHit)
+		{
+			AEnemyAI* enemy2 = Cast<AEnemyAI>( outhit.GetActor() );
+			if (enemy2)
+			{
+				enemy2->Destroy();
+			}
+		}
+		*/
+		
+
+
 
 		if (nullptr == PlayerAnim) return;
 		PlayerAnim->PlayerRifleFireMontage();
-		bool breturnValue = GetWorld()->LineTraceSingleByChannel(outhit, start, end, ECollisionChannel::ECC_Visibility, params);
+		bool breturnValue = GetWorld()->LineTraceSingleByChannel(outhit, start, end, ECollisionChannel::ECC_Pawn , params);
 
 		if (breturnValue)
 		{
-			DrawDebugLine(GetWorld(), outhit.TraceStart, outhit.ImpactPoint, FColor::Red, false, 10);
+			//DrawDebugLine(GetWorld(), outhit.TraceStart, outhit.ImpactPoint, FColor::Red, false, 10);
 			UPrimitiveComponent* hitComp = outhit.GetComponent();
 
-			if (hitComp && hitComp->IsSimulatingPhysics())
+			AEnemyAI* enemy2 = Cast<AEnemyAI>( outhit.GetActor());
+			//AEnemyAI* enemy2 =Cast hitComp.GetActor();
+
+			
+			if (enemy2 /* && hitComp->IsSimulatingPhysics() */)
 			{
-				//±× ÄÄÆ÷³ÍÆ®ÇÑÅ× ÈûÀ» °¡ÇÏ°í ½Í´Ù.
+				//ê·¸ ì»´í¬ë„ŒíŠ¸í•œí…Œ í˜ì„ ê°€í•˜ê³  ì‹¶ë‹¤.
 				FVector tmp = end - start;
-				hitComp->AddForce(tmp.GetSafeNormal() * 500000 * hitComp->GetMass());
+				//hitComp->AddForce(tmp.GetSafeNormal() * 500000 * hitComp->GetMass());
+				enemy2->Destroy();
+				gamemode->KillCountUp(); 
+
+
 			}
 
-			//ºÎµúÈù °÷¿¡ expVFX¸¦ »ı¼ºÇØ¼­ ¹èÄ¡ÇÏ°í ½Í´Ù.
+			//ë¶€ë”ªíŒ ê³³ì— expVFXë¥¼ ìƒì„±í•´ì„œ ë°°ì¹˜í•˜ê³  ì‹¶ë‹¤.
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), expVFX, outhit.ImpactPoint);
 
 			bAttack = false;
@@ -131,7 +159,7 @@ void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon)
 {
 	//PlayerAnim->PlayerRifleFireMontage();
 	if (Weapon) {
-		//weapon¿¡ ¹«±â Á¤º¸¸¸ ´ã°Ü ÀÖ°í ½ÇÁ¦ °´Ã¼´Â »ı¼ºµÇ¾î ÀÖÁö ¾ÊÀ½
+		//weaponì— ë¬´ê¸° ì •ë³´ë§Œ ë‹´ê²¨ ìˆê³  ì‹¤ì œ ê°ì²´ëŠ” ìƒì„±ë˜ì–´ ìˆì§€ ì•ŠìŒ
 		const USkeletalMeshSocket* WeaponSocket = GetMesh()->GetSocketByName("RifleGunSocket");
 		AWeaponActor* weapon = GetWorld()->SpawnActor<AWeaponActor>(FVector::ZeroVector, FRotator::ZeroRotator);
 
