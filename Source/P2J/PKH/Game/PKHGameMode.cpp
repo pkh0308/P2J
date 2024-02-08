@@ -205,6 +205,8 @@ void APKHGameMode::GameOver(FString NewFailReasonString)
 
 void APKHGameMode::OpenLevel(enum ELevelSelect NewLevel)
 {
+	QuestGuideUI->UnsetQuestGuideText();
+
 	UP2JGameInstance* GI = Cast<UP2JGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (GI)
 	{
