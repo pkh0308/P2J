@@ -224,6 +224,11 @@ void APasser_FBI::Shoot()
 		if (PlayerCharacter)
 		{
 			PlayerCharacter->TakePlayerDamaged(2);
+			DrawDebugLine( GetWorld() , StartVec , EndVec , FColor::Green , false , 2.0f );
 		}
+	}
+	else
+	{
+		DrawDebugLine( GetWorld() , StartVec , EndVec , FColor::Red , false , 2.0f );
 	}
 }

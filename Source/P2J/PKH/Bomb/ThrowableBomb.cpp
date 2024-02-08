@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PKH/Bomb/ThrowableBomb.h"
@@ -64,12 +64,12 @@ void AThrowableBomb::Explode()
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), BombShakeClass, GetActorLocation(), InnerRadius, OuterRadius);
 
 	// Sound
-
+	
 
 	// Destroy Door
 	TArray<FOverlapResult> OverlapResults;
 	FCollisionObjectQueryParams Param;
-	bool IsHit = GetWorld()->OverlapMultiByObjectType(OverlapResults, GetActorLocation(), FQuat::Identity, Param, FCollisionShape::MakeSphere(50.0f));
+	bool IsHit = GetWorld()->OverlapMultiByObjectType(OverlapResults, GetActorLocation(), FQuat::Identity, Param, FCollisionShape::MakeSphere( ExplodeRadius ));
 	if (false == IsHit)
 	{
 		return;
