@@ -25,7 +25,7 @@ void UQuestGuideWidget::SetQuestGuideText(FString GuideString, float DisplayTime
 	}
 	else
 	{
-		GuideText->SetText(FText::FromString( GuideString));
+		GuideText->SetText(FText::FromString(GuideString));
 	}
 	GuideText->SetVisibility(ESlateVisibility::Visible);
 
