@@ -168,13 +168,22 @@ void APlayerZeroCharacter::OnAxisLookupPitch(float value)
 void APlayerZeroCharacter::OnEnemyOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	APasserBase* enemy1 = Cast<APasserBase>(OtherActor);
-	AEnemyAI* enemy2 = Cast<AEnemyAI>( OtherActor );
+	//AEnemyAI* enemy2 = Cast<AEnemyAI>( OtherActor );
 
-	if (enemy1 || enemy2)
+	
+	if (enemy1)
 	{
 		enemy1->OnDamaged(1, this);
-		enemy2->OnDamaged(1);
 	}
+
+	/*
+	if (enemy2)
+	{
+		enemy2->OnDamaged(1);
+		//enemy2->OnDamaged(1);
+		UE_LOG( LogTemp , Warning , TEXT( "qqqqqqqqqqqqqqqqqqqqqq" ) );
+	}
+	*/
 }
 
 void APlayerZeroCharacter::Attack()
