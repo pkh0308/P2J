@@ -13,6 +13,7 @@ void ALevel2Clear_SequenceTrigger::OnPlayerOverlap( UPrimitiveComponent* Overlap
 	FTimerHandle Handle;
 	APKHGameMode* GameMode = Cast<APKHGameMode>( UGameplayStatics::GetGameMode( GetWorld() ) );
 
+	
 
 	if (OtherActor->IsA<APlayerTwoCharacter>())
 	{
@@ -31,5 +32,7 @@ void ALevel2Clear_SequenceTrigger::OnPlayerOverlap( UPrimitiveComponent* Overlap
 		//UGameplayStatics::SpawnEmitterAtLocation()
 
 	}
+
+	PlaySequence();
 
 }	
