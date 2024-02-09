@@ -116,6 +116,7 @@ void APasser_FBI::OnDamaged(int32 InDamage, AActor* NewTarget)
 	{
 		return;
 	}
+	IsDamagedDelay = true;
 
 	Hp -= InDamage;
 	if (Hp <= 0)
@@ -124,6 +125,10 @@ void APasser_FBI::OnDamaged(int32 InDamage, AActor* NewTarget)
 	}
 	else
 	{
+		// Sound
+		int SFXIndex = FMath::RandRange( 0 , SFX_Damaged.Num() - 1 );
+		UGameplayStatics::PlaySound2D( GetWorld() , SFX_Damaged[SFXIndex] , 1.4f );
+
 		if (IsRage)
 		{
 			return;
@@ -141,6 +146,7 @@ void APasser_FBI::OnDamaged(int32 InDamage, AActor* NewTarget)
 		if (Hp <= 3)
 		{
 			IsRage = true;
+			UGameplayStatics::PlaySound2D( GetWorld() , SFX_Rage );
 		}
 	}
 }
@@ -150,6 +156,7 @@ void APasser_FBI::OnDamagedEnd()
 	Super::OnDamagedEnd();
 
 	WeaponMeshComp->SetVisibility(IsRage);
+	IsDamagedDelay = false;
 }
 
 void APasser_FBI::OnDie()
@@ -158,6 +165,9 @@ void APasser_FBI::OnDie()
 	IsRage = false;
 	WeaponMeshComp->SetVisibility(false);
 	GetCharacterMovement()->MaxWalkSpeed = FastRunSpeed;
+
+	// Sound
+	UGameplayStatics::PlaySound2D( GetWorld() , SFX_Run );
 
 	AActor* TargetActor = Cast<AActor>(GetBlackboard()->GetValueAsObject(PASSER_KEY_TARGET));
 	if (TargetActor)
@@ -209,6 +219,9 @@ void APasser_FBI::Shoot()
 		return;
 	}
 
+	// Sound
+	UGameplayStatics::PlaySound2D( GetWorld() , SFX_Shoot );
+
 	FHitResult HResult;
 	FCollisionQueryParams Param;
 	Param.AddIgnoredActor(this);
@@ -224,11 +237,7 @@ void APasser_FBI::Shoot()
 		if (PlayerCharacter)
 		{
 			PlayerCharacter->TakePlayerDamaged(2);
-			DrawDebugLine( GetWorld() , StartVec , EndVec , FColor::Green , false , 2.0f );
+			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Blood, HResult.GetActor()->GetActorLocation() , FRotator(), FVector(0.6f) );
 		}
-	}
-	else
-	{
-		DrawDebugLine( GetWorld() , StartVec , EndVec , FColor::Red , false , 2.0f );
 	}
 }

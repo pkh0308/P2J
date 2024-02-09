@@ -64,7 +64,7 @@ void AThrowableBomb::Explode()
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), BombShakeClass, GetActorLocation(), InnerRadius, OuterRadius);
 
 	// Sound
-	
+	UGameplayStatics::PlaySound2D( GetWorld() , SFX_BombExplosion, 0.3f );
 
 	// Destroy Door
 	TArray<FOverlapResult> OverlapResults;

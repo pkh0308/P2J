@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PKH/Trigger/ExplodeTrigger.h"
@@ -43,4 +43,7 @@ void AExplodeTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 	// Camera Shake
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), ExplodeShakeClass, GetActorLocation(), InnerRadius, OuterRadius);
+
+	// Sound
+	UGameplayStatics::PlaySound2D( GetWorld() , SFX_FireExplosion );
 }

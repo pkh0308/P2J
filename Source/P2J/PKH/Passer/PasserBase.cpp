@@ -7,6 +7,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "PKH/Passer/PasserAIKey.h"
 #include "JYJ/PlayerZeroCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APasserBase::APasserBase()
@@ -70,6 +71,10 @@ void APasserBase::OnDamaged(int32 InDamage, AActor* NewTarget)
 	}
 	IsDamagedDelay = true;
 
+	// Sound
+	int SFXIndex = FMath::RandRange( 0 , SFX_Damaged.Num() - 1 );
+	UGameplayStatics::PlaySound2D( GetWorld() , SFX_Damaged[SFXIndex] );
+
 	Hp -= InDamage;
 	if (Hp <= 0)
 	{
@@ -121,16 +126,19 @@ void APasserBase::AttackHit()
 	FCollisionObjectQueryParams Param;
 
 	bool OverlapRes = GetWorld()->OverlapMultiByObjectType(OverlapResults, AttackCenterVec, FQuat::Identity, Param, FCollisionShape::MakeSphere(AttackRadius));
-	if (OverlapRes)
+	if (false == OverlapRes)
 	{
-		for (int i = 0; i < OverlapResults.Num(); i++)
+		return;
+	}
+
+	for (int i = 0; i < OverlapResults.Num(); i++)
+	{
+		APlayerZeroCharacter* PlayerCharacter = Cast<APlayerZeroCharacter>( OverlapResults[i].GetActor() );
+		if (PlayerCharacter)
 		{
-			APlayerZeroCharacter* PlayerCharacter = Cast<APlayerZeroCharacter>(OverlapResults[i].GetActor());
-			if (PlayerCharacter)
-			{
-				PlayerCharacter->TakePlayerDamaged(1);
-				break;
-			}
+			PlayerCharacter->TakePlayerDamaged( 1 );
+			UGameplayStatics::PlaySound2D( GetWorld() , SFX_PunchHit );
+			break;
 		}
 	}
 }

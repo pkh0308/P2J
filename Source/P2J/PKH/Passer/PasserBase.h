@@ -75,4 +75,12 @@ public:
 
 	void SetEndAttackDelegate(FOnPasserAttackFinished NewOnAttackFinished);
 	void SetEndDamagedDelegate(FOnPasserDamagedFinished NewOnDamagedFinished);
+
+// Sound
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TObjectPtr<class USoundBase>> SFX_Damaged;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class USoundBase> SFX_PunchHit;
 };

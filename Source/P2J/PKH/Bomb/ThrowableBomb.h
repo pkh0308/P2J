@@ -57,4 +57,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float OuterRadius = 3000.0f;
+
+// Sound
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class USoundBase> SFX_BombExplosion;
 };
