@@ -27,6 +27,9 @@ public:
 
 	void setupDynamite();
 	
+	UPROPERTY()
+	class AMudActor* mud;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bCleanQEnabled;
 

@@ -13,6 +13,8 @@
 #include "../../../../../../../Source/Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "../JYS/Enemy/EnemyAI.h"
 #include "../PKH/Game/PKHGameMode.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Components/SpotLightComponent.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 
 APlayerThirdCharacter::APlayerThirdCharacter()
 {
@@ -23,6 +25,12 @@ APlayerThirdCharacter::APlayerThirdCharacter()
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, -90, 0));
 
 	}
+
+	lightCookie = CreateDefaultSubobject<USpotLightComponent>(TEXT("lightCookie"));
+	lightCookie->SetupAttachment( GetMesh() ); 
+	//(X=10.000000,Y=15.000000,Z=140.000000)
+	lightCookie->SetRelativeLocation( FVector( 10, 15, 140) );
+	lightCookie->SetWorldRotation( FRotator( 0, 90, 0) );
 
 	springArmComp->TargetArmLength = 130.f;
 	springArmComp->SetWorldLocation( FVector( 0 , 0 , 130 ) );
@@ -73,20 +81,29 @@ void APlayerThirdCharacter::Zoom()
 
 void APlayerThirdCharacter::ZoomIn()
 {
-	targetFOV = 50;
-	bOnZoomRifle = true;
-	crossHairUI->SetVisibility(ESlateVisibility::Visible);
-	springArmComp->SetRelativeLocation(FVector( 0, 40, 90));
-	//GetMesh()->SetRelativeLocation(FVector(-30, 0, -90));
+	if (bValidRifle)
+	{
+		targetFOV = 70;
+		bOnZoomRifle = true;
+		crossHairUI->SetVisibility(ESlateVisibility::Visible);
+		springArmComp->SetRelativeLocation(FVector( 0, 40, 130));
+
+		//조준 시, 플레이어 조준점으로 회전
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+	}
 }
 
 void APlayerThirdCharacter::ZoomOut()
 {
 	targetFOV = 90;
 	bOnZoomRifle = false;
-	springArmComp->SetRelativeLocation(FVector(0, 0, 90));
+	springArmComp->SetRelativeLocation(FVector(0, 0, 130));
 	crossHairUI->SetVisibility(ESlateVisibility::Hidden);
-	//GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
+
+	//조준 X, 상태 원복
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 void APlayerThirdCharacter::OnActionChooseSMG11()
@@ -116,20 +133,20 @@ void APlayerThirdCharacter::OnActionFire()
 		if (breturnValue)
 		{
 			//DrawDebugLine(GetWorld(), outhit.TraceStart, outhit.ImpactPoint, FColor::Red, false, 10);
+			
 			UPrimitiveComponent* hitComp = outhit.GetComponent();
 
 			AEnemyAI* enemy2 = Cast<AEnemyAI>( outhit.GetActor());
 			//AEnemyAI* enemy2 =Cast hitComp.GetActor();
 
 			
-			if (enemy2 /* && hitComp->IsSimulatingPhysics() */)
+			if ( enemy2 )
 			{
 				//그 컴포넌트한테 힘을 가하고 싶다.
 				FVector tmp = end - start;
 				//hitComp->AddForce(tmp.GetSafeNormal() * 500000 * hitComp->GetMass());
 				enemy2->Destroy();
 				gamemode->KillCountUp(); 
-
 
 			}
 
@@ -144,17 +161,16 @@ void APlayerThirdCharacter::OnActionFire()
 
 void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon)
 {
-	//PlayerAnim->PlayerRifleFireMontage();
 	if (Weapon) {
+
 		//weapon에 무기 정보만 담겨 있고 실제 객체는 생성되어 있지 않음
 		const USkeletalMeshSocket* WeaponSocket = GetMesh()->GetSocketByName("RifleGunSocket");
 		AWeaponActor* weapon = GetWorld()->SpawnActor<AWeaponActor>(FVector::ZeroVector, FRotator::ZeroRotator);
 
-		if (weapon)
-		{
-			WeaponSocket->AttachActor(weapon, GetMesh());
-			bValidRifle = true;
-		}
+
+		WeaponSocket->AttachActor(weapon, GetMesh());
+		bValidRifle = true;
+		
 	}
 }
 

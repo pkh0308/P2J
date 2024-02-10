@@ -9,6 +9,7 @@
 #include "PlayerTwoCharacter.h"
 #include "../PKH/Game/PKHGameMode.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "MudActor.h"
 
 // Sets default values
 AWetBroom::AWetBroom()
@@ -46,6 +47,7 @@ void AWetBroom::BeginPlay()
 void AWetBroom::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	player2->bCleanQEnabled = this->bCleanQEnabled;
 
 }
 
@@ -71,9 +73,26 @@ void AWetBroom::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 		//플레이어의 메쉬에 빗자루 붙임
 		FName BroomSocket(TEXT("BroomSocket"));
 		AttachToComponent(playerTwo->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, BroomSocket);
+		//bCleanQEnabled = true;
+		//playerTwo->bCleanQEnabled = this->bCleanQEnabled;
 		this->bCleanQEnabled = playerTwo->bCleanQEnabled;
 		nextQuest = false;
 	}
 
+}
+
+void AWetBroom::OnMudOverlap( UPrimitiveComponent* OverlappedComp , AActor* OtherActor , UPrimitiveComponent* OtherComp , int32 OtherBodyIndex , bool bFromSweep , const FHitResult& SweepResult )
+{
+	
+	/*
+	AMudActor* mud = Cast<AMudActor>(OtherActor);
+
+	UE_LOG(LogTemp,Warning, TEXT("clean test1"));
+	if ( bCleanQEnabled )
+	{
+		UE_LOG( LogTemp , Warning , TEXT( "clean test2" ) );
+		OtherActor->Destroy();
+	}
+	*/
 }
 

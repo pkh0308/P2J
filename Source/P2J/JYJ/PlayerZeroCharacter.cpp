@@ -189,8 +189,6 @@ void APlayerZeroCharacter::OnEnemyOverlap(UPrimitiveComponent* OverlappedComp, A
 
 void APlayerZeroCharacter::Attack()
 {
-	//auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
-	//punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
 	if (nullptr == PlayerAnim) return;
 	PlayerAnim->PlayerAttackMontage();
 

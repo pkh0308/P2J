@@ -1,9 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYJ/WeaponActor.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Engine/StaticMesh.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h"
 
 // Sets default values
 AWeaponActor::AWeaponActor()
@@ -11,7 +12,7 @@ AWeaponActor::AWeaponActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	//SMG11Y �ε�
+	//SMG11Y 로드
 	SMGMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SMGMeshComp"));
 	SMGMeshComp->SetupAttachment(RootComponent);
 
@@ -25,6 +26,7 @@ AWeaponActor::AWeaponActor()
 		SMGMeshComp->SetWorldScale3D(FVector(1.5f));
 	}
 
+	start = SMGMeshComp->GetSocketLocation("triggerSocket");
 
 }
 
@@ -32,7 +34,7 @@ AWeaponActor::AWeaponActor()
 void AWeaponActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame

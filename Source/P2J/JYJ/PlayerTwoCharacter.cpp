@@ -73,6 +73,11 @@ void APlayerTwoCharacter::cleanStart()
 {
 	PlayerAnim->PlayerCleanMontage();
 	bCleanQEnabled = true;
+	if (bCleanQEnabled)
+	{
+		//mud->mudDestroy();
+	}
+
 }
 
 void APlayerTwoCharacter::cleanEnd()
