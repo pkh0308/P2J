@@ -30,6 +30,7 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 
 	p1camComp = CreateDefaultSubobject<UCameraComponent>(TEXT("p1camComp"));
 	p1camComp->SetupAttachment(springArmComp);
+	p1camComp->SetWorldLocation( FVector( 0 , 40 , 0 ) );
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tmpMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/JYJ/Mesh/Player1/Ch06_nonPBR.Ch06_nonPBR'"));
 	if (tmpMesh.Succeeded())

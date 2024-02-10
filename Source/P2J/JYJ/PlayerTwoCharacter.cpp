@@ -9,6 +9,9 @@
 #include "MudActor.h"
 #include "WetBroom.h"
 #include "../PKH/Game/PKHGameMode.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/SpringArmComponent.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Camera/CameraComponent.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 
 APlayerTwoCharacter::APlayerTwoCharacter()
 {
@@ -20,6 +23,14 @@ APlayerTwoCharacter::APlayerTwoCharacter()
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, -90, 0));
 
 	}
+
+	springArmComp->TargetArmLength = 130.f;
+	springArmComp->SetWorldLocation( FVector( 0 , 0 , 130 ) );
+	p1camComp->SetWorldRotation( FRotator( -15 , 0 , 0 ) ); 
+	p1camComp->SetWorldLocation( FVector(0, 30, -30));
+
+	//플레이어 2 걸음 속도 조절
+	this->GetCharacterMovement()->MaxWalkSpeed = 300;
 }
 
 void APlayerTwoCharacter::BeginPlay()

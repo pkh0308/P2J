@@ -24,6 +24,11 @@ APlayerThirdCharacter::APlayerThirdCharacter()
 
 	}
 
+	springArmComp->TargetArmLength = 130.f;
+	springArmComp->SetWorldLocation( FVector( 0 , 0 , 130 ) );
+	p1camComp->SetWorldRotation( FRotator( -15 , 0 , 0 ) );
+	p1camComp->SetWorldLocation( FVector( 0 , 30 , -30 ) );
+
 }
 
 void APlayerThirdCharacter::BeginPlay()
@@ -103,24 +108,6 @@ void APlayerThirdCharacter::OnActionFire()
 		FVector end = start + (p1camComp->GetForwardVector() * 100000);
 		FCollisionQueryParams params;
 		params.AddIgnoredActor(this);	//플레이어 제외 요청
-
-		
-		//경호님 코드 
-
-		/*
-		bool IsHit = GetWorld()->LineTraceSingleByChannel( outhit , start , end, ECollisionChannel::ECC_Pawn , params );
-		if (IsHit)
-		{
-			AEnemyAI* enemy2 = Cast<AEnemyAI>( outhit.GetActor() );
-			if (enemy2)
-			{
-				enemy2->Destroy();
-			}
-		}
-		*/
-		
-
-
 
 		if (nullptr == PlayerAnim) return;
 		PlayerAnim->PlayerRifleFireMontage();
