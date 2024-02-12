@@ -77,17 +77,26 @@ void APKHGameMode::BeginPlay()
 	if (QuestGuideUI)
 	{
 		QuestGuideUI->AddToViewport();
+		FTimerHandle GuideHandle;
 
 		switch (LevelIdx)
 		{
 		case 1:
-			QuestGuideUI->SetQuestGuideText(TEXT("전화중인 남자에게 시비를 거십시오."));
+			QuestGuideUI->SetQuestGuideText(TEXT("오늘은 썩 기분이 거지같군. 누구 하나 잡고 시비라도 걸어야겠어."), 4.0f, true);
+			GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
+				[this]() {
+					QuestGuideUI->SetQuestGuideText( TEXT( "전화중인 남자에게 시비를 거십시오." ) );
+				} ) , 4.0f , false );
 			break;
 		case 2:
 			QuestGuideUI->SetQuestGuideText(TEXT("폭탄을 설치하십시오."));
 			break;
 		case 3:
-			QuestGuideUI->SetQuestGuideText(TEXT("보안 디스크를 획득하십시오."));
+			QuestGuideUI->SetQuestGuideText(TEXT("좋아, 혼란한 틈을 타서 디스크를 훔치면 되겠군."), 4.0f, true);
+			GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
+				[this]() {
+					QuestGuideUI->SetQuestGuideText( TEXT( "보안 디스크를 획득하십시오." ) );
+				} ) , 4.0f , false );
 			break;
 		default:
 			QuestGuideUI->SetQuestGuideText(TEXT(""));
@@ -130,9 +139,9 @@ void APKHGameMode::BeginPlay()
 		}), 1.0f, true);
 }
 
-void APKHGameMode::SetQuestGuideText(FString GuideString, float DisplayTime)
+void APKHGameMode::SetQuestGuideText(FString GuideString, float DisplayTime, bool IsMonologue )
 {
-	QuestGuideUI->SetQuestGuideText(GuideString, DisplayTime);
+	QuestGuideUI->SetQuestGuideText(GuideString, DisplayTime, IsMonologue );
 }
 
 void APKHGameMode::UnsetQuestGuideText()

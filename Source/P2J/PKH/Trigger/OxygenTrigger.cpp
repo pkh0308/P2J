@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PKH/Trigger/OxygenTrigger.h"
@@ -10,11 +10,14 @@ void AOxygenTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, A
 {
 	Super::OnPlayerOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 
+	if (IsTriggered)
+	{
+		return;
+	}
 	if (false == OtherActor->IsA<APlayerZeroCharacter>())
 	{
 		return;
 	}
-
 	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (nullptr == GameMode)
 	{
@@ -22,4 +25,5 @@ void AOxygenTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, A
 	}
 
 	GameMode->StartOxygenTimer();
+	GameMode->SetQuestGuideText( TEXT( "여기서부턴 화재가 심하군. 빠르게 탈출해야겠어." ) , 4.0f , true );
 }

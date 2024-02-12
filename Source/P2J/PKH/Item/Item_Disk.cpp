@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
 #include "JYJ/PlayerZeroCharacter.h"
+#include "../../../../../../../Source/Runtime/LevelSequence/Public/LevelSequencePlayer.h"
 
 AItem_Disk::AItem_Disk()
 {
@@ -22,12 +23,18 @@ AItem_Disk::AItem_Disk()
 	}
 }
 
+void AItem_Disk::BeginPlay()
+{
+	Super::BeginPlay();
+
+	FMovieSceneSequencePlaybackSettings MovieSetting;
+	ALevelSequenceActor* OutActor;
+	SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer( GetWorld() , SequenceFactory , MovieSetting , OutActor );
+}
+
 void AItem_Disk::GetItem( APlayerZeroCharacter* InCharacter)
 {
 	Super::GetItem(InCharacter);
-
-	SetActive( false );
-	UE_LOG(LogTemp, Log, TEXT("Player Get Disk"));
 
 	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (nullptr == GameMode)
@@ -38,6 +45,18 @@ void AItem_Disk::GetItem( APlayerZeroCharacter* InCharacter)
 	if (GameMode->CheckCurQuest(EQuestType::Q7_GetTheDisk))
 	{
 		GameMode->ClearCurQuest();
-		GameMode->SetQuestGuideText(TEXT("보안국 건물에서 탈출하십시오."));
+		SequencePlayer->Play();
+
+		FTimerHandle MonoHandle;
+		GetWorldTimerManager().SetTimer( MonoHandle, FTimerDelegate::CreateLambda(
+			[GameMode]() {
+				GameMode->SetQuestGuideText( TEXT( "좋아, 필요한 물건은 챙겼으니 얼른 나가야겠어." ), 4.0f, true );
+			}), 4.0f, false);
+
+		FTimerHandle GuideHandle;
+		GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
+			[GameMode]() {
+				GameMode->SetQuestGuideText( TEXT( "보안국 건물에서 탈출하십시오." ) );
+			} ) , 8.0f , false );
 	}
 }

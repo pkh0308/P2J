@@ -18,6 +18,15 @@ public:
 	AItem_Disk();
 
 protected:
+	virtual void BeginPlay() override;
+
+protected:
 	virtual void GetItem(class APlayerZeroCharacter* InCharacter) override;
 	
+	UPROPERTY()
+	TObjectPtr<class ULevelSequencePlayer> SequencePlayer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class ULevelSequence> SequenceFactory;
+
 };

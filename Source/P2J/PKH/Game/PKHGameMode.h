@@ -104,7 +104,7 @@ protected:
 	TObjectPtr<class UGameOverWidget> GameOverUI;
 
 public:
-	void SetQuestGuideText(FString GuideString, float DisplayTime = 5.0f);
+	void SetQuestGuideText(FString GuideString, float DisplayTime = 5.0f, bool IsMonologue = false);
 	void UnsetQuestGuideText();
 
 	void ShowFadeOut();

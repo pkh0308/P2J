@@ -40,6 +40,12 @@ void AItem_IDCard::GetItem(APlayerZeroCharacter* InCharacter)
 	if (GameMode->CheckCurQuest(EQuestType::Q2_GetIDCard))
 	{
 		GameMode->ClearCurQuest();
-		GameMode->SetQuestGuideText(TEXT("정보국 건물에 진입하십시오."));
+		GameMode->SetQuestGuideText(TEXT("잠깐만, 이 ID 카드는... 이걸로 한 건 할 수 있겠어."), 4.0f, true);
+
+		FTimerHandle GuideHandle;
+		GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
+			[GameMode]() {
+				GameMode->SetQuestGuideText( TEXT( "정보국 건물에 진입하십시오." ) );
+			} ) , 4.0f , false );
 	}
 }
