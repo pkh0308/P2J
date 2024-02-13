@@ -69,7 +69,7 @@ void APKHGameMode::BeginPlay()
 	else if (CurLevelName == LevelNames[2])
 	{
 		LevelIdx = 3;
-		CurQuest = EQuestType::Q7_GetTheDisk;
+		CurQuest = EQuestType::Q6_GetTheDisk;
 	}
 	
 	// UI

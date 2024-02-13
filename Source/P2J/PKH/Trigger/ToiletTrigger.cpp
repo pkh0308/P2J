@@ -30,6 +30,11 @@ void AToiletTrigger::OnPlayerOverlap( UPrimitiveComponent* OverlappedComponent ,
 		return;
 	}
 
+	if (GameMode->CheckCurQuest( EQuestType::Q4_PlantBombs ))
+	{
+		GameMode->ClearCurQuest();
+	}
+
 	FTimerHandle MonoHandle;
 	GetWorldTimerManager().SetTimer( MonoHandle , FTimerDelegate::CreateLambda(
 		[GameMode]() {

@@ -42,7 +42,7 @@ void AItem_Disk::GetItem( APlayerZeroCharacter* InCharacter)
 		return;
 	}
 
-	if (GameMode->CheckCurQuest(EQuestType::Q7_GetTheDisk))
+	if (GameMode->CheckCurQuest(EQuestType::Q6_GetTheDisk))
 	{
 		GameMode->ClearCurQuest();
 		SequencePlayer->Play();
@@ -50,7 +50,7 @@ void AItem_Disk::GetItem( APlayerZeroCharacter* InCharacter)
 		FTimerHandle MonoHandle;
 		GetWorldTimerManager().SetTimer( MonoHandle, FTimerDelegate::CreateLambda(
 			[GameMode]() {
-				GameMode->SetQuestGuideText( TEXT( "좋아, 필요한 물건은 챙겼으니 얼른 나가야겠어." ), 4.0f, true );
+				GameMode->SetQuestGuideText( TEXT( "필요한 물건은 챙겼으니 얼른 나가야겠어." ), 4.0f, true );
 			}), 4.0f, false);
 
 		FTimerHandle GuideHandle;

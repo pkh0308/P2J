@@ -14,9 +14,8 @@ enum class EQuestType : uint8
 	Q3_EnterBuilding,
 	Q4_PlantBombs,
 	Q5_ExitBuilding,
-	Q6_EnterAsAFireman,
-	Q7_GetTheDisk,
-	Q8_EscapeBuilding,
+	Q6_GetTheDisk,
+	Q7_EscapeBuilding,
 	AllClear
 };
 
