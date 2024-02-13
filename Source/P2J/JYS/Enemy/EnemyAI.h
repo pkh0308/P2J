@@ -47,12 +47,16 @@ public:
 
 public:
 	
+
 	UFUNCTION()
 	void OnDamaged(int damage);
 	void OnDead();
 
 	UPROPERTY(EditAnywhere)
-	int HP = 3;
+	int32 maxHP = 0;
+
+	UPROPERTY( EditAnywhere )
+	int32 hp = maxHP;
 
 	UPROPERTY(EditAnywhere)
 	bool isDead = false;
@@ -61,5 +65,5 @@ public:
 	void Attack();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UAIFSM* fsm;
+	class UAIFSM* aiFSM;
 };

@@ -3,6 +3,8 @@
 
 #include "JYS/AIFSM.h"
 #include "Enemy/EnemyAI.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Components/CapsuleComponent.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Character.h"
 
 // Sets default values for this component's properties
 UAIFSM::UAIFSM()
@@ -112,7 +114,29 @@ void UAIFSM::TickDamage()
 
 void UAIFSM::TickDie()
 {
+	if (false == isDieDone)
+		return;
+}
 
+void UAIFSM::TakeDamage( int damage )
+{
+	// 체력을 damage만큼 줄이고 싶다
+	me->hp -= damage;
+	if (me->hp < 0)
+	{
+		me->hp = 0;
+	}
+	// 체력이 0 이하라면 Die상태로 전이하고싶다
+
+	if (me->hp < 0)
+	{
+		SetState( EAIState::DIE );
+		// 죽음 애니메이션 몽타주 재생
+		me->PlayAnimMontage( enemyMontage , 1 , TEXT( "Dying" ) );
+		isDieDone = false;
+	}
+	//충돌체를 끄고 싶다
+	me->GetCapsuleComponent()->SetCollisionEnabled( ECollisionEnabled::NoCollision );
 }
 
 void UAIFSM::SetState(EAIState next)

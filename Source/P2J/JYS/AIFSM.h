@@ -37,7 +37,7 @@ public:
 	EAIState state;
 
 	UPROPERTY(EditAnywhere)
-	float attackDist = 200;
+	float attackDist = 450;
 
 	UPROPERTY(EditAnywhere)
 	class AActor* target;
@@ -51,9 +51,23 @@ public:
 	void TickDamage();
 	void TickDie();
 
+public:
+	bool isDieDone;
+
 	float currentTime;
 
 	float attackWaitTime = 1;
 
+	void TakeDamage( int damage );
+
 	void SetState(EAIState next);
+
+	// 공격 대기 시간
+	UPROPERTY(EditAnywhere)
+	float attackDelayTime = 2.0f;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UAnimMontage* enemyMontage;
+
+
 };

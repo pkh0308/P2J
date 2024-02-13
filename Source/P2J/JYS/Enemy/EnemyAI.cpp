@@ -28,7 +28,7 @@ AEnemyAI::AEnemyAI()
 	}
 
 	// EnemyFSM 컴포넌트 추가
-	fsm = CreateDefaultSubobject<UAIFSM>(TEXT("FSM"));
+	aiFSM = CreateDefaultSubobject<UAIFSM>(TEXT("aiFSM"));
 }
 
 // Called when the game starts or when spawned
@@ -58,15 +58,16 @@ void AEnemyAI::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+
 void AEnemyAI::OnDamaged(int damage)
 {
-	if (isDead) 
+	if (isDead)
 	{
 		return;
 	}
 
-	HP = HP - damage;
-	if (HP <= 0)
+	hp = hp - damage;
+	if (hp <= 0)
 	{
 		OnDead();
 	}
