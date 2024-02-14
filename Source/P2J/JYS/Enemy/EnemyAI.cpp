@@ -67,16 +67,7 @@ void AEnemyAI::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemyAI::OnDamaged(int damage)
 {
-	if (isDead)
-	{
-		return;
-	}
-
-	hp = hp - damage;
-	if (hp <= 0)
-	{
-		OnDead();
-	}
+	aiFSM->TakeDamage(damage);
 }
 
 void AEnemyAI::OnDead()
