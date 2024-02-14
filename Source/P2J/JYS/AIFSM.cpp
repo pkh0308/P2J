@@ -117,20 +117,26 @@ void UAIFSM::TickDie()
 	if (false == isDieDone)
 		return;
 
-	// 2초동안 아래로 이동하다가
-	float deltaTime = GetWorld()->GetDeltaSeconds();
-	FVector P0 = me->GetActorLocation();
-	FVector velocity = FVector::DownVector * 500;
-	me->SetActorLocation(P0 + velocity * GetWorld()->GetDeltaSeconds());
+	//// 2초동안 아래로 이동하다가
+	//float deltaTime = GetWorld()->GetDeltaSeconds();
+	//FVector P0 = me->GetActorLocation();
+	//FVector velocity = FVector::DownVector * 500;
+	//me->SetActorLocation(P0 + velocity * GetWorld()->GetDeltaSeconds());
 
-	// 시간이 흐르다가
-	currentTime += deltaTime;
-	// 2초가 되면 
-	if (currentTime > 2)
-	{
-		// 2초가 되면 스스로 파괴하고싶다
-		me->Destroy();
-	}
+	//// 시간이 흐르다가
+	//currentTime += deltaTime;
+	//// 2초가 되면 
+	//if (currentTime > 2)
+	//{
+	//	// 2초가 되면 스스로 파괴하고싶다
+	//	me->Destroy();
+	//}
+	
+	// 죽음 애니메이션 몽타주 재생
+	UE_LOG(LogTemp,Warning, TEXT("test11111"));
+	me->PlayAnimMontage( enemyMontage , 1 );
+	isDieDone = false;
+
 }
 
 void UAIFSM::TakeDamage( int damage )
@@ -138,20 +144,22 @@ void UAIFSM::TakeDamage( int damage )
 	// 체력을 damage만큼 줄이고 싶다
 	me->hp -= damage;
 	UE_LOG(LogTemp, Warning, TEXT("Enemy2 test1"));
+	UE_LOG( LogTemp , Warning , TEXT( "Enemy2 hp %d" ), me->hp );
+
 	if (me->hp < 0)
 	{
 		UE_LOG( LogTemp , Warning , TEXT( "Enemy2 test2" ) );
 		me->hp = 0;
 		// 체력이 0 이하라면 Die상태로 전이하고싶다
 		SetState( EAIState::DIE );
-		// 죽음 애니메이션 몽타주 재생
-		me->PlayAnimMontage( enemyMontage , 1 , TEXT( "Dying" ) );
-		isDieDone = false;
 	}
 
+	me->PlayAnimMontage( enemyMontage , 1, TEXT("Die"));
+	isDieDone = false;
 
-	//충돌체를 끄고 싶다
-	me->GetCapsuleComponent()->SetCollisionEnabled( ECollisionEnabled::NoCollision );
+
+	////충돌체를 끄고 싶다
+	//me->GetCapsuleComponent()->SetCollisionEnabled( ECollisionEnabled::NoCollision );
 }
 
 void UAIFSM::SetState(EAIState next)
