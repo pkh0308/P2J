@@ -26,7 +26,6 @@ void ASequenceTrigger::BeginPlay()
 	FMovieSceneSequencePlaybackSettings MovieSetting;
 	ALevelSequenceActor* OutActor;
 	SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), SequenceFactory, MovieSetting, OutActor);
-	SequencePlayer->OnFinished.AddDynamic(this, &ASequenceTrigger::OnSequenceFinished );
 }
 
 void ASequenceTrigger::OnSequenceFinished()
