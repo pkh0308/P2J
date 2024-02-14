@@ -41,7 +41,7 @@ AEnemyAI::AEnemyAI()
 void AEnemyAI::BeginPlay()
 {
 	Super::BeginPlay();
-	OnActionFire();
+	// OnActionFire();
 }
 
 // Called every frame

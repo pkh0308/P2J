@@ -71,5 +71,4 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class UAnimMontage* enemyMontage;
 
-
 };

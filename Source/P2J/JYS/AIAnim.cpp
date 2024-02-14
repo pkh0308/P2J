@@ -24,7 +24,8 @@ void UAIAnim::NativeUpdateAnimation( float DeltaSeconds )
 	state = aiFSM->state;
 }
 
-void UAIAnim::AnimNotify_DieEnd()
+void UAIAnim::AnimNotify_DyingEnd()
 {
-	aiFSM->SetState( EAIState::MOVE );
+	aiFSM->isDieDone = true;
+	/*aiFSM->SetState( EAIState::MOVE );*/
 }

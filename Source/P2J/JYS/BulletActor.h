@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -23,7 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Ãæµ¹Ã¼¿Í ¿Ü°üÀ» ¸¸µé°í½Í´Ù.
+	// ì¶©ëŒì²´ì™€ ì™¸ê´€ì„ ë§Œë“¤ê³ ì‹¶ë‹¤.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AAA)
 	class USphereComponent* sphereComp;
 
@@ -34,4 +34,6 @@ public:
 	class UProjectileMovementComponent* movementComp;
 
 	FORCEINLINE void AutoDestroy() { this->Destroy(); }
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

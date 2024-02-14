@@ -26,6 +26,6 @@ public:
 	EAIState state;
 	
 	UFUNCTION()
-	void AnimNotify_DieEnd();
+	void AnimNotify_DyingEnd();
 	
 };

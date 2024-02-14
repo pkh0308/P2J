@@ -5,6 +5,8 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/SphereComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/ProjectileMovementComponent.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Actor.h"
+#include "../JYJ/PlayerThirdCharacter.h"
 
 // Sets default values
 ABulletActor::ABulletActor()
@@ -21,12 +23,12 @@ ABulletActor::ABulletActor()
 	movementComp->SetUpdatedComponent(sphereComp);
 
 	// speed 설정, 바운드 설정
-	movementComp->InitialSpeed = 200.f;
-	movementComp->MaxSpeed = 200.f;
+	movementComp->InitialSpeed = 2000.f;
+	movementComp->MaxSpeed = 2000.f;
 	movementComp->bShouldBounce = true;
 	movementComp->ProjectileGravityScale = 0;
 
-	sphereComp->SetCollisionProfileName(TEXT("BlockAll"));
+	sphereComp->SetCollisionProfileName(TEXT("Bullet"));
 	meshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	// 메시의 크기를 0.25로 하고 싶다
@@ -48,6 +50,7 @@ void ABulletActor::BeginPlay()
 	FTimerHandle timerHandle;
 	//GetWorld()->GetTimerManager().SetTimer(timerHandle, FTimerDelegate::CreateLambda([this]()->void {this->Destroy(); }), 10, false);
 	
+
 }
 
 // Called every frame
@@ -55,5 +58,14 @@ void ABulletActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//SetActorLocation( this->GetActorForwardVector() * 3000 * GetWorld()->DeltaTimeSeconds);
+}
+
+void ABulletActor::NotifyActorBeginOverlap( AActor* OtherActor )
+{
+	APlayerThirdCharacter* player = Cast<APlayerThirdCharacter>(OtherActor);
+	if (player)
+	{
+		player->TakePlayerDamaged(1);
+	}
 }
 

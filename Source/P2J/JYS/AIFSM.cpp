@@ -100,7 +100,7 @@ void UAIFSM::TickAttack()
 		else// 7. 그렇지 않다면
 		{
 			// 8.공격을 하고싶다.
-			UE_LOG( LogTemp , Warning , TEXT( "Enemy->Player Attack!!" ) );
+			me->OnActionFire();
 			GEngine->AddOnScreenDebugMessage( -1 , 3 , FColor::Cyan , TEXT( "Enemy->Player Attack!!" ) );
 
 		}
@@ -133,9 +133,8 @@ void UAIFSM::TickDie()
 	//}
 	
 	// 죽음 애니메이션 몽타주 재생
-	UE_LOG(LogTemp,Warning, TEXT("test11111"));
-	me->PlayAnimMontage( enemyMontage , 1 );
-	isDieDone = false;
+	
+
 
 }
 
@@ -152,10 +151,11 @@ void UAIFSM::TakeDamage( int damage )
 		me->hp = 0;
 		// 체력이 0 이하라면 Die상태로 전이하고싶다
 		SetState( EAIState::DIE );
+
+		me->PlayAnimMontage( enemyMontage , 1, TEXT("Die"));
+		isDieDone = false;
 	}
 
-	me->PlayAnimMontage( enemyMontage , 1, TEXT("Die"));
-	isDieDone = false;
 
 
 	////충돌체를 끄고 싶다
