@@ -8,6 +8,7 @@
 #include "PKH/UI/QuestClearWidget.h"
 #include "PKH/UI/GameOverWidget.h"
 #include "P2JGameInstance.h"
+#include "JYJ/PlayerHPBar.h"
 
 APKHGameMode::APKHGameMode()
 {
@@ -30,6 +31,12 @@ APKHGameMode::APKHGameMode()
 		FadeOutUIClass = FadeOutUIRef.Class;
 	}
 
+	static ConstructorHelpers::FClassFinder<UPlayerHPBar> PlayerHpUIRef( TEXT( "/Game/JYJ/UI/WBP_PlayerHP.WBP_PlayerHP_C" ) );
+	if (PlayerHpUIRef.Class)
+	{
+		PlayerHpUIClass = PlayerHpUIRef.Class;
+	}
+
 	static ConstructorHelpers::FClassFinder<UOxygenWidget> OxygenUIRef(TEXT("/Game/PKH/UI/WBP_OxygenWidget.WBP_OxygenWidget_C"));
 	if (OxygenUIRef.Class)
 	{
@@ -49,7 +56,7 @@ APKHGameMode::APKHGameMode()
 	}
 
 	LevelNames.Add(TEXT("Demo_Copy"));
-	LevelNames.Add(TEXT("Level2_Test"));
+	LevelNames.Add(TEXT("Level2_Test_Copy"));
 	LevelNames.Add(TEXT("Level3"));
 }
 
@@ -132,6 +139,16 @@ void APKHGameMode::BeginPlay()
 		GameOverUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 
+	// Hp Bar
+	if (LevelIdx == 1)
+	{
+		PlayerHpUI = CreateWidget<UPlayerHPBar>( GetWorld() , PlayerHpUIClass );
+		if (PlayerHpUI)
+		{
+			PlayerHpUI->AddToViewport();
+		}
+	}
+
 	// Timer
 	GetWorldTimerManager().SetTimer(TimeHandle, FTimerDelegate::CreateLambda(
 		[this]() {
@@ -158,6 +175,27 @@ void APKHGameMode::ClearCurQuest()
 
 	UE_LOG(LogTemp, Log, TEXT("Quest Clear: %s"), *UEnum::GetValueAsString(CurQuest));
 	CurQuest = EQuestType((uint8)CurQuest + 1);
+}
+
+void APKHGameMode::CountBomb()
+{
+	if (CurQuest != EQuestType::Q4_PlantBombs)
+	{
+		return;
+	}
+
+	BombCount++;
+	if (BombCount == 3)
+	{
+		ClearCurQuest();
+		SetQuestGuideText( TEXT( "폭탄은 모두 설치했군. 슬슬 나가야겠어." ) , 4.0f , true );
+
+		FTimerHandle GuideHandle;
+		GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
+			[this]() {
+				SetQuestGuideText( TEXT( "보안국 건물을 나간 뒤, 폭탄을 터뜨리십시오." ) );
+			} ) , 4.0f , false );
+	}
 }
 
 void APKHGameMode::ShowFadeOut()

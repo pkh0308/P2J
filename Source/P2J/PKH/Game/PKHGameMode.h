@@ -50,10 +50,14 @@ protected:
 protected:
 	EQuestType CurQuest;
 
+	int BombCount = 0;
+
 public:
 	FORCEINLINE bool CheckCurQuest(enum EQuestType Type) { return CurQuest == Type; }
 
 	void ClearCurQuest();
+
+	void CountBomb();
 
 // Time & Kill Count
 protected:
@@ -80,6 +84,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UUserWidget> FadeOutUI;
+
+	// Hp Bar
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UPlayerHPBar> PlayerHpUIClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UPlayerHPBar> PlayerHpUI;
 
 	// Oxygen
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
