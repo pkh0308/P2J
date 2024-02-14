@@ -19,30 +19,30 @@ void ABuildingExplosionTrigger::OnPlayerOverlap( UPrimitiveComponent* Overlapped
 	{
 		return;
 	}
-	/*if (false == GameMode->CheckCurQuest( EQuestType::Q5_ExitBuilding ))
+	if (false == GameMode->CheckCurQuest( EQuestType::Q5_ExitBuilding ))
 	{
 		return;
 	}
 
-	GameMode->ClearCurQuest();*/
+	GameMode->ClearCurQuest();
 	PlaySequence();
 
 	// Explosion
 	FTimerHandle Handle1;
 	GetWorldTimerManager().SetTimer( Handle1 , FTimerDelegate::CreateLambda(
 		[this]() { 
-			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector( 1510.65f, 14861.57f, 7307) , FRotator(0, -105, 0) , FVector( 3.0f ) );
+			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector( 1510.65f, 14861.57f, 7307) , FRotator(0, -105, 0) , FVector( 4.0f ) );
 		}), 2.0f, false);
 	FTimerHandle Handle2;
 	GetWorldTimerManager().SetTimer( Handle2 , FTimerDelegate::CreateLambda(
 		[this]() { 
-			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector( -1753.4f, 14963.35f, 7307) , FRotator(0, -65, 0) , FVector( 3.0f ) );
+			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector( -1753.4f, 14963.35f, 7307) , FRotator(0, -65, 0) , FVector( 4.0f ) );
 		} ) , 2.5f , false );
 
 	FTimerHandle Handle3;
 	GetWorldTimerManager().SetTimer( Handle3 , FTimerDelegate::CreateLambda(
 		[this]() { 
-			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector( -349.3f, 15388.96f, 6000) , FRotator(0, -85, 0) , FVector( 4.0f ) );
+			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector( -349.3f, 15388.96f, 6000) , FRotator(0, -85, 0) , FVector( 5.0f ) );
 		} ) , 3.0f , false );
 
 	FTimerHandle Handle4;
