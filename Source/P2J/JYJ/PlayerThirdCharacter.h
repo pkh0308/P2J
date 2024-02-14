@@ -39,6 +39,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USpotLightComponent* lightCookie;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USpotLightComponent* playerLight;
+
 	UFUNCTION()
 	void AttachWeapon(TSubclassOf<AWeaponActor> Weapon);
 	

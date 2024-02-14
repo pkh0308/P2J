@@ -15,6 +15,7 @@
 #include "../PKH/Game/PKHGameMode.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/SpotLightComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Components/CapsuleComponent.h"
 
 APlayerThirdCharacter::APlayerThirdCharacter()
 {
@@ -26,12 +27,20 @@ APlayerThirdCharacter::APlayerThirdCharacter()
 
 	}
 
+	//Player LightCookie settings
 	lightCookie = CreateDefaultSubobject<USpotLightComponent>(TEXT("lightCookie"));
 	lightCookie->SetupAttachment( GetMesh() ); 
-	//(X=10.000000,Y=15.000000,Z=140.000000)
 	lightCookie->SetRelativeLocation( FVector( 10, 15, 140) );
 	lightCookie->SetWorldRotation( FRotator( 0, 90, 0) );
 
+	//Player InsideLight settings
+	playerLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("playerLight"));
+	playerLight->SetupAttachment( GetCapsuleComponent()); 
+	playerLight->SetRelativeLocation(FVector(-130, 0, 50));
+	playerLight->SetIntensity(7000);
+	playerLight->SetAttenuationRadius(500);
+
+	//Player3 Camera settings
 	springArmComp->TargetArmLength = 130.f;
 	springArmComp->SetWorldLocation( FVector( 0 , 0 , 130 ) );
 	p1camComp->SetWorldRotation( FRotator( -15 , 0 , 0 ) );
@@ -47,7 +56,6 @@ void APlayerThirdCharacter::BeginPlay()
 
 	crossHairUI = CreateWidget(GetWorld(), crossHairFactory);
 	crossHairUI->AddToViewport();
-
 	crossHairUI->SetVisibility(ESlateVisibility::Hidden);
 
 
@@ -164,7 +172,6 @@ void APlayerThirdCharacter::OnActionFire()
 void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon)
 {
 	if (Weapon) {
-
 		//weapon에 무기 정보만 담겨 있고 실제 객체는 생성되어 있지 않음
 		const USkeletalMeshSocket* WeaponSocket = GetMesh()->GetSocketByName("RifleGunSocket");
 		AWeaponActor* weapon = GetWorld()->SpawnActor<AWeaponActor>(FVector::ZeroVector, FRotator::ZeroRotator);
