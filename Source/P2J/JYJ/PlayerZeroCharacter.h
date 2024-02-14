@@ -81,5 +81,9 @@ public:
 	UPROPERTY()
 	class APKHGameMode* gamemode;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	class UWidgetComponent* playerUI;
 
+	UPROPERTY()
+	class UPlayerHPBar* playerHPBar;
 };

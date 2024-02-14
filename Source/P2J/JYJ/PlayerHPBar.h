@@ -21,9 +21,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	class UProgressBar* HPBar;
 
-	void SetHP( int32 hp , int32 maxHP );
-
 	UPROPERTY()
 	class APlayerZeroCharacter* player;
+
+	void SetHP( int32 hp , int32 maxHP );
+
+
 	
 };
