@@ -132,10 +132,16 @@ void UAIFSM::TickDie()
 	//	me->Destroy();
 	//}
 	
-	// 죽음 애니메이션 몽타주 재생
 	
 
 
+}
+
+void UAIFSM::DoDamageEnd()
+{
+	// 이동상태로 전이하고싶다
+	SetState(EAIState::MOVE);
+	me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
 void UAIFSM::TakeDamage( int damage )
@@ -149,9 +155,21 @@ void UAIFSM::TakeDamage( int damage )
 	{
 		UE_LOG( LogTemp , Warning , TEXT( "Enemy2 test2" ) );
 		me->hp = 0;
+
+	}
+	// 만약 체력이 0보다 크다면 Damage 상태로 전이하고싶다
+	if (me->hp > 0) 
+	{
+		SetState(EAIState::DAMAGE);
+		// 데미지 몽타주 재생
+		me->PlayAnimMontage(enemyMontage, 1, TEXT("Hit"));
+		
+	}
+	else
+	{
 		// 체력이 0 이하라면 Die상태로 전이하고싶다
 		SetState( EAIState::DIE );
-
+		// 죽음 애니메이션 몽타주 재생
 		me->PlayAnimMontage( enemyMontage , 1, TEXT("Die"));
 		isDieDone = false;
 	}

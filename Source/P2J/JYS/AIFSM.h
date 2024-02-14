@@ -53,6 +53,8 @@ public:
 	void TickDamage();
 	void TickDie();
 
+	void DoDamageEnd();
+
 public:
 	bool isDieDone;
 

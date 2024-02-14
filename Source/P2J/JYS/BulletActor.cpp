@@ -49,8 +49,6 @@ void ABulletActor::BeginPlay()
 	// 총알 액터의 수명을 5초로 하고 싶다. 타이머를 이용해서 처리하고 싶다.
 	FTimerHandle timerHandle;
 	//GetWorld()->GetTimerManager().SetTimer(timerHandle, FTimerDelegate::CreateLambda([this]()->void {this->Destroy(); }), 10, false);
-	
-
 }
 
 // Called every frame

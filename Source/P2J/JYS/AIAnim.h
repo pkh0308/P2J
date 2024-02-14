@@ -24,6 +24,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EAIState state;
+
+	UFUNCTION()
+	void AnimNotify_DamageEnd();
 	
 	UFUNCTION()
 	void AnimNotify_DyingEnd();
