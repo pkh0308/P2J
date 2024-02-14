@@ -137,19 +137,19 @@ void UAIFSM::TakeDamage( int damage )
 {
 	// 체력을 damage만큼 줄이고 싶다
 	me->hp -= damage;
+	UE_LOG(LogTemp, Warning, TEXT("Enemy2 test1"));
 	if (me->hp < 0)
 	{
+		UE_LOG( LogTemp , Warning , TEXT( "Enemy2 test2" ) );
 		me->hp = 0;
-	}
-	// 체력이 0 이하라면 Die상태로 전이하고싶다
-
-	if (me->hp < 0)
-	{
+		// 체력이 0 이하라면 Die상태로 전이하고싶다
 		SetState( EAIState::DIE );
 		// 죽음 애니메이션 몽타주 재생
 		me->PlayAnimMontage( enemyMontage , 1 , TEXT( "Dying" ) );
 		isDieDone = false;
 	}
+
+
 	//충돌체를 끄고 싶다
 	me->GetCapsuleComponent()->SetCollisionEnabled( ECollisionEnabled::NoCollision );
 }
