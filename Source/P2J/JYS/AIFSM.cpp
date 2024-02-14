@@ -116,6 +116,21 @@ void UAIFSM::TickDie()
 {
 	if (false == isDieDone)
 		return;
+
+	// 2초동안 아래로 이동하다가
+	float deltaTime = GetWorld()->GetDeltaSeconds();
+	FVector P0 = me->GetActorLocation();
+	FVector velocity = FVector::DownVector * 500;
+	me->SetActorLocation(P0 + velocity * GetWorld()->GetDeltaSeconds());
+
+	// 시간이 흐르다가
+	currentTime += deltaTime;
+	// 2초가 되면 
+	if (currentTime > 2)
+	{
+		// 2초가 되면 스스로 파괴하고싶다
+		me->Destroy();
+	}
 }
 
 void UAIFSM::TakeDamage( int damage )

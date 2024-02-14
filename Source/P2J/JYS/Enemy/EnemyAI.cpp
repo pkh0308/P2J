@@ -5,6 +5,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "../BulletActor.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Components/ArrowComponent.h"
 
 
 // Sets default values
@@ -29,13 +30,18 @@ AEnemyAI::AEnemyAI()
 
 	// EnemyFSM 컴포넌트 추가
 	aiFSM = CreateDefaultSubobject<UAIFSM>(TEXT("aiFSM"));
+
+	// firePosition 생성
+	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition"));
+	firePosition->SetupAttachment(RootComponent);
+	firePosition->SetRelativeLocation(FVector(85,20,45));
 }
 
 // Called when the game starts or when spawned
 void AEnemyAI::BeginPlay()
 {
 	Super::BeginPlay();
-	/*OnActionFire();*/
+	OnActionFire();
 }
 
 // Called every frame
@@ -47,7 +53,7 @@ void AEnemyAI::Tick(float DeltaTime)
 
 void AEnemyAI::OnActionFire()
 {
-	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
+	FTransform t = firePosition->GetComponentTransform();
 	GetWorld()->SpawnActor<ABulletActor>(bulletFactory, t);
 }
 

@@ -39,6 +39,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABulletActor> bulletFactory;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UArrowComponent* firePosition;
+
 	UFUNCTION(BlueprintCallable)
 	void OnActionFire();
 
@@ -53,7 +56,7 @@ public:
 	void OnDead();
 
 	UPROPERTY(EditAnywhere)
-	int32 maxHP = 0;
+	int32 maxHP = 3;
 
 	UPROPERTY( EditAnywhere )
 	int32 hp = maxHP;
