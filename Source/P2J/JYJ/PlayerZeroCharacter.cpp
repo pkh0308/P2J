@@ -214,7 +214,12 @@ void APlayerZeroCharacter::TakePlayerDamaged(int damage)
 
 
 	this->playerHP = this->playerHP - damage;
+
+	if (nullptr == playerHPBar)
+		return;
+
 	playerHPBar->SetHP(playerHP, playerMaxHP);
+
 
 	PlayerAnim->PlayerHitMontage();
 
