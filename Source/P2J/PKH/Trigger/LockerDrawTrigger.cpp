@@ -5,7 +5,6 @@
 #include "JYJ/PlayerZeroCharacter.h"
 #include "PKH/Game/PKHGameMode.h"
 #include "Kismet/GameplayStatics.h"
-#include "../../../../../../../Source/Runtime/LevelSequence/Public/LevelSequencePlayer.h"
 
 void ALockerDrawTrigger::OnPlayerOverlap( UPrimitiveComponent* OverlappedComponent , AActor* OtherActor , UPrimitiveComponent* OtherComp , int32 OtherBodyIndex , bool bFromSweep , const FHitResult& SweepResult )
 {
@@ -35,4 +34,9 @@ void ALockerDrawTrigger::OnPlayerOverlap( UPrimitiveComponent* OverlappedCompone
 		[GameMode]() {
 			GameMode->CountBomb();
 		} ) , 6.5f , false );
+}
+
+void ALockerDrawTrigger::OnSequenceFinished()
+{
+	
 }

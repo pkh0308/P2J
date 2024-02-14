@@ -23,7 +23,6 @@ void AToiletTrigger::OnPlayerOverlap( UPrimitiveComponent* OverlappedComponent ,
 	IsTriggered = true;
 	PlaySequence();
 
-	// Monologue & guide
 	APKHGameMode* GameMode = Cast<APKHGameMode>( UGameplayStatics::GetGameMode( GetWorld() ) );
 	if (nullptr == GameMode)
 	{
@@ -35,4 +34,9 @@ void AToiletTrigger::OnPlayerOverlap( UPrimitiveComponent* OverlappedComponent ,
 		[GameMode]() {
 			GameMode->CountBomb();
 		} ) , 4.0f , false );
+}
+
+void AToiletTrigger::OnSequenceFinished()
+{
+	
 }

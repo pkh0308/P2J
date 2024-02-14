@@ -17,6 +17,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void OnSequenceFinished();
+
 // Component
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

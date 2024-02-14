@@ -28,10 +28,15 @@ void ALockerOpenTrigger::OnPlayerOverlap( UPrimitiveComponent* OverlappedCompone
 	{
 		return;
 	}
-	
+
 	FTimerHandle Handle;
 	GetWorldTimerManager().SetTimer( Handle , FTimerDelegate::CreateLambda(
 		[GameMode]() {
 			GameMode->CountBomb();
-		} ) , 6.5f , false );
+		} ) , 4.0f , false );
+}
+
+void ALockerOpenTrigger::OnSequenceFinished()
+{
+	
 }

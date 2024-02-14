@@ -17,5 +17,7 @@ class P2J_API AToiletTrigger : public ASequenceTrigger
 protected:
 	virtual void OnPlayerOverlap( UPrimitiveComponent* OverlappedComponent , AActor* OtherActor , UPrimitiveComponent* OtherComp , int32 OtherBodyIndex , bool bFromSweep , const FHitResult& SweepResult ) override;
 
+	virtual void OnSequenceFinished() override;
+
 	bool IsTriggered = false;
 };

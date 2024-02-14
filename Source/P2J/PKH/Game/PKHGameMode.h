@@ -114,6 +114,9 @@ protected:
 	TObjectPtr<class UGameOverWidget> GameOverUI;
 
 public:
+	FORCEINLINE class UPlayerHPBar* GetHpBar() { return PlayerHpUI; }
+
+public:
 	void SetQuestGuideText(FString GuideString, float DisplayTime = 5.0f, bool IsMonologue = false);
 	void UnsetQuestGuideText();
 
