@@ -39,7 +39,8 @@ void AExplodeTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, 
 	}
 
 	// Particle
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), VFX_Explosion, GetActorLocation(), ExplodeRotation, ExplodeScale);
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), VFX_Fire, GetActorLocation(), FRotator() , FVector(1.0f));
+	UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , GetActorLocation() , ExplodeRotation , ExplodeScale );
 
 	// Camera Shake
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), ExplodeShakeClass, GetActorLocation(), InnerRadius, OuterRadius);

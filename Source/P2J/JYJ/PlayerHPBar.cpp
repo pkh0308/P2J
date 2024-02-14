@@ -17,7 +17,7 @@ void UPlayerHPBar::NativeConstruct()
 
 void UPlayerHPBar::NativeTick( const FGeometry& MyGeometry , float InDeltaTime )
 {
-	
+	//SetHP(player->playerHP, player->playerMaxHP);
 }
 
 void UPlayerHPBar::SetHP( int32 hp , int32 maxHP )

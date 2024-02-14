@@ -17,6 +17,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "../PKH/Game/PKHGameMode.h"
 #include "../JYS/Enemy/EnemyAI.h"
+#include "PlayerHPBar.h"
 
 // Sets default values
 APlayerZeroCharacter::APlayerZeroCharacter()
@@ -94,6 +95,8 @@ void APlayerZeroCharacter::BeginPlay()
 	
 	//GameOver 띄우기 위해 게임모드 선언
 	gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	playerHPBar = Cast<UPlayerHPBar>( gamemode->GetHpBar() );
 
 	punchComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -208,7 +211,10 @@ void APlayerZeroCharacter::StopSprinting()
 void APlayerZeroCharacter::TakePlayerDamaged(int damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Player Hit TEST"));
+
+
 	this->playerHP = this->playerHP - damage;
+	playerHPBar->SetHP(playerHP, playerMaxHP);
 
 	PlayerAnim->PlayerHitMontage();
 

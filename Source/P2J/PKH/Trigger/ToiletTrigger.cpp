@@ -23,27 +23,20 @@ void AToiletTrigger::OnPlayerOverlap( UPrimitiveComponent* OverlappedComponent ,
 	IsTriggered = true;
 	PlaySequence();
 
-	// Monologue & guide
 	APKHGameMode* GameMode = Cast<APKHGameMode>( UGameplayStatics::GetGameMode( GetWorld() ) );
 	if (nullptr == GameMode)
 	{
 		return;
 	}
 
-	if (GameMode->CheckCurQuest( EQuestType::Q4_PlantBombs ))
-	{
-		GameMode->ClearCurQuest();
-	}
-
-	FTimerHandle MonoHandle;
-	GetWorldTimerManager().SetTimer( MonoHandle , FTimerDelegate::CreateLambda(
+	FTimerHandle Handle;
+	GetWorldTimerManager().SetTimer( Handle , FTimerDelegate::CreateLambda(
 		[GameMode]() {
-			GameMode->SetQuestGuideText( TEXT( "폭탄은 모두 설치했군. 슬슬 나가야겠어." ) , 4.0f , true );
+			GameMode->CountBomb();
 		} ) , 4.0f , false );
+}
 
-	FTimerHandle GuideHandle;
-	GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
-		[GameMode]() {
-			GameMode->SetQuestGuideText( TEXT( "보안국 건물을 나간 뒤, 폭탄을 터뜨리십시오." ) );
-		} ) , 8.0f , false );
+void AToiletTrigger::OnSequenceFinished()
+{
+	
 }

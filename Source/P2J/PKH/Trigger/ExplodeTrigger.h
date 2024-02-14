@@ -22,6 +22,9 @@ protected:
 // VFX
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UParticleSystem> VFX_Fire;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UParticleSystem> VFX_Explosion;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -30,16 +33,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector ExplodeScale = FVector(1.0f);
 
+	
+// Camera Shake
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UCameraShakeBase> ExplodeShakeClass;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float InnerRadius = 1500.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float OuterRadius = 3000.0f;
-
-// Camera Shake
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class UCameraShakeBase> ExplodeShakeClass;
 
 // Sound
 protected:
