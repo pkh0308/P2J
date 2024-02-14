@@ -137,15 +137,17 @@ void APlayerThirdCharacter::OnActionFire()
 			UPrimitiveComponent* hitComp = outhit.GetComponent();
 
 			AEnemyAI* enemy2 = Cast<AEnemyAI>( outhit.GetActor());
-			//AEnemyAI* enemy2 =Cast hitComp.GetActor();
-
 			
 			if ( enemy2 )
 			{
 				//그 컴포넌트한테 힘을 가하고 싶다.
 				FVector tmp = end - start;
 				//hitComp->AddForce(tmp.GetSafeNormal() * 500000 * hitComp->GetMass());
-				enemy2->Destroy();
+				//enemy2->Destroy();
+				UE_LOG(LogTemp, Warning, TEXT("enemy2 attack"));
+				enemy2->OnDamaged(1);
+
+				//나중엔 정보원쪽 코드에서 kill count 계산해야 함
 				gamemode->KillCountUp(); 
 
 			}

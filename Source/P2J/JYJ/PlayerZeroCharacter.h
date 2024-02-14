@@ -73,12 +73,13 @@ public:
 	void TakePlayerDamaged(int damage);
 
 	UPROPERTY(EditAnywhere)
-	int32 playerHP = 0;
+	int32 playerMaxHP = 10;
 
 	UPROPERTY(EditAnywhere)
-	int32 playerMaxHP = 10;
+	int32 playerHP = playerMaxHP;
 
 	UPROPERTY()
 	class APKHGameMode* gamemode;
+
 
 };

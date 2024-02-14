@@ -85,7 +85,8 @@ void APlayerZeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	this->playerHP = this->playerMaxHP;
+	//this->playerHP = this->playerMaxHP;
+	
 
 	PlayerAnim = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 	check(PlayerAnim);

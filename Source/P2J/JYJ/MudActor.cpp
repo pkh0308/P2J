@@ -82,8 +82,8 @@ void AMudActor::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 
 void AMudActor::mudDestroy()
 {
-	FTimerHandle Handle;
-	GetWorldTimerManager().SetTimer( Handle , 3.0f , false );
+	//FTimerHandle Handle;
+	//GetWorldTimerManager().SetTimer( Handle , 3.0f , false );
 	this->Destroy( true );
 }
 
