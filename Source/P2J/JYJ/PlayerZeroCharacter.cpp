@@ -210,18 +210,13 @@ void APlayerZeroCharacter::StopSprinting()
 
 void APlayerZeroCharacter::TakePlayerDamaged(int damage)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Player Hit TEST"));
-
-
+	PlayerAnim->PlayerHitMontage();
 	this->playerHP = this->playerHP - damage;
 
 	if (nullptr == playerHPBar)
 		return;
 
 	playerHPBar->SetHP(playerHP, playerMaxHP);
-
-
-	PlayerAnim->PlayerHitMontage();
 
 	if (this->playerHP < damage)
 	{

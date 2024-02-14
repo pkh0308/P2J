@@ -52,11 +52,17 @@ void APlayerTwoCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 void APlayerTwoCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (OtherActor->IsA<ADynamitePlace>())
+
+	UE_LOG( LogTemp , Warning , TEXT( "clean test111" ) );
+	if (OtherActor->IsA<AMudActor>())
 	{
-		bBombQEnabled = true;
-		dynamiteTransform = OtherActor->GetActorTransform();
+		UE_LOG(LogTemp, Warning, TEXT("clean test2222"));
+		mud = Cast<AMudActor>( OtherActor );
+
+		//bBombQEnabled = true;
+		//dynamiteTransform = OtherActor->GetActorTransform();
 	}
+	
 }
 
 void APlayerTwoCharacter::Tick( float DeltaTime )
@@ -73,9 +79,10 @@ void APlayerTwoCharacter::cleanStart()
 {
 	PlayerAnim->PlayerCleanMontage();
 	bCleanQEnabled = true;
-	if (bCleanQEnabled)
+
+	if (mud->bCleanQEnabled)
 	{
-		//mud->mudDestroy();
+		mud->mudDestroy();
 	}
 
 }

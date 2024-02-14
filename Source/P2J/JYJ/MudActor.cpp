@@ -59,31 +59,19 @@ void AMudActor::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 {
 	UE_LOG(LogTemp, Warning, TEXT("mud test1"));
 
-	APlayerTwoCharacter* playerTwo = Cast<APlayerTwoCharacter>(OtherActor);
 	AWetBroom* broom = Cast<AWetBroom>(OtherActor);
 	APKHGameMode* gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	if ( broom )
 	{
 		gamemode->SetQuestGuideText( TEXT( "우클릭으로 얼룩을 지우십시오." ) );
-		//this->Destroy( true );
-		
-		if( broom->bCleanQEnabled )
-		{
-			//FTimerHandle Handle;
-			//GetWorldTimerManager().SetTimer( Handle, 3.0f, false );
-			this->Destroy(true);
-		}
-		
-
+		bCleanQEnabled = true;
 	}
 
 }
 
 void AMudActor::mudDestroy()
 {
-	//FTimerHandle Handle;
-	//GetWorldTimerManager().SetTimer( Handle , 3.0f , false );
 	this->Destroy( true );
 }
 
