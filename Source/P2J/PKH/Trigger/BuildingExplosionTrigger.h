@@ -23,4 +23,18 @@ protected:
 
 	UPROPERTY( EditAnywhere )
 	TObjectPtr<class UParticleSystem> VFX_Fire;
+
+	// Sound
+	UPROPERTY( EditAnywhere )
+	TObjectPtr<class USoundBase> SFX_Explosion_1;
+
+	UPROPERTY( EditAnywhere )
+	TObjectPtr<class USoundBase> SFX_Explosion_2;
+
+	// Camera Shake
+	UPROPERTY( EditAnywhere )
+	TSubclassOf<class UCameraShakeBase> BuildingShakeClass;
+
+	float InnerRadius = 30000.0f;
+	float OuterRadius = 50000.0f;
 };
