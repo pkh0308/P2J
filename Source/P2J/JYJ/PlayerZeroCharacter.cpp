@@ -96,7 +96,10 @@ void APlayerZeroCharacter::BeginPlay()
 	//GameOver 띄우기 위해 게임모드 선언
 	gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
+
 	playerHPBar = Cast<UPlayerHPBar>( gamemode->GetHpBar() );
+	if (nullptr == playerHPBar)
+		return;
 
 	punchComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 

@@ -8,7 +8,7 @@ void APlayerGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	healthUI = CreateWidget<UPlayerHPBar>( GetWorld() , playerHealthUIFactory );
-	healthUI->AddToViewport( 1 );
+	//healthUI = CreateWidget<UPlayerHPBar>( GetWorld() , playerHealthUIFactory );
+	//healthUI->AddToViewport( 1 );
 
 }
