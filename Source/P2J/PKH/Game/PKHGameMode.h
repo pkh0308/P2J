@@ -132,4 +132,26 @@ public:
 // Level
 public:
 	void OpenLevel(enum ELevelSelect NewLevel);
+
+// BGM
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TObjectPtr<class UAudioComponent>> BgmComps;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<class USoundBase> BGM_Level3;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<class USoundBase> SFX_FireAlarm;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<class USoundAttenuation> SA_FireAlarm;
+
+// SFX
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<class USoundBase> SFX_MissionClear;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<class USoundBase> SFX_MissionFail;
 };

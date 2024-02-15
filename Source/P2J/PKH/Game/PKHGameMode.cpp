@@ -9,6 +9,7 @@
 #include "PKH/UI/GameOverWidget.h"
 #include "P2JGameInstance.h"
 #include "JYJ/PlayerHPBar.h"
+#include "Components/AudioComponent.h"
 
 APKHGameMode::APKHGameMode()
 {
@@ -55,6 +56,36 @@ APKHGameMode::APKHGameMode()
 		GameOverUIClass = GameOverUIRef.Class;
 	}
 
+	// Sound
+	static ConstructorHelpers::FObjectFinder<USoundBase> BGM_Level3Ref( TEXT( "/Script/Engine.SoundWave'/Game/PKH/Sound/Level3/BGM_Level3.BGM_Level3'" ) );
+	if (BGM_Level3Ref.Object)
+	{
+		BGM_Level3 = BGM_Level3Ref.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<USoundBase> SFX_FireAlarmRef( TEXT( "/Script/Engine.SoundWave'/Game/PKH/Sound/Level3/SFX_FireAlarm.SFX_FireAlarm'" ) );
+	if (SFX_FireAlarmRef.Object)
+	{
+		SFX_FireAlarm = SFX_FireAlarmRef.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<USoundAttenuation> SA_FireAlarmRef( TEXT( "/Script/Engine.SoundAttenuation'/Game/PKH/Blueprints/Sound/SA_FireAlarm.SA_FireAlarm'" ) );
+	if (SA_FireAlarmRef.Object)
+	{
+		SA_FireAlarm = SA_FireAlarmRef.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<USoundBase> SFX_MissionClearRef( TEXT( "/Script/Engine.SoundWave'/Game/PKH/Sound/SFX_MissionClear.SFX_MissionClear'" ) );
+	if (SFX_MissionClearRef.Object)
+	{
+		SFX_MissionClear = SFX_MissionClearRef.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<USoundBase> SFX_MissionFailRef( TEXT( "/Script/Engine.SoundWave'/Game/PKH/Sound/SFX_MissionFail.SFX_MissionFail'" ) );
+	if (SFX_MissionFailRef.Object)
+	{
+		SFX_MissionFail = SFX_MissionFailRef.Object;
+	}
+
+	// Level
 	LevelNames.Add(TEXT("Demo_Copy"));
 	LevelNames.Add(TEXT("Level2_Test_Copy"));
 	LevelNames.Add(TEXT("Level3"));
@@ -154,6 +185,21 @@ void APKHGameMode::BeginPlay()
 		[this]() {
 			Seconds++;
 		}), 1.0f, true);
+
+	// BGM
+	switch (LevelIdx)
+	{
+	case 1:
+		
+		break;
+	case 2:
+		
+		break;
+	case 3:
+		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Level3 , 0.3f ));
+		BgmComps.Add(UGameplayStatics::SpawnSoundAtLocation( GetWorld() , SFX_FireAlarm , FVector(-3000, -538, 5200) , FRotator() , 0.15f , 1.0f, 0, SA_FireAlarm ));
+		break;
+	}
 }
 
 void APKHGameMode::SetQuestGuideText(FString GuideString, float DisplayTime, bool IsMonologue )
@@ -228,8 +274,16 @@ void APKHGameMode::GameClear()
 		Seconds += GI->GetSeconds();
 	}
 
+	// UI
 	GameClearUI->SetClearUIText(Seconds, OxygenUI->GetOxygenRate(), KillCount);
 	GameClearUI->SetVisibility(ESlateVisibility::Visible);
+
+	// Sound
+	for (int i = 0; i < BgmComps.Num(); i++)
+	{
+		BgmComps[i]->Stop();
+	}
+	UGameplayStatics::PlaySound2D(GetWorld(), SFX_MissionClear, 1.0f);
 
 	FTimerHandle Handle;
 	GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda(
@@ -243,6 +297,13 @@ void APKHGameMode::GameOver(FString NewFailReasonString)
 	// Hide UI
 	QuestGuideUI->SetVisibility(ESlateVisibility::Hidden);
 	OxygenUI->SetVisibility(ESlateVisibility::Hidden);
+
+	// Sound
+	for (int i = 0; i < BgmComps.Num(); i++)
+	{
+		BgmComps[i]->Stop();
+	}
+	UGameplayStatics::PlaySound2D( GetWorld() , SFX_MissionFail , 1.0f );
 
 	// Game Over
 	GameOverUI->SetFailReasonText(NewFailReasonString);
