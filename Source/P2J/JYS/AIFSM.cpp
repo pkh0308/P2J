@@ -56,6 +56,10 @@ void UAIFSM::TickIdle()
 	{
 		// 3. 이동상태로 전이하고싶다. -> state의 값을 MOVE로 바꾸고싶다.
 		SetState(EAIState::MOVE);
+		attackState = true;
+	}
+	else {
+		attackState = false;
 	}
 }
 
@@ -88,7 +92,7 @@ void UAIFSM::TickAttack()
 	{
 		// 3. 현재시간을 초기화 하고 싶다.
 		currentTime = 0;
-		// 4. 목적지와의 거리를 재고 
+		// 4. 목적지와의 거리를 재고
 		FVector distance = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() - me->GetActorLocation();
 		float targetdist = distance.Length();
 
@@ -104,7 +108,6 @@ void UAIFSM::TickAttack()
 			// 8.공격을 하고싶다.
 			me->OnActionFire();
 			GEngine->AddOnScreenDebugMessage( -1 , 3 , FColor::Cyan , TEXT( "Enemy->Player Attack!!" ) );
-
 		}
 	}
 }
@@ -174,6 +177,9 @@ void UAIFSM::TakeDamage( int damage )
 		// 죽음 애니메이션 몽타주 재생
 		me->PlayAnimMontage( enemyMontage , 1, TEXT("Die"));
 		isDieDone = false;
+
+		me->GetCapsuleComponent()->SetCollisionEnabled( ECollisionEnabled::NoCollision );
+		
 		APKHGameMode* gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 		gamemode->KillCountUp();
 	}

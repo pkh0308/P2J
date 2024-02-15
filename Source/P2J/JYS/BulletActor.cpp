@@ -23,8 +23,8 @@ ABulletActor::ABulletActor()
 	movementComp->SetUpdatedComponent(sphereComp);
 
 	// speed 설정, 바운드 설정
-	movementComp->InitialSpeed = 2000.f;
-	movementComp->MaxSpeed = 2000.f;
+	movementComp->InitialSpeed = 1000.f;
+	movementComp->MaxSpeed = 1000.f;
 	movementComp->bShouldBounce = true;
 	movementComp->ProjectileGravityScale = 0;
 
@@ -34,7 +34,7 @@ ABulletActor::ABulletActor()
 	// 메시의 크기를 0.25로 하고 싶다
 	meshComp->SetWorldScale3D(FVector(0.25f));
 	//충돌체의 반지름을 12.5 하고싶다
-	sphereComp->SetSphereRadius(6.0f);
+	sphereComp->SetSphereRadius(0.05f);
 
 }
 

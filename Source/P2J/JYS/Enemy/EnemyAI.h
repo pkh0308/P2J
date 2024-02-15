@@ -69,4 +69,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UAIFSM* aiFSM;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//bool attackState;
 };

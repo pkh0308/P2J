@@ -73,4 +73,7 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class UAnimMontage* enemyMontage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool attackState;
+
 };
