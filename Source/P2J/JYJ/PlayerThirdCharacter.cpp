@@ -155,9 +155,6 @@ void APlayerThirdCharacter::OnActionFire()
 				UE_LOG(LogTemp, Warning, TEXT("enemy2 attack"));
 				enemy2->OnDamaged(1);
 
-				//나중엔 정보원쪽 코드에서 kill count 계산해야 함
-				gamemode->KillCountUp(); 
-
 			}
 
 			//부딪힌 곳에 expVFX를 생성해서 배치하고 싶다.

@@ -83,4 +83,6 @@ public:
 
 	UPROPERTY()
 	class UPlayerHPBar* playerHPBar;
+
+	int64 milliseconds;
 };

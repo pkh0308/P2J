@@ -26,6 +26,7 @@ public:
 	void ZoomOut();
 	void OnActionChooseSMG11();
 	void OnActionFire();
+
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float targetFOV = 90;

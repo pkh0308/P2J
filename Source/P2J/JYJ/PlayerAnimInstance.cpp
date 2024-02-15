@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "JYJ/PlayerAnimInstance.h"
@@ -16,7 +16,7 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	bRifleValid = false;
 	bIDLEJump = false;
 
-	//¸ùÅ¸ÁÖ º¯¼ö °¡Á®¿À±â
+	//ëª½íƒ€ì£¼ ë³€ìˆ˜ ê°€ì ¸ì˜¤ê¸°
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>AMPlayer1(TEXT("/Script/Engine.AnimMontage'/Game/JYJ/Animations/Player1/AM_Player1.AM_Player1'"));
 	if (AMPlayer1.Succeeded())
 	{
@@ -64,7 +64,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	auto Character = Cast<ACharacter>(player);
 
-	//ÇÃ·¹ÀÌ¾î ±âº» ¾Ö´Ï¸ŞÀÌ¼Ç º¯¼ö »ı¼º
+	//í”Œë ˆì´ì–´ ê¸°ë³¸ ì• ë‹ˆë©”ì´ì…˜ ë³€ìˆ˜ ìƒì„±
 	if (Character)
 	{
 		isInAir = Character->GetMovementComponent()->IsFalling();
@@ -74,9 +74,11 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			bIDLEJump = true;
 		}
 
+		bMove = true;
+
 	}
 
-	//ÇÃ·¹ÀÌ¾î3 Æ¯Á¤ º¯¼ö »ı¼º
+	//í”Œë ˆì´ì–´3 íŠ¹ì • ë³€ìˆ˜ ìƒì„±
 	if (player == Cast<APlayerThirdCharacter>(Character)) {
 		auto playerThree = Cast<APlayerThirdCharacter>(Character);
 		bRifleValid = playerThree->bValidRifle;
@@ -94,18 +96,18 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 }
 
-//ÁÖ¸ÔÁú ¸ùÅ¸ÁÖ
+//ì£¼ë¨¹ì§ˆ ëª½íƒ€ì£¼
 void UPlayerAnimInstance::PlayerAttackMontage()
 {
 	if (!Montage_IsPlaying(PlayerMontage))
 	{
 		Cast<APlayerZeroCharacter>(TryGetPawnOwner())->PlayAnimMontage(PlayerMontage, 1, TEXT("Punching"));
-		
+		bMove = false;
 	}
 
 }
 
-//Ã»¼Ò ¸ùÅ¸ÁÖ Àç»ı
+//ì²­ì†Œ ëª½íƒ€ì£¼ ì¬ìƒ
 void UPlayerAnimInstance::PlayerCleanMontage()
 {
 	if (!Montage_IsPlaying(PlayerMontage))
@@ -114,7 +116,7 @@ void UPlayerAnimInstance::PlayerCleanMontage()
 	}
 }
 
-//°İ¹ßÇÏ´Â ¸ùÅ¸ÁÖ
+//ê²©ë°œí•˜ëŠ” ëª½íƒ€ì£¼
 void UPlayerAnimInstance::PlayerRifleFireMontage()
 {
 	if (!Montage_IsPlaying(PlayerMontage))
@@ -123,7 +125,7 @@ void UPlayerAnimInstance::PlayerRifleFireMontage()
 	}
 }
 
-//»ç¸Á ¸ùÅ¸ÁÖ
+//ì‚¬ë§ ëª½íƒ€ì£¼
 void UPlayerAnimInstance::PlayerDeathMontage()
 {
 	if (!Montage_IsPlaying(PlayerMontage))
@@ -132,7 +134,7 @@ void UPlayerAnimInstance::PlayerDeathMontage()
 	}
 }
 
-//ÇÇ°İ ¸ùÅ¸ÁÖ
+//í”¼ê²© ëª½íƒ€ì£¼
 void UPlayerAnimInstance::PlayerHitMontage()
 {
 	if (!Montage_IsPlaying(PlayerMontage))

@@ -52,11 +52,8 @@ void APlayerTwoCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 void APlayerTwoCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-
-	UE_LOG( LogTemp , Warning , TEXT( "clean test111" ) );
 	if (OtherActor->IsA<AMudActor>())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("clean test2222"));
 		mud = Cast<AMudActor>( OtherActor );
 
 		//bBombQEnabled = true;
@@ -77,11 +74,13 @@ void APlayerTwoCharacter::Tick( float DeltaTime )
 
 void APlayerTwoCharacter::cleanStart()
 {
-	PlayerAnim->PlayerCleanMontage();
-	bCleanQEnabled = true;
+
+	if (nullptr == mud)
+		return;
 
 	if (mud->bCleanQEnabled)
 	{
+		PlayerAnim->PlayerCleanMontage();
 		mud->mudDestroy();
 	}
 
@@ -89,7 +88,7 @@ void APlayerTwoCharacter::cleanStart()
 
 void APlayerTwoCharacter::cleanEnd()
 {
-	bCleanQEnabled = false;
+	//bCleanQEnabled = false;
 }
 
 void APlayerTwoCharacter::setupDynamite()
