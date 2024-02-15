@@ -5,6 +5,8 @@
 #include "Enemy/EnemyAI.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/CapsuleComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Character.h"
+#include "../PKH/Game/PKHGameMode.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UAIFSM::UAIFSM()
@@ -172,6 +174,8 @@ void UAIFSM::TakeDamage( int damage )
 		// 죽음 애니메이션 몽타주 재생
 		me->PlayAnimMontage( enemyMontage , 1, TEXT("Die"));
 		isDieDone = false;
+		APKHGameMode* gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+		gamemode->KillCountUp();
 	}
 
 
