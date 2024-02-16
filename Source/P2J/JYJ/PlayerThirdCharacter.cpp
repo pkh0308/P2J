@@ -17,6 +17,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Components/CapsuleComponent.h"
 #include "PlayerHPBar.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Sound/SoundBase.h"
 
 APlayerThirdCharacter::APlayerThirdCharacter()
 {
@@ -126,9 +127,12 @@ void APlayerThirdCharacter::OnActionChooseSMG11()
 
 void APlayerThirdCharacter::OnActionFire()
 {
+
 	bAttack = true;
 	if(bAttack == true && bValidRifle == true)
 	{ 
+		UGameplayStatics::PlaySound2D( GetWorld() , fireSound );
+
 		FHitResult outhit;
 		FVector start = p1camComp->GetComponentLocation();
 		FVector end = start + (p1camComp->GetForwardVector() * 100000);

@@ -64,7 +64,8 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class AWeaponActor* Rifle;
 
-
+	UPROPERTY(EditAnywhere)
+	class USoundBase* fireSound;
 
 	void OnActionCrouchStart();
 	void OnActionCrouchEnd();
