@@ -51,10 +51,13 @@ void AEnemyAI::Tick(float DeltaTime)
 
 }
 
+
 void AEnemyAI::OnActionFire()
 {
 	FTransform t = firePosition->GetComponentTransform();
 	GetWorld()->SpawnActor<ABulletActor>(bulletFactory, t);
+
+	// GetWorldTimerManager().SetTimer(fireTimerHandle, this, &AEnemyAI::OnActionFire, 0.15f, true, 0.15f);
 }
 
 // Called to bind functionality to input

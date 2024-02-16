@@ -43,7 +43,12 @@ public:
 	class UArrowComponent* firePosition;
 
 	UFUNCTION(BlueprintCallable)
+	/*void OnInputFirePressed();
+	void OnInputFireReleased();*/
 	void OnActionFire();
+	
+	// AutoFire 타이머
+	FTimerHandle fireTimerHandle;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -69,6 +74,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UAIFSM* aiFSM;
+
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	//bool attackState;
