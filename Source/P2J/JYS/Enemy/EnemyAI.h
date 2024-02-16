@@ -43,8 +43,6 @@ public:
 	class UArrowComponent* firePosition;
 
 	UFUNCTION(BlueprintCallable)
-	/*void OnInputFirePressed();
-	void OnInputFireReleased();*/
 	void OnActionFire();
 	
 	// AutoFire 타이머
@@ -75,7 +73,4 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UAIFSM* aiFSM;
 
-
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//bool attackState;
 };

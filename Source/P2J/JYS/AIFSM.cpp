@@ -26,15 +26,32 @@ void UAIFSM::BeginPlay()
 
 	// 내 본체를 기억하고싶다.
 	me = Cast<AEnemyAI>( GetOwner() );
-	
-	
+
+
 }
 
 
 // Called every frame
-void UAIFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UAIFSM::TickComponent( float DeltaTime , ELevelTick TickType , FActorComponentTickFunction* ThisTickFunction )
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	Super::TickComponent( DeltaTime , TickType , ThisTickFunction );
+
+	// 자동 총쏘기가 활성화 되었다면
+	if (bAutoFire)
+	{
+		// 시간이 흐르다가
+		currentTimeAutoFire += DeltaTime;
+		// 만약 현재시간이 총쏘기 시간이되면
+		// 총쏘고
+		// 현재시간을 0을 초기화 
+		if (currentTimeAutoFire > autoFireTime)
+		{
+			me->OnActionFire();
+			GEngine->AddOnScreenDebugMessage( -1 , 3 , FColor::Cyan , TEXT( "Enemy->Player Attack!!" ) );
+			currentTimeAutoFire = 0;
+		}
+	}
+
 
 	switch (state)
 	{
@@ -55,7 +72,7 @@ void UAIFSM::TickIdle()
 	if (targetdist.Length() < 450)
 	{
 		// 3. 이동상태로 전이하고싶다. -> state의 값을 MOVE로 바꾸고싶다.
-		SetState(EAIState::MOVE);
+		SetState( EAIState::MOVE );
 		attackState = true;
 	}
 	else {
@@ -87,6 +104,15 @@ void UAIFSM::TickAttack()
 {
 	// 1. 시간이 흐르다가
 	currentTime += GetWorld()->GetDeltaSeconds();
+
+	if (false == bAutoFire)
+	{
+		if (currentTime > attackWaitTime*0.25f) {
+			bAutoFire = true;
+			currentTimeAutoFire = 0;
+
+		}
+	}
 	/*UE_LOG( LogTemp , Warning , TEXT( "Attack TEST1 %f"), currentTime );*/
 	if (currentTime > attackWaitTime)// 2. 현재 시간이 공격 대기시간을 초과하면
 	{
@@ -102,12 +128,12 @@ void UAIFSM::TickAttack()
 
 			// 6.	이동상태로 전이하고싶다.
 			SetState( EAIState::MOVE );
+
 		}
 		else// 7. 그렇지 않다면
 		{
 			// 8.공격을 하고싶다.
-			me->OnActionFire();
-			GEngine->AddOnScreenDebugMessage( -1 , 3 , FColor::Cyan , TEXT( "Enemy->Player Attack!!" ) );
+
 		}
 	}
 }
@@ -136,8 +162,8 @@ void UAIFSM::TickDie()
 	//	// 2초가 되면 스스로 파괴하고싶다
 	//	me->Destroy();
 	//}
-	
-	
+
+
 
 
 }
@@ -145,16 +171,16 @@ void UAIFSM::TickDie()
 void UAIFSM::DoDamageEnd()
 {
 	// 이동상태로 전이하고싶다
-	SetState(EAIState::MOVE);
-	me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	SetState( EAIState::MOVE );
+	me->GetCapsuleComponent()->SetCollisionEnabled( ECollisionEnabled::QueryAndPhysics );
 }
 
 void UAIFSM::TakeDamage( int damage )
 {
 	// 체력을 damage만큼 줄이고 싶다
 	me->hp -= damage;
-	UE_LOG(LogTemp, Warning, TEXT("Enemy2 test1"));
-	UE_LOG( LogTemp , Warning , TEXT( "Enemy2 hp %d" ), me->hp );
+	UE_LOG( LogTemp , Warning , TEXT( "Enemy2 test1" ) );
+	UE_LOG( LogTemp , Warning , TEXT( "Enemy2 hp %d" ) , me->hp );
 
 	if (me->hp < 0)
 	{
@@ -163,24 +189,24 @@ void UAIFSM::TakeDamage( int damage )
 
 	}
 	// 만약 체력이 0보다 크다면 Damage 상태로 전이하고싶다
-	if (me->hp > 0) 
+	if (me->hp > 0)
 	{
-		SetState(EAIState::DAMAGE);
+		SetState( EAIState::DAMAGE );
 		// 데미지 몽타주 재생
-		me->PlayAnimMontage(enemyMontage, 1, TEXT("Hit"));
-		
+		me->PlayAnimMontage( enemyMontage , 1 , TEXT( "Hit" ) );
+
 	}
 	else
 	{
 		// 체력이 0 이하라면 Die상태로 전이하고싶다
 		SetState( EAIState::DIE );
 		// 죽음 애니메이션 몽타주 재생
-		me->PlayAnimMontage( enemyMontage , 1, TEXT("Die"));
+		me->PlayAnimMontage( enemyMontage , 1 , TEXT( "Die" ) );
 		isDieDone = false;
 
 		me->GetCapsuleComponent()->SetCollisionEnabled( ECollisionEnabled::NoCollision );
-		
-		APKHGameMode* gamemode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+		APKHGameMode* gamemode = Cast<APKHGameMode>( UGameplayStatics::GetGameMode( GetWorld() ) );
 		gamemode->KillCountUp();
 	}
 
@@ -190,9 +216,16 @@ void UAIFSM::TakeDamage( int damage )
 	//me->GetCapsuleComponent()->SetCollisionEnabled( ECollisionEnabled::NoCollision );
 }
 
-void UAIFSM::SetState(EAIState next)
+void UAIFSM::SetState( EAIState next )
 {
 	state = next;
+	if (next == EAIState::ATTACK)
+	{
+	}
+	else
+	{
+		bAutoFire = false;
+	}
 	//currentTime = 0;
 }
 

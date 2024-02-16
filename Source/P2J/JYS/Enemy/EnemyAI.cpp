@@ -48,7 +48,7 @@ void AEnemyAI::BeginPlay()
 void AEnemyAI::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	GetWorld()->GetTimerManager().SetTimer(fireTimerHandle, this, &AEnemyAI::Attack, 5.0f, true);
 }
 
 
@@ -56,8 +56,6 @@ void AEnemyAI::OnActionFire()
 {
 	FTransform t = firePosition->GetComponentTransform();
 	GetWorld()->SpawnActor<ABulletActor>(bulletFactory, t);
-
-	// GetWorldTimerManager().SetTimer(fireTimerHandle, this, &AEnemyAI::OnActionFire, 0.15f, true, 0.15f);
 }
 
 // Called to bind functionality to input
@@ -93,6 +91,8 @@ void AEnemyAI::Attack()
 	 FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
 	 GetWorld()->SpawnActor<ABulletActor>(bulletFactory, t);
 
+	GetWorld()->GetTimerManager().ClearTimer(fireTimerHandle); 
+	 
 	 //GetWorld()->SpawnActor<ABulletActor>(bulletFactory, FVector((37.000000, 0.000000, 51.000000)), FRotator(0));
 
 	 UE_LOG(LogTemp, Warning, TEXT("TEST1"));

@@ -76,4 +76,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool attackState;
 
+
+	bool bAutoFire;
+	float currentTimeAutoFire;
+	float autoFireTime = 2;
+
+
 };
