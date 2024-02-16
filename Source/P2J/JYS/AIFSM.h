@@ -81,5 +81,6 @@ public:
 	float currentTimeAutoFire;
 	float autoFireTime = 2;
 
-
+	UPROPERTY(EditAnywhere)
+	class USoundBase* dyingSound;
 };

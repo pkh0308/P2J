@@ -73,4 +73,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UAIFSM* aiFSM;
 
+
 };

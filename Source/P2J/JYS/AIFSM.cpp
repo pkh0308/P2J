@@ -208,6 +208,8 @@ void UAIFSM::TakeDamage( int damage )
 
 		APKHGameMode* gamemode = Cast<APKHGameMode>( UGameplayStatics::GetGameMode( GetWorld() ) );
 		gamemode->KillCountUp();
+
+		UGameplayStatics::PlaySound2D(GetWorld(), dyingSound);
 	}
 
 

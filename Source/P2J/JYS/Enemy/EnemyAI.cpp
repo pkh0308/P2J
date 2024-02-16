@@ -91,7 +91,7 @@ void AEnemyAI::Attack()
 	 FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
 	 GetWorld()->SpawnActor<ABulletActor>(bulletFactory, t);
 
-	GetWorld()->GetTimerManager().ClearTimer(fireTimerHandle); 
+	/*GetWorld()->GetTimerManager().ClearTimer(fireTimerHandle); */
 	 
 	 //GetWorld()->SpawnActor<ABulletActor>(bulletFactory, FVector((37.000000, 0.000000, 51.000000)), FRotator(0));
 
