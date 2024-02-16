@@ -31,7 +31,7 @@ protected:
 // Move 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	float MoveSpeed = 1000.0f;
+	float MoveSpeed = 1200.0f;
 
 	UPROPERTY(EditDefaultsOnly)
 	float RotationSpeed = 10.0f;

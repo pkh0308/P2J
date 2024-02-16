@@ -44,7 +44,9 @@ protected:
 
 // Level
 protected:
+	UPROPERTY()
 	TArray<FName> LevelNames;
+
 	int32 LevelIdx = -1;
 
 // Quest

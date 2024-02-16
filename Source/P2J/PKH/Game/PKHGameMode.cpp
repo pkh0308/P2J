@@ -373,6 +373,9 @@ void APKHGameMode::StopBgm()
 {
 	for (int i = 0; i < BgmComps.Num(); i++)
 	{
-		BgmComps[i]->Stop();
+		if (IsValid(BgmComps[i]))
+		{
+			BgmComps[i]->Stop();
+		}
 	}
 }
