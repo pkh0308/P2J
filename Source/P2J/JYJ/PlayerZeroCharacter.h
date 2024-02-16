@@ -70,7 +70,10 @@ public:
 	//void OnPunchingMontageEnded(UAnimMontage* Montage, bool bInterrupred);
 
 	UFUNCTION(BlueprintCallable)
-	void TakePlayerDamaged(int damage);
+	virtual void TakePlayerDamaged(int damage);
+
+	
+	virtual void gameOverText();
 
 	UPROPERTY(EditAnywhere)
 	int32 playerMaxHP = 10;

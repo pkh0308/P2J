@@ -69,4 +69,9 @@ public:
 	void OnActionCrouchStart();
 	void OnActionCrouchEnd();
 
+	virtual void gameOverText() override;
+
+	virtual void TakePlayerDamaged( int damage ) override;
+
+
 };
