@@ -111,11 +111,7 @@ void APlayerZeroCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//Move();
-	if (this->playerHP == 0)
-	{
-		PlayerAnim->PlayerDeathMontage();
-		gamemode->GameOver(TEXT("당신은 시민에게 맞아 죽었습니다."));
-	}
+	
 
 }
 
@@ -215,17 +211,28 @@ void APlayerZeroCharacter::StopSprinting()
 
 void APlayerZeroCharacter::TakePlayerDamaged(int damage)
 {
-	PlayerAnim->PlayerHitMontage();
+	// 데미지 만큼 체력을 소모한다.
 	this->playerHP = this->playerHP - damage;
-
-	if (nullptr == playerHPBar)
-		return;
-
-	playerHPBar->SetHP(playerHP, playerMaxHP);
-
 	if (this->playerHP < damage)
 	{
 		this->playerHP = 0;
 	}
-}
 
+	// 체력이 결정되었다면 UI로 반영한다.
+	if (nullptr != playerHPBar)
+		playerHPBar->SetHP( playerHP , playerMaxHP );
+
+	// 만약 체력이 0이면 죽는다.
+	if (this->playerHP == 0)
+	{
+		if (PlayerAnim)
+			PlayerAnim->PlayerDeathMontage();
+		gamemode->GameOver( TEXT( "당신은 시민에게 맞아 죽었습니다." ) );
+	}
+	// 그렇지않다면 (== 체력이 0보다 크다면)
+	else 
+	{
+		if (PlayerAnim)
+			PlayerAnim->PlayerHitMontage();
+	}
+}

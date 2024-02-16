@@ -61,6 +61,11 @@ public:
 	UPROPERTY()
 	class UUserWidget* crossHairUI;
 
+	UPROPERTY(EditDefaultsOnly)
+	class AWeaponActor* Rifle;
+
+
+
 	void OnActionCrouchStart();
 	void OnActionCrouchEnd();
 

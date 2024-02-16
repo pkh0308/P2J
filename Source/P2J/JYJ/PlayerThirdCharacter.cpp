@@ -140,7 +140,13 @@ void APlayerThirdCharacter::OnActionFire()
 
 		if (breturnValue)
 		{
-			//DrawDebugLine(GetWorld(), outhit.TraceStart, outhit.ImpactPoint, FColor::Red, false, 10);
+			
+			//DrawDebugLine(GetWorld(), outhit.TraceStart, outhit.ImpactPoint, FColor::Red, false, 0.2f);
+			//FTransform t = GetMesh()->GetSocketTransform( TEXT("RifleGunSocket") );
+			//triggerSocket
+			FTransform t = Rifle->SMGMeshComp->GetSocketTransform( TEXT( "triggerSocket" ) );
+
+			DrawDebugLine( GetWorld() , t.GetLocation() , outhit.ImpactPoint , FColor::Silver , false , 0.2f);
 			
 			UPrimitiveComponent* hitComp = outhit.GetComponent();
 
@@ -166,15 +172,15 @@ void APlayerThirdCharacter::OnActionFire()
 
 }
 
-void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> Weapon)
+void APlayerThirdCharacter::AttachWeapon(TSubclassOf<AWeaponActor> WeaponFactory)
 {
-	if (Weapon) {
+	if (WeaponFactory) {
 		//weapon에 무기 정보만 담겨 있고 실제 객체는 생성되어 있지 않음
 		const USkeletalMeshSocket* WeaponSocket = GetMesh()->GetSocketByName("RifleGunSocket");
-		AWeaponActor* weapon = GetWorld()->SpawnActor<AWeaponActor>(FVector::ZeroVector, FRotator::ZeroRotator);
+		Rifle = GetWorld()->SpawnActor<AWeaponActor>(FVector::ZeroVector, FRotator::ZeroRotator);
 
 
-		WeaponSocket->AttachActor(weapon, GetMesh());
+		WeaponSocket->AttachActor( Rifle , GetMesh());
 		bValidRifle = true;
 		
 	}
