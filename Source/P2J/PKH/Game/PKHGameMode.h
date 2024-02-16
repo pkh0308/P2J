@@ -45,7 +45,7 @@ protected:
 // Level
 protected:
 	TArray<FName> LevelNames;
-	int32 LevelIdx = 0;
+	int32 LevelIdx = -1;
 
 // Quest
 protected:

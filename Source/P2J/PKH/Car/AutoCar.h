@@ -30,7 +30,17 @@ protected:
 
 // Move 
 protected:
-	float MoveSpeed = 500.0f;
+	UPROPERTY(EditDefaultsOnly)
+	float MoveSpeed = 1000.0f;
+
+	UPROPERTY(EditDefaultsOnly)
 	float RotationSpeed = 10.0f;
 
+	bool IsRotating = false;
+
+	UPROPERTY(EditAnywhere)
+	FRotator TargetRotation;
+
+public:
+	void StartRotation();
 };
