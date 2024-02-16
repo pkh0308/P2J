@@ -116,7 +116,11 @@ APKHGameMode::APKHGameMode()
 void APKHGameMode::BeginPlay()
 {
 	FString CurLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	if (CurLevelName == LevelNames[1])
+	if (CurLevelName == LevelNames[0])
+	{
+		LevelIdx = 0;
+	}
+	else if (CurLevelName == LevelNames[1])
 	{
 		LevelIdx = 1;
 		CurQuest = EQuestType::Q1_FightWithMan; 
@@ -133,7 +137,7 @@ void APKHGameMode::BeginPlay()
 	}
 	else
 	{
-		LevelIdx = 0;
+		LevelIdx = -1;
 	}
 	
 	// UI
