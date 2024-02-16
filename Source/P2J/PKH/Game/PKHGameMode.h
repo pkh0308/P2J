@@ -22,7 +22,8 @@ enum class EQuestType : uint8
 UENUM()
 enum class ELevelSelect : uint8 
 {
-	Level1 = 0,
+	Level0 = 0,
+	Level1,
 	Level2,
 	Level3
 };
@@ -71,6 +72,13 @@ public:
 
 // UI
 protected:
+	// Loading
+	UPROPERTY( EditAnywhere , BlueprintReadWrite )
+	TSubclassOf<class UUserWidget> LoadingUIClass;
+
+	UPROPERTY( EditAnywhere , BlueprintReadWrite )
+	TObjectPtr<class UUserWidget> LoadingUI;
+
 	// Guide
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UQuestGuideWidget> QuestGuideUIClass;
@@ -139,6 +147,15 @@ protected:
 	TArray<TObjectPtr<class UAudioComponent>> BgmComps;
 
 	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<class USoundBase> BGM_Title;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<class USoundBase> BGM_Level1;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<class USoundBase> BGM_Level2;
+
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<class USoundBase> BGM_Level3;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -146,6 +163,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<class USoundAttenuation> SA_FireAlarm;
+
+public:
+	void StopBgm();
 
 // SFX
 protected:

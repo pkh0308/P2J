@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PKH/Passer/BTTask_PasserAttack.h"
@@ -6,6 +6,7 @@
 #include "BehaviorTree/BlackBoardComponent.h"
 #include "PKH/Passer/PasserBase.h"
 #include "PKH/Passer/PasserAIKey.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UBTTask_PasserAttack::UBTTask_PasserAttack()
 {
@@ -45,6 +46,16 @@ EBTNodeResult::Type UBTTask_PasserAttack::ExecuteTask(UBehaviorTreeComponent& Ow
 			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		});
 
+	// Rotate
+	AActor* Target = Cast<AActor>( BBComp->GetValueAsObject( PASSER_KEY_TARGET ) );
+	if (nullptr == Target)
+	{
+		return EBTNodeResult::Failed;
+	}
+
+	FVector DirectionVec = Target->GetActorLocation() - OwnerPasser->GetActorLocation();
+	FRotator TargetRotation = UKismetMathLibrary::MakeRotFromX( DirectionVec.GetSafeNormal() );
+	OwnerPasser->SetActorRotation( TargetRotation );
 	OwnerPasser->BeginAttack();
 	OwnerPasser->SetEndAttackDelegate(OnAttakFinished);
 

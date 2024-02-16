@@ -46,6 +46,15 @@ EBTNodeResult::Type UBTTask_FBIAttack::ExecuteTask(UBehaviorTreeComponent& Owner
 			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		});
 
+	// Rotate
+	AActor* Target = Cast<AActor>( BBComp->GetValueAsObject( PASSER_KEY_TARGET ) );
+	if (nullptr == Target)
+	{
+		return EBTNodeResult::Failed;
+	}
+
+	FVector DirectionVec = Target->GetActorLocation() - OwnerPasser->GetActorLocation();
+	OwnerPasser->SetActorRotation( DirectionVec.GetSafeNormal().ToOrientationRotator() );
 	OwnerPasser->BeginAttack();
 	OwnerPasser->SetEndAttackDelegate(OnAttakFinished);
 

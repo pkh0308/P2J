@@ -20,6 +20,12 @@ APKHGameMode::APKHGameMode()
 	}
 
 	// UI
+	static ConstructorHelpers::FClassFinder<UUserWidget> LoadingUIRef( TEXT( "/Game/JYJ/UI/WBP_Loading.WBP_Loading_C" ) );
+	if (LoadingUIRef.Class)
+	{
+		LoadingUIClass = LoadingUIRef.Class;
+	}
+
 	static ConstructorHelpers::FClassFinder<UQuestGuideWidget> QuestGuideRef(TEXT("/Game/PKH/UI/WBP_QuestGuide.WBP_QuestGuide_C"));
 	if (QuestGuideRef.Class)
 	{
@@ -57,6 +63,21 @@ APKHGameMode::APKHGameMode()
 	}
 
 	// Sound
+	static ConstructorHelpers::FObjectFinder<USoundBase> BGM_TitleRef( TEXT( "/Script/Engine.SoundWave'/Game/PKH/Sound/Title/BGM_Title.BGM_Title'" ) );
+	if (BGM_TitleRef.Object)
+	{
+		BGM_Title = BGM_TitleRef.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<USoundBase> BGM_Level1Ref( TEXT( "/Script/Engine.SoundWave'/Game/PKH/Sound/Level1/BGM_Level1.BGM_Level1'" ) );
+	if (BGM_Level1Ref.Object)
+	{
+		BGM_Level1 = BGM_Level1Ref.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<USoundBase> BGM_Level2Ref( TEXT( "/Script/Engine.SoundWave'/Game/PKH/Sound/Level2/BGM_Level2.BGM_Level2'" ) );
+	if (BGM_Level2Ref.Object)
+	{
+		BGM_Level2 = BGM_Level2Ref.Object;
+	}
 	static ConstructorHelpers::FObjectFinder<USoundBase> BGM_Level3Ref( TEXT( "/Script/Engine.SoundWave'/Game/PKH/Sound/Level3/BGM_Level3.BGM_Level3'" ) );
 	if (BGM_Level3Ref.Object)
 	{
@@ -86,6 +107,7 @@ APKHGameMode::APKHGameMode()
 	}
 
 	// Level
+	LevelNames.Add(TEXT("StartLevel"));
 	LevelNames.Add(TEXT("Demo_Copy"));
 	LevelNames.Add(TEXT("Level2_Test_Copy"));
 	LevelNames.Add(TEXT("Level3"));
@@ -94,51 +116,65 @@ APKHGameMode::APKHGameMode()
 void APKHGameMode::BeginPlay()
 {
 	FString CurLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	if (CurLevelName == LevelNames[0])
+	if (CurLevelName == LevelNames[1])
 	{
 		LevelIdx = 1;
 		CurQuest = EQuestType::Q1_FightWithMan; 
 	}
-	else if(CurLevelName == LevelNames[1])
+	else if(CurLevelName == LevelNames[2])
 	{
 		LevelIdx = 2;
 		CurQuest = EQuestType::Q4_PlantBombs;
 	}
-	else if (CurLevelName == LevelNames[2])
+	else if (CurLevelName == LevelNames[3])
 	{
 		LevelIdx = 3;
 		CurQuest = EQuestType::Q6_GetTheDisk;
 	}
+	else
+	{
+		LevelIdx = 0;
+	}
 	
 	// UI
-	QuestGuideUI = CreateWidget<UQuestGuideWidget>(GetWorld(), QuestGuideUIClass);
-	if (QuestGuideUI)
+	if (LevelIdx > 0)
 	{
-		QuestGuideUI->AddToViewport();
-		FTimerHandle GuideHandle;
-
-		switch (LevelIdx)
+		QuestGuideUI = CreateWidget<UQuestGuideWidget>( GetWorld() , QuestGuideUIClass );
+		if (QuestGuideUI)
 		{
-		case 1:
-			QuestGuideUI->SetQuestGuideText(TEXT("오늘은 썩 기분이 거지같군. 누구 하나 잡고 시비라도 걸어야겠어."), 4.0f, true);
-			GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
-				[this]() {
-					QuestGuideUI->SetQuestGuideText( TEXT( "전화중인 남자에게 시비를 거십시오." ) );
-				} ) , 4.0f , false );
-			break;
-		case 2:
-			QuestGuideUI->SetQuestGuideText(TEXT("폭탄을 설치하십시오."));
-			break;
-		case 3:
-			QuestGuideUI->SetQuestGuideText(TEXT("좋아, 혼란한 틈을 타서 디스크를 훔치면 되겠군."), 4.0f, true);
-			GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
-				[this]() {
-					QuestGuideUI->SetQuestGuideText( TEXT( "보안 디스크를 획득하십시오." ) );
-				} ) , 4.0f , false );
-			break;
-		default:
-			QuestGuideUI->SetQuestGuideText(TEXT(""));
-			break;
+			QuestGuideUI->AddToViewport();
+			FTimerHandle GuideHandle;
+
+			switch (LevelIdx)
+			{
+			case 1:
+				QuestGuideUI->SetQuestGuideText( TEXT( "오늘은 썩 기분이 거지같군. 누구 하나 잡고 시비라도 걸어야겠어." ) , 4.0f , true );
+				GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
+					[this]() {
+						QuestGuideUI->SetQuestGuideText( TEXT( "전화중인 남자에게 시비를 거십시오." ) );
+					} ) , 4.0f , false );
+				break;
+			case 2:
+				QuestGuideUI->SetQuestGuideText( TEXT( "폭탄을 설치하십시오." ) );
+				break;
+			case 3:
+				QuestGuideUI->SetQuestGuideText( TEXT( "좋아, 혼란한 틈을 타서 디스크를 훔치면 되겠군." ) , 4.0f , true );
+				GetWorldTimerManager().SetTimer( GuideHandle , FTimerDelegate::CreateLambda(
+					[this]() {
+						QuestGuideUI->SetQuestGuideText( TEXT( "보안 디스크를 획득하십시오." ) );
+					} ) , 4.0f , false );
+				break;
+			}
+		}
+	}
+
+	// Title
+	if (LevelIdx == 0)
+	{
+		LoadingUI = CreateWidget<UUserWidget>( GetWorld() , LoadingUIClass );
+		if (LoadingUI)
+		{
+			LoadingUI->AddToViewport();
 		}
 	}
 
@@ -171,7 +207,7 @@ void APKHGameMode::BeginPlay()
 	}
 
 	// Hp Bar
-	if (LevelIdx == 1)
+	if (LevelIdx == 1 || LevelIdx == 3)
 	{
 		PlayerHpUI = CreateWidget<UPlayerHPBar>( GetWorld() , PlayerHpUIClass );
 		if (PlayerHpUI)
@@ -181,23 +217,29 @@ void APKHGameMode::BeginPlay()
 	}
 
 	// Timer
-	GetWorldTimerManager().SetTimer(TimeHandle, FTimerDelegate::CreateLambda(
-		[this]() {
-			Seconds++;
-		}), 1.0f, true);
+	if (LevelIdx > 0)
+	{
+		GetWorldTimerManager().SetTimer( TimeHandle , FTimerDelegate::CreateLambda(
+			[this]() {
+				Seconds++;
+			} ) , 1.0f , true );
+	}
 
 	// BGM
 	switch (LevelIdx)
 	{
+	case 0:
+		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Title , 1.0f ) );
+		break;
 	case 1:
-		
+		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Level1 , 1.0f ) );
 		break;
 	case 2:
-		
+		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Level2 , 0.5f ) );
 		break;
 	case 3:
 		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Level3 , 0.3f ));
-		BgmComps.Add(UGameplayStatics::SpawnSoundAtLocation( GetWorld() , SFX_FireAlarm , FVector(-3000, -538, 5200) , FRotator() , 0.15f , 1.0f, 0, SA_FireAlarm ));
+		BgmComps.Add(UGameplayStatics::SpawnSoundAtLocation( GetWorld() , SFX_FireAlarm , FVector(-3000, -538, 5200) , FRotator() , 0.08f , 1.0f, 0, SA_FireAlarm ));
 		break;
 	}
 }
@@ -246,6 +288,10 @@ void APKHGameMode::CountBomb()
 
 void APKHGameMode::ShowFadeOut()
 {
+	if (PlayerHpUI)
+	{
+		PlayerHpUI->SetVisibility( ESlateVisibility::Hidden );
+	}
 	FadeOutUI->SetVisibility(ESlateVisibility::Visible);
 }
 
@@ -279,10 +325,7 @@ void APKHGameMode::GameClear()
 	GameClearUI->SetVisibility(ESlateVisibility::Visible);
 
 	// Sound
-	for (int i = 0; i < BgmComps.Num(); i++)
-	{
-		BgmComps[i]->Stop();
-	}
+	StopBgm();
 	UGameplayStatics::PlaySound2D(GetWorld(), SFX_MissionClear, 1.0f);
 
 	FTimerHandle Handle;
@@ -299,12 +342,9 @@ void APKHGameMode::GameOver(FString NewFailReasonString)
 	OxygenUI->SetVisibility(ESlateVisibility::Hidden);
 
 	// Sound
-	for (int i = 0; i < BgmComps.Num(); i++)
-	{
-		BgmComps[i]->Stop();
-	}
+	StopBgm();
 	UGameplayStatics::PlaySound2D( GetWorld() , SFX_MissionFail , 1.0f );
-
+	
 	// Game Over
 	GameOverUI->SetFailReasonText(NewFailReasonString);
 	GameOverUI->SetVisibility(ESlateVisibility::Visible);
@@ -323,4 +363,12 @@ void APKHGameMode::OpenLevel(enum ELevelSelect NewLevel)
 
 	uint8 Idx = (uint8)NewLevel;
 	UGameplayStatics::OpenLevel(GetWorld(), LevelNames[Idx]);
+}
+
+void APKHGameMode::StopBgm()
+{
+	for (int i = 0; i < BgmComps.Num(); i++)
+	{
+		BgmComps[i]->Stop();
+	}
 }
