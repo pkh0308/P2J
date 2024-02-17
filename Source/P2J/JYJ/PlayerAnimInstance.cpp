@@ -143,4 +143,11 @@ void UPlayerAnimInstance::PlayerHitMontage()
 	}
 }
 
-
+//폭탄 설치 몽타주
+void UPlayerAnimInstance::PlayerSetBombMontage()
+{
+	if (!Montage_IsPlaying( PlayerMontage ))
+	{
+		Cast<APlayerZeroCharacter>( TryGetPawnOwner() )->PlayAnimMontage( PlayerMontage , 1 , TEXT( "SetBomb" ) );
+	}
+}

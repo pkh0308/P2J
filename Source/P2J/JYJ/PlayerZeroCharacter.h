@@ -88,4 +88,7 @@ public:
 	class UPlayerHPBar* playerHPBar;
 
 	int64 milliseconds;
+
+	bool bAvailableMove;
+
 };

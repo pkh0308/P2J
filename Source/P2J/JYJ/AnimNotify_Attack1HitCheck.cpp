@@ -12,16 +12,13 @@ void UAnimNotify_Attack1HitCheck::Notify(USkeletalMeshComponent* MeshComp, UAnim
 {
 	Super::Notify(MeshComp, Animation);
 
-	UE_LOG( LogTemp , Warning , TEXT( "Player attack1 TEST1" ) );
-
 	if (MeshComp)
 	{
-		UE_LOG( LogTemp , Warning , TEXT( "Player attack1 TEST2" ) );
 		APlayerZeroCharacter* AttackPlayer = Cast<APlayerZeroCharacter>(MeshComp->GetOwner());
 
 		if (AttackPlayer)
 		{
-			UE_LOG( LogTemp , Warning , TEXT( "Player attack1 TEST3" ) );
+			AttackPlayer->bAvailableMove = false;
 			AttackPlayer->punchComp->SetCollisionProfileName(TEXT("PlayerAttack"));
 			//AttackPlayer->punchComp->SetCollisionEnabled(ECollisionEnabled::);
 		}

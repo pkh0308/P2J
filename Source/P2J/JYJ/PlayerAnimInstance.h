@@ -72,6 +72,7 @@ public:
 	void PlayerRifleFireMontage();
 	void PlayerDeathMontage();
 	void PlayerHitMontage();
+	void PlayerSetBombMontage();
 	//void PlayerCrouch();
 
 

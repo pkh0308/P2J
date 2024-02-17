@@ -12,6 +12,7 @@
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/SpringArmComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Camera/CameraComponent.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
+#include "../PKH/Trigger/LockerDrawTrigger.h"
 
 APlayerTwoCharacter::APlayerTwoCharacter()
 {
@@ -65,10 +66,12 @@ void APlayerTwoCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 void APlayerTwoCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+	/*
 	if (dynamiteCnt == 3)
 	{
 		gamemode->SetQuestGuideText(TEXT("건물을 나가시오."));
 	}
+	*/
 
 }
 
@@ -82,6 +85,12 @@ void APlayerTwoCharacter::cleanStart()
 	{
 		PlayerAnim->PlayerCleanMontage();
 		mud->mudDestroy();
+		mudCnt++;
+	}
+
+	if (mudCnt == 5)
+	{
+		gamemode->SetQuestGuideText( TEXT( "오른편 방에 진입하여 사물함에 폭탄을 설치하시오." ) );
 	}
 
 }
@@ -102,4 +111,13 @@ void APlayerTwoCharacter::setupDynamite()
 	}
 }
 
+void APlayerTwoCharacter::OnBombOverlap( UPrimitiveComponent* OverlappedComp , AActor* OtherActor , UPrimitiveComponent* OtherComp , int32 OtherBodyIndex , bool bFromSweep , const FHitResult& SweepResult )
+{
+	ALockerDrawTrigger* setBomb = Cast<ALockerDrawTrigger>( OtherActor );
+
+	if (setBomb)
+	{
+		PlayerAnim->PlayerSetBombMontage();
+	}
+}
 

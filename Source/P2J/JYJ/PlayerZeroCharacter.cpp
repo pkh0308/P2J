@@ -85,6 +85,7 @@ APlayerZeroCharacter::APlayerZeroCharacter()
 void APlayerZeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	bAvailableMove = true;
 
 	//this->playerHP = this->playerMaxHP;
 	
@@ -142,16 +143,21 @@ void APlayerZeroCharacter::PostInitializeComponents()
 void APlayerZeroCharacter::OnAxisVertical(float value)
 {
 	//direction.X = value;
-	FVector Direction = UKismetMathLibrary::GetForwardVector(FRotator(0.0f, GetControlRotation().Yaw, 0.0f));
-	AddMovementInput(Direction, value);
+	if (bAvailableMove)
+	{
+		FVector Direction = UKismetMathLibrary::GetForwardVector(FRotator(0.0f, GetControlRotation().Yaw, 0.0f));
+		AddMovementInput(Direction, value);
+	}
 }
 
 void APlayerZeroCharacter::OnAxisHorizontal(float value)
 {
 	//direction.Y = value;
-	FVector Direction = UKismetMathLibrary::GetRightVector(FRotator(0.0f, GetControlRotation().Yaw, 0.0f));
-	AddMovementInput(Direction, value);
-
+	if (bAvailableMove)
+	{
+		FVector Direction = UKismetMathLibrary::GetRightVector(FRotator(0.0f, GetControlRotation().Yaw, 0.0f));
+		AddMovementInput(Direction, value);
+	}
 }
 
 void APlayerZeroCharacter::OnActionJump()
