@@ -28,10 +28,22 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UStaticMeshComponent> MeshComp;
 
+	UFUNCTION()
+	void OnPlayerHit(UPrimitiveComponent* HitComponent , AActor* OtherActor , UPrimitiveComponent* OtherComp , FVector NormalImpulse , const FHitResult& Hit );
+
 // Move 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	float MoveSpeed = 1200.0f;
+	float MaxMoveSpeed = 1800.0f;
+
+	UPROPERTY( EditDefaultsOnly )
+	float MinMoveSpeed = 300.0f;
+
+	UPROPERTY( EditDefaultsOnly )
+	float DeltaAccel = 40.0f;
+
+	float CurAccel = 0;
+	float CurMoveSpeed = 0;
 
 	UPROPERTY(EditDefaultsOnly)
 	float RotationSpeed = 10.0f;

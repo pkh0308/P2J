@@ -3,6 +3,9 @@
 
 #include "PKH/Car/AutoCar.h"
 #include "Components/BoxComponent.h"
+#include "JYJ/PlayerZeroCharacter.h"
+#include "PKH/Game/PKHGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 AAutoCar::AAutoCar()
 {
@@ -17,6 +20,7 @@ AAutoCar::AAutoCar()
 	MeshComp->SetupAttachment( BoxComp );
 	MeshComp->SetRelativeScale3D( FVector( 0.7f ) );
 	MeshComp->SetCollisionProfileName( TEXT( "BlockAll" ) );
+	MeshComp->OnComponentHit.AddDynamic(this, &AAutoCar::OnPlayerHit );
 }
 
 void AAutoCar::BeginPlay()
@@ -29,6 +33,8 @@ void AAutoCar::BeginPlay()
 		TargetRotation.Yaw = 0;
 	}
 	IsRotating = false;
+
+	CurMoveSpeed = MinMoveSpeed;
 }
 
 void AAutoCar::Tick(float DeltaTime)
@@ -37,8 +43,9 @@ void AAutoCar::Tick(float DeltaTime)
 
 	if (IsRotating)
 	{
-		SetActorRotation(FMath::Lerp<FRotator>(GetActorRotation(), TargetRotation, DeltaTime ));
-		if (FMath::Abs(TargetRotation.Yaw - GetActorRotation().Yaw) < 5)
+		SetActorRotation(FMath::Lerp<FRotator>(GetActorRotation(), TargetRotation, DeltaTime));
+		float TargetYaw = FMath::Abs(TargetRotation.Yaw - GetActorRotation().Yaw) < 90 ? TargetRotation.Yaw : TargetRotation.Yaw - 360;
+		if (FMath::Abs(TargetYaw - GetActorRotation().Yaw) < 5)
 		{
 			SetActorRotation( TargetRotation );
 			IsRotating = false;
@@ -46,7 +53,33 @@ void AAutoCar::Tick(float DeltaTime)
 	}
 	else
 	{
-		SetActorLocation( GetActorLocation() + GetActorRightVector() * MoveSpeed * DeltaTime );
+		if (CurMoveSpeed < MaxMoveSpeed)
+		{
+			CurAccel += DeltaAccel * DeltaTime;
+			CurMoveSpeed += CurAccel;
+		}
+		SetActorLocation( GetActorLocation() + GetActorRightVector() * CurMoveSpeed * DeltaTime );
+	}
+}
+
+void AAutoCar::OnPlayerHit( UPrimitiveComponent* HitComponent , AActor* OtherActor , UPrimitiveComponent* OtherComp , FVector NormalImpulse , const FHitResult& Hit )
+{
+	APlayerZeroCharacter* Player = Cast<APlayerZeroCharacter>( OtherActor );
+	if (nullptr == Player)
+	{
+		return;
+	}
+	
+	APKHGameMode* GameMode = Cast<APKHGameMode>( UGameplayStatics::GetGameMode( GetWorld() ) );
+	if (nullptr == GameMode)
+	{
+		return;
+	}
+
+	Player->TakePlayerDamaged( 1 );
+	if (CurMoveSpeed > 1000)
+	{
+		GameMode->GameOver( TEXT( "차에 치여 사망하였습니다." ) );
 	}
 }
 
@@ -59,4 +92,6 @@ void AAutoCar::StartRotation()
 	}
 
 	IsRotating = true;
+	CurMoveSpeed = MinMoveSpeed;
+	CurAccel = 0;
 }

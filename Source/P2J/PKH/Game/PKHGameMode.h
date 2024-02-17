@@ -137,6 +137,7 @@ public:
 
 	void GameClear();
 
+	bool IsOver = false;
 	void GameOver(FString NewFailReasonString);
 
 // Level

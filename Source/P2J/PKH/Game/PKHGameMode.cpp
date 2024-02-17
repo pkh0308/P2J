@@ -341,6 +341,12 @@ void APKHGameMode::GameClear()
 
 void APKHGameMode::GameOver(FString NewFailReasonString)
 {
+	if (IsOver)
+	{
+		return;
+	}
+	IsOver = true;
+
 	// Hide UI
 	QuestGuideUI->SetVisibility(ESlateVisibility::Hidden);
 	OxygenUI->SetVisibility(ESlateVisibility::Hidden);
