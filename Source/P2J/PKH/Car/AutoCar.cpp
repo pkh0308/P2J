@@ -76,10 +76,14 @@ void AAutoCar::OnPlayerHit( UPrimitiveComponent* HitComponent , AActor* OtherAct
 		return;
 	}
 
-	Player->TakePlayerDamaged( 1 );
 	if (CurMoveSpeed > 1000)
 	{
 		GameMode->GameOver( TEXT( "차에 치여 사망하였습니다." ) );
+		Player->TakePlayerDamaged( 1000 );
+	}
+	else
+	{
+		Player->TakePlayerDamaged( 1 );
 	}
 }
 

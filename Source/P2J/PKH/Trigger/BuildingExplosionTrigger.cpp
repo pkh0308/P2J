@@ -75,7 +75,7 @@ void ABuildingExplosionTrigger::OnPlayerOverlap( UPrimitiveComponent* Overlapped
 			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector(-1196.75f, 15637.93f, 6312) , FRotator(0, -70, 0) , FVector( 3.0f ) );
 			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Fire , FVector( -1196.75f , 15637.93f , 6312 ) , FRotator( 0 , -70 , 0 ) , FVector( 1.2f ) );
 			UGameplayStatics::PlaySound2D( GetWorld() , SFX_Explosion_1 , 0.7f , 0.7f );
-		} ) , 6.2f , false );
+		} ) , 5.7f , false );
 	FTimerHandle Handle7;
 	GetWorldTimerManager().SetTimer( Handle7 , FTimerDelegate::CreateLambda(
 		[this]() {
