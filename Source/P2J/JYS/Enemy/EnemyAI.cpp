@@ -75,7 +75,7 @@ void AEnemyAI::OnDamaged(int damage)
 void AEnemyAI::OnDead()
 {
 	isDead = true;
-	UE_LOG( LogTemp , Warning , TEXT( "die" ) );
+	// UE_LOG( LogTemp , Warning , TEXT( "die" ) );
 }
 
 void AEnemyAI::Attack()
@@ -95,7 +95,7 @@ void AEnemyAI::Attack()
 	 
 	 //GetWorld()->SpawnActor<ABulletActor>(bulletFactory, FVector((37.000000, 0.000000, 51.000000)), FRotator(0));
 
-	 UE_LOG(LogTemp, Warning, TEXT("TEST1"));
+	 // UE_LOG(LogTemp, Warning, TEXT("TEST1"));
 
 
 }

@@ -44,7 +44,7 @@ void ABulletActor::BeginPlay()
 	Super::BeginPlay();
 
 	movementComp->Velocity = GetActorForwardVector() * movementComp->MaxSpeed;
-	UE_LOG( LogTemp , Log , TEXT( "dasdasds" ) );
+	// UE_LOG( LogTemp , Log , TEXT( "dasdasds" ) );
 
 	// 총알 액터의 수명을 5초로 하고 싶다. 타이머를 이용해서 처리하고 싶다.
 	// FTimerHandle timerHandle;

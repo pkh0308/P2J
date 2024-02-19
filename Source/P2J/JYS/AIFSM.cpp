@@ -47,7 +47,7 @@ void UAIFSM::TickComponent( float DeltaTime , ELevelTick TickType , FActorCompon
 		if (currentTimeAutoFire > autoFireTime)
 		{
 			me->OnActionFire();
-			GEngine->AddOnScreenDebugMessage( -1 , 3 , FColor::Cyan , TEXT( "Enemy->Player Attack!!" ) );
+			// GEngine->AddOnScreenDebugMessage( -1 , 3 , FColor::Cyan , TEXT( "Enemy->Player Attack!!" ) );
 			currentTimeAutoFire = 0;
 		}
 	}
@@ -93,7 +93,6 @@ void UAIFSM::TickMove()
 	{
 		// 4. 공격상태로 전이하고싶다.
 		SetState( EAIState::ATTACK );
-
 
 		// FVector dir = target->GetActorLocation() - me->GetActorLocation();
 		// me->AddMovementInput( dir.GetSafeNormal() );
@@ -179,12 +178,12 @@ void UAIFSM::TakeDamage( int damage )
 {
 	// 체력을 damage만큼 줄이고 싶다
 	me->hp -= damage;
-	UE_LOG( LogTemp , Warning , TEXT( "Enemy2 test1" ) );
-	UE_LOG( LogTemp , Warning , TEXT( "Enemy2 hp %d" ) , me->hp );
+	// UE_LOG( LogTemp , Warning , TEXT( "Enemy2 test1" ) );
+	// UE_LOG( LogTemp , Warning , TEXT( "Enemy2 hp %d" ) , me->hp );
 
 	if (me->hp < 0)
 	{
-		UE_LOG( LogTemp , Warning , TEXT( "Enemy2 test2" ) );
+		// UE_LOG( LogTemp , Warning , TEXT( "Enemy2 test2" ) );
 		me->hp = 0;
 
 	}
