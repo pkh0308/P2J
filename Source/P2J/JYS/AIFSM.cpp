@@ -170,7 +170,7 @@ void UAIFSM::TickDie()
 void UAIFSM::DoDamageEnd()
 {
 	// 이동상태로 전이하고싶다
-	SetState( EAIState::MOVE );
+	SetState( EAIState::IDLE );
 	me->GetCapsuleComponent()->SetCollisionEnabled( ECollisionEnabled::QueryAndPhysics );
 }
 
@@ -194,6 +194,7 @@ void UAIFSM::TakeDamage( int damage )
 		// 데미지 몽타주 재생
 		me->PlayAnimMontage( enemyMontage , 1 , TEXT( "Hit" ) );
 
+		DoDamageEnd();
 	}
 	else
 	{
