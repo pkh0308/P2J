@@ -159,7 +159,7 @@ void APKHGameMode::BeginPlay()
 					} ) , 4.0f , false );
 				break;
 			case 2:
-				QuestGuideUI->SetQuestGuideText( TEXT( "폭탄을 설치하십시오." ) );
+				QuestGuideUI->SetQuestGuideText( TEXT( "청소부로 잠입하여, 폭탄을 설치하십시오." ) );
 				break;
 			case 3:
 				QuestGuideUI->SetQuestGuideText( TEXT( "좋아, 혼란한 틈을 타서 디스크를 훔치면 되겠군." ) , 4.0f , true );
@@ -239,10 +239,10 @@ void APKHGameMode::BeginPlay()
 		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Level1 , 1.0f ) );
 		break;
 	case 2:
-		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Level2 , 0.5f ) );
+		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Level2 , 0.6f ) );
 		break;
 	case 3:
-		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Level3 , 0.3f ));
+		BgmComps.Add( UGameplayStatics::SpawnSound2D( GetWorld() , BGM_Level3 , 0.4f ));
 		BgmComps.Add(UGameplayStatics::SpawnSoundAtLocation( GetWorld() , SFX_FireAlarm , FVector(-3000, -538, 5200) , FRotator() , 0.08f , 1.0f, 0, SA_FireAlarm ));
 		break;
 	}

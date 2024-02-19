@@ -60,14 +60,14 @@ void ABuildingExplosionTrigger::OnPlayerOverlap( UPrimitiveComponent* Overlapped
 		[this]() {
 			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector( 2092.13f, 14705.76f, 6312) , FRotator(0, -105, 0) , FVector( 3.0f ) );
 			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Fire , FVector( 2092.13f , 14705.76f , 6312 ) , FRotator( 0 , -105 , 0 ) , FVector( 1.2f ) );
-			UGameplayStatics::PlaySound2D( GetWorld() , SFX_Explosion_1 , 1.3f , 1.3f );
+			UGameplayStatics::PlaySound2D( GetWorld() , SFX_Explosion_2 , 1.3f , 1.3f );
 		} ) , 4.2f , false );
 	FTimerHandle Handle5;
 	GetWorldTimerManager().SetTimer( Handle5 , FTimerDelegate::CreateLambda(
 		[this]() { 
 			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector( 547.62f, 15119.61f, 6312) , FRotator(0, -105, 0) , FVector( 3.0f ) );
 			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Fire , FVector( 547.62f , 15119.61f , 6312 ) , FRotator( 0 , -105 , 0 ) , FVector( 1.2f ) );
-			UGameplayStatics::PlaySound2D( GetWorld() , SFX_Explosion_2 , 1.1f , 0.7f );
+			UGameplayStatics::PlaySound2D( GetWorld() , SFX_Explosion_1 , 1.1f , 0.7f );
 		} ) , 5.2f , false );
 	FTimerHandle Handle6;
 	GetWorldTimerManager().SetTimer( Handle6 , FTimerDelegate::CreateLambda(
@@ -81,8 +81,8 @@ void ABuildingExplosionTrigger::OnPlayerOverlap( UPrimitiveComponent* Overlapped
 		[this]() {
 			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Explosion , FVector( -2367.60f, 15211.78f, 6312 ) , FRotator(0, -70, 0) , FVector( 3.0f ) );
 			UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , VFX_Fire , FVector( -2367.60f , 15211.78f , 6312 ) , FRotator( 0 , -70 , 0 ) , FVector( 1.2f ) );
-			UGameplayStatics::PlaySound2D( GetWorld() , SFX_Explosion_2 , 1.6f , 1.3f );
-		} ) , 7.2f , false );
+			UGameplayStatics::PlaySound2D( GetWorld() , SFX_Explosion_2 , 1.7f , 1.5f );
+		} ) , 7.0f , false );
 
 	// Open Level
 	FTimerHandle Handle9;

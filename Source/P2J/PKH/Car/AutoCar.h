@@ -40,7 +40,7 @@ protected:
 	float MinMoveSpeed = 300.0f;
 
 	UPROPERTY( EditDefaultsOnly )
-	float DeltaAccel = 40.0f;
+	float DeltaAccel = 30.0f;
 
 	float CurAccel = 0;
 	float CurMoveSpeed = 0;

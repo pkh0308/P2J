@@ -44,12 +44,14 @@ void AItem_Disk::GetItem( APlayerZeroCharacter* InCharacter)
 
 	if (GameMode->CheckCurQuest(EQuestType::Q6_GetTheDisk))
 	{
+		GameMode->SetHpBar( false );
 		GameMode->ClearCurQuest();
 		SequencePlayer->Play();
 
 		FTimerHandle MonoHandle;
 		GetWorldTimerManager().SetTimer( MonoHandle, FTimerDelegate::CreateLambda(
 			[GameMode]() {
+				GameMode->SetHpBar( true );
 				GameMode->SetQuestGuideText( TEXT( "필요한 물건은 챙겼으니 얼른 나가야겠어." ), 4.0f, true );
 			}), 4.0f, false);
 
