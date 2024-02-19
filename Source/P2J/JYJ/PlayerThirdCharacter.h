@@ -32,7 +32,10 @@ public:
 	float targetFOV = 90;
 
 	UPROPERTY(EditAnywhere)
-	class UParticleSystem* expVFX;
+	class UParticleSystem* enemyVFX;
+
+	UPROPERTY( EditAnywhere )
+	class UParticleSystem* gunVFX;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AWeaponActor> Gun;
@@ -71,6 +74,8 @@ public:
 	void OnActionCrouchEnd();
 
 	virtual void TakePlayerDamaged( int damage ) override;
+
+	
 
 
 };

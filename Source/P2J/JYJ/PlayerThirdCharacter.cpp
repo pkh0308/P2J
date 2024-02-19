@@ -19,6 +19,7 @@
 #include "PlayerHPBar.h"
 #include "../../../../../../../Source/Runtime/Engine/Classes/Sound/SoundBase.h"
 
+
 APlayerThirdCharacter::APlayerThirdCharacter()
 {
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tmpMesh(TEXT("/Script/Engine.Skeleton'/Game/JYJ/Mesh/Player3/Ch35_nonPBR_Skeleton.Ch35_nonPBR_Skeleton'"));
@@ -87,6 +88,8 @@ void APlayerThirdCharacter::Zoom()
 {
 	//선형보간을 이용해서 현재 FOV를 targetFOV값에 근접하게 하고 싶다.
 	p1camComp->FieldOfView = FMath::Lerp<float>(p1camComp->FieldOfView, targetFOV, GetWorld()->GetDeltaSeconds() * 10);
+
+	
 }
 
 void APlayerThirdCharacter::ZoomIn()
@@ -165,11 +168,13 @@ void APlayerThirdCharacter::OnActionFire()
 				//enemy2->Destroy();
 				UE_LOG(LogTemp, Warning, TEXT("enemy2 attack"));
 				enemy2->OnDamaged(1);
+				UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , enemyVFX , outhit.ImpactPoint );
 
 			}
-
-			//부딪힌 곳에 expVFX를 생성해서 배치하고 싶다.
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), expVFX, outhit.ImpactPoint);
+			else
+			{
+				UGameplayStatics::SpawnEmitterAtLocation( GetWorld() , gunVFX , outhit.ImpactPoint );
+			}
 
 			bAttack = false;
 		}
@@ -227,5 +232,6 @@ void APlayerThirdCharacter::TakePlayerDamaged( int damage )
 		if (PlayerAnim)
 			PlayerAnim->PlayerHitMontage();
 	}
+
 }
 
