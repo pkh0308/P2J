@@ -185,7 +185,7 @@ void APasser_FBI::OnDie()
 		[this]() {
 			Destroy();
 		}
-	), 14.0f, false);
+	), 12.0f, false);
 
 	// Quest
 	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
