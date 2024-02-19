@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PKH/Trigger/ElebatorEscapeTrigger.h"
@@ -20,6 +20,13 @@ void AElebatorEscapeTrigger::OnPlayerOverlap(UPrimitiveComponent* OverlappedComp
 	APKHGameMode* GameMode = Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode)
 	{
+		GameMode->SetHpBar( false );
 		GameMode->StopOxygenTimer();
+
+		FTimerHandle HpHandle;
+		GetWorldTimerManager().SetTimer( HpHandle , FTimerDelegate::CreateLambda(
+			[GameMode]() {
+				GameMode->SetHpBar( true );
+			} ) , 3.0f , false );
 	}
 }

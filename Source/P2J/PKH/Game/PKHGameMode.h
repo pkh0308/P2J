@@ -135,6 +135,8 @@ public:
 	void StartOxygenTimer();
 	void StopOxygenTimer();
 
+	void SetHpBar(bool IsVisible);
+
 	void GameClear();
 
 	bool IsOver = false;

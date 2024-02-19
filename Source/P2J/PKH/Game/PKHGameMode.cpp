@@ -343,6 +343,7 @@ void APKHGameMode::GameOver(FString NewFailReasonString)
 {
 	if (IsOver)
 	{
+		GameOverUI->SetFailReasonText( NewFailReasonString );
 		return;
 	}
 	IsOver = true;
@@ -359,6 +360,18 @@ void APKHGameMode::GameOver(FString NewFailReasonString)
 	GameOverUI->SetFailReasonText(NewFailReasonString);
 	GameOverUI->SetVisibility(ESlateVisibility::Visible);
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.2f);
+}
+
+void APKHGameMode::SetHpBar( bool IsVisible )
+{
+	if (IsVisible)
+	{
+		PlayerHpUI->SetVisibility( ESlateVisibility::Visible );
+	}
+	else
+	{
+		PlayerHpUI->SetVisibility( ESlateVisibility::Hidden );
+	}
 }
 
 void APKHGameMode::OpenLevel(enum ELevelSelect NewLevel)

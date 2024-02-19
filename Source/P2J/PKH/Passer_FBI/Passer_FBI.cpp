@@ -179,12 +179,6 @@ void APasser_FBI::OnDie()
 	}
 	GetBlackboard()->SetValueAsObject(PASSER_KEY_TARGET, nullptr);
 
-	// Sequence
-	if (SequencePlayer)
-	{
-		SequencePlayer->Play();
-	}
-
 	// Destroy
 	FTimerHandle DestroyHandle;
 	GetWorldTimerManager().SetTimer(DestroyHandle, FTimerDelegate::CreateLambda(
@@ -199,6 +193,7 @@ void APasser_FBI::OnDie()
 	{
 		return;
 	}
+
 	if (GameMode->CheckCurQuest(EQuestType::Q1_FightWithMan))
 	{
 		GameMode->ClearCurQuest();
@@ -207,7 +202,20 @@ void APasser_FBI::OnDie()
 		GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda(
 			[&]() {
 				Cast<APKHGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->SetQuestGuideText(TEXT("ID 카드를 획득하십시오."));
-			}), 12.0f, false);
+			}), 11.2f, false);
+	}
+
+	// Sequence
+	if (SequencePlayer)
+	{
+		GameMode->SetHpBar( false );
+		SequencePlayer->Play();
+
+		FTimerHandle HpHandle;
+		GetWorldTimerManager().SetTimer(HpHandle , FTimerDelegate::CreateLambda(
+			[GameMode]() {
+				GameMode->SetHpBar( true );
+			}), 11.0f, false);
 	}
 }
 
