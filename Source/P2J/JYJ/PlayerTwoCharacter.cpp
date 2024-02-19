@@ -88,7 +88,7 @@ void APlayerTwoCharacter::cleanStart()
 		mudCnt++;
 	}
 
-	if (mudCnt == 5)
+	if (mudCnt == 3)
 	{
 		gamemode->SetQuestGuideText( TEXT( "오른편 방에 진입하여 사물함에 폭탄을 설치하시오." ) );
 	}

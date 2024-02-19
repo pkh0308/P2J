@@ -201,11 +201,6 @@ void APlayerThirdCharacter::OnActionCrouchEnd()
 	PlayerAnim->bCrouch = false;
 }
 
-void APlayerThirdCharacter::gameOverText()
-{
-	gamemode->GameOver( TEXT( "당신은 정보원에게 사격당해 사망하였습니다." ) );
-}
-
 void APlayerThirdCharacter::TakePlayerDamaged( int damage )
 {
 	// 데미지 만큼 체력을 소모한다.
@@ -224,7 +219,7 @@ void APlayerThirdCharacter::TakePlayerDamaged( int damage )
 	{
 		if (PlayerAnim)
 			PlayerAnim->PlayerDeathMontage();
-		gameOverText();
+		deadReason( TEXT( "당신은 정보원에게 사격당해 사망하였습니다." ) );
 	}
 	// 그렇지않다면 (== 체력이 0보다 크다면)
 	else

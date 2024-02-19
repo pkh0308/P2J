@@ -244,11 +244,6 @@ void APlayerZeroCharacter::TakePlayerDamaged(int damage)
 	}
 }
 
-void APlayerZeroCharacter::gameOverText()
-{
-	gamemode->GameOver( TEXT( "당신은 시민에게 맞아 죽었습니다." ) );
-}
-
 void APlayerZeroCharacter::deadReason( FString reason )
 {
 	gamemode->GameOver( reason );
