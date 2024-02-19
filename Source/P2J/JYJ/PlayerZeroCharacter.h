@@ -91,4 +91,6 @@ public:
 
 	bool bAvailableMove;
 
+	void deadReason( FString reason );
+
 };

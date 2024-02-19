@@ -233,7 +233,8 @@ void APlayerZeroCharacter::TakePlayerDamaged(int damage)
 	{
 		if (PlayerAnim)
 			PlayerAnim->PlayerDeathMontage();
-		gameOverText();
+
+		deadReason( TEXT( "당신은 시민에게 맞아 죽었습니다." ) );
 	}
 	// 그렇지않다면 (== 체력이 0보다 크다면)
 	else 
@@ -246,4 +247,9 @@ void APlayerZeroCharacter::TakePlayerDamaged(int damage)
 void APlayerZeroCharacter::gameOverText()
 {
 	gamemode->GameOver( TEXT( "당신은 시민에게 맞아 죽었습니다." ) );
+}
+
+void APlayerZeroCharacter::deadReason( FString reason )
+{
+	gamemode->GameOver( reason );
 }
