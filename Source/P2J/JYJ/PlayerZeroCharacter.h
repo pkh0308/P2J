@@ -72,9 +72,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void TakePlayerDamaged(int damage);
 
-	
-	virtual void gameOverText();
-
 	UPROPERTY(EditAnywhere)
 	int32 playerMaxHP = 10;
 
